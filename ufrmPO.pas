@@ -581,6 +581,7 @@ begin
     aistax :=  1
   else
     aistax := 0;
+    
   if chkDTP.Checked then
     aisdtp :=  1
   else

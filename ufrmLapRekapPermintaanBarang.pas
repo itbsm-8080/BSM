@@ -110,18 +110,18 @@ begin
 //    cxGrdMaster.Columns[14].Width :=70;
 //    cxGrdMaster.Columns[15].Width :=70;
     s:= 'select distinct Kode,Nama,Kode_supplier,Supplier,'
-+ ' (select sum(qty) from permintaanbarang where tanggal='+quotd(startdate.date)+' and kode=x.kode and cabang="01") Solo,'
-+ ' (select sum(qty) from permintaanbarang where tanggal='+quotd(startdate.date)+' and kode=x.kode and cabang="02") Jogja,'
-+ ' (select sum(qty) from permintaanbarang where tanggal='+quotd(startdate.date)+' and kode=x.kode and cabang="03") Madiun,'
-+ ' (select sum(qty) from permintaanbarang where tanggal='+quotd(startdate.date)+' and kode=x.kode and cabang="04") Purwokerto,'
-+ ' (select sum(qty) from permintaanbarang where tanggal='+quotd(startdate.date)+' and kode=x.kode and cabang="05") Semarang,'
-+ ' (select sum(qty) from permintaanbarang where tanggal='+quotd(startdate.date)+' and kode=x.kode and cabang="06") Surabaya,'
-+ ' (select sum(qty) from permintaanbarang where tanggal='+quotd(startdate.date)+' and kode=x.kode and cabang="07") Cirebon,'
-+ ' (select sum(qty) from permintaanbarang where tanggal='+quotd(startdate.date)+' and kode=x.kode and cabang="08") Lab,'
-+ ' (select sum(qty) from permintaanbarang where tanggal='+quotd(startdate.date)+' and kode=x.kode and cabang="10") Jakarta,'
-+ ' (select sum(qty) from permintaanbarang where tanggal='+quotd(startdate.date)+' and kode=x.kode ) Total,'
++ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="01") Solo,'
++ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="02") Jogja,'
++ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="03") Madiun,'
++ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="04") Purwokerto,'
++ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="05") Semarang,'
++ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="06") Surabaya,'
++ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="07") Cirebon,'
++ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="08") Lab,'
++ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="10") Jakarta,'
++ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode ) Total,'
 + ' Stok ,'
-+ ' Stok-(select sum(qty) from permintaanbarang where tanggal='+quotd(startdate.date)+' and kode=x.kode ) Sisa'
++ ' Stok-(select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode ) Sisa'
 + ' from permintaanbarang x'
 + ' where Tanggal<='+quotd(startdate.date) ;
 
@@ -227,14 +227,22 @@ var
   tt:TStrings;
   i:Integer;
   ahargabeli,atotal :double;
+  aistax: Integer;
 begin
   inherited;
-  showmessage(CDS.FieldByName('kode_supplier').AsString);
+  aistax := 1;
+//  showmessage(CDS.FieldByName('kode_supplier').AsString);
+
+  if MessageDlg('Ingin membuat PO dengan pajak ?',mtCustom,
+                              [mbYes,mbNo], 0)= mrNo
+  then aistax := 0 ;
+
   anomor:=frmpo.getmaxkode2;
   s:='insert into Tpo_HDR '
-     + ' (po_nomor,po_tanggal,po_sup_kode) values ('
+     + ' (po_nomor,po_tanggal,po_istax,po_sup_kode) values ('
      +  QuotedStr(anomor)+','
      + QuotD(Date)+','
+     + Quot(aistax)+','
      + Quot(CDS.FieldByName('kode_supplier').AsString)+')';
   // xExecQuery(s,frmMenu.conn);
 EnsureConnected(frmMenu.conn);

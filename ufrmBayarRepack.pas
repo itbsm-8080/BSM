@@ -1,0 +1,946 @@
+unit ufrmBayarRepack;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Grids,  AdvGrid, ComCtrls, StdCtrls, AdvEdit, ExtCtrls,
+  AdvPanel, AdvCGrid, BaseGrid,SqlExpr, DBAdvGrd, DB, DBClient, Provider,
+  FMTBcd, RAWPrinter, StrUtils, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
+  dxSkinsDefaultPainters, cxTextEdit, cxMaskEdit, cxDropDownEdit,
+  cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox, cxStyles,
+  dxSkinscxPCPainter, cxCustomData, cxFilter, cxData, cxDataStorage,
+  cxDBData, cxSpinEdit, cxCalendar, Menus, cxButtons, cxGridLevel,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxClasses,
+  cxGridCustomView, cxGrid, cxButtonEdit, cxRadioGroup, AdvEdBtn, MyAccess;
+
+type
+  TfrmBayarRepack = class(TForm)
+    AdvPanel1: TAdvPanel;
+    lbljudul: TLabel;
+    AdvPanel2: TAdvPanel;
+    Label2: TLabel;
+    Label4: TLabel;
+    dttanggal: TDateTimePicker;
+    AdvPanel3: TAdvPanel;
+    Label3: TLabel;
+    edtKeterangan: TAdvEdit;
+    RAWPrinter1: TRAWPrinter;
+    edtNomor: TAdvEdit;
+    cxGrid: TcxGrid;
+    cxGrdMain: TcxGridDBTableView;
+    clNo: TcxGridDBColumn;
+    clNomor: TcxGridDBColumn;
+    clTanggal: TcxGridDBColumn;
+    clQty: TcxGridDBColumn;
+    clTarif: TcxGridDBColumn;
+    cxGrdDetail: TcxGridDBTableView;
+    lvMaster: TcxGridLevel;
+    AdvPanel4: TAdvPanel;
+    cxButton8: TcxButton;
+    cxButton2: TcxButton;
+    cxButton1: TcxButton;
+    clTotal: TcxGridDBColumn;
+    PopupMenu1: TPopupMenu;
+    HapusRecord1: TMenuItem;
+    Label5: TLabel;
+    edtNilai: TAdvEdit;
+    cxButton3: TcxButton;
+    Label1: TLabel;
+    edtTarif: TAdvEdit;
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure edtNomorExit(Sender: TObject);
+    procedure refreshdata;
+    procedure simpandata;
+    procedure loaddataall(akode : string);
+    procedure doslipmutasi(anomor : string );
+    function GetCDS: TClientDataSet;
+
+    function getmaxkode:string;
+    procedure FormCreate(Sender: TObject);
+    procedure insertketampungan(anomor:string);
+    procedure cxButton8Click(Sender: TObject);
+    procedure cxButton2Click(Sender: TObject);
+    procedure cxButton1Click(Sender: TObject);
+    function cekdata:Boolean;
+
+    procedure initgrid;
+    procedure HapusRecord1Click(Sender: TObject);
+    procedure clNoGetDisplayText(Sender: TcxCustomGridTableItem;
+      ARecord: TcxCustomGridRecord; var AText: String);
+    procedure cxLookupGudangAsalPropertiesEditValueChanged(
+      Sender: TObject);
+    procedure clQTYPropertiesEditValueChanged(Sender: TObject);
+    procedure clSKUPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure bantuanaccount;
+    procedure clAccountPropertiesEditValueChanged(Sender: TObject);
+    procedure edtAccountClickBtn(Sender: TObject);
+    procedure rbKasClick(Sender: TObject);
+    procedure rbBankClick(Sender: TObject);
+    procedure clSupplierPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    function cekbiaya2(akode:string):Boolean;
+    function cekkembar(akode:string;amemo:String;abaris:Integer):Boolean;
+    procedure cxButton3Click(Sender: TObject);
+    function getunitbisnis(anik:string):string;
+    procedure clNikPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure cxButton4Click(Sender: TObject);
+    private
+     buttonSelected  : integer;
+     FID : STRING;
+     FCDSCostCenter: TClientDataset;
+     FCDSAccount: TClientDataset;
+     FFLAGEDIT: Boolean;
+     xtotal : Double;
+     NOMERATOR : string;
+
+
+      { Private declarations }
+     protected
+    FCDS: TClientDataSet;
+  public
+      property CDS: TClientDataSet read GetCDS write FCDS;
+          property CDSCostCenter: TClientDataSet read FCDSCostCenter write FCDSCostCenter;
+
+          property ID: string read FID write FID;
+            property FLAGEDIT: Boolean read FFLAGEDIT write FFLAGEDIT;
+    { Public declarations }
+  end;
+ const
+
+    NOMERATOR = 'BRP';
+
+var
+  frmBayarRepack: TfrmBayarRepack;
+
+implementation
+
+uses MAIN,uModuleConnection,uFrmbantuan,Ulib,uReport;
+
+{$R *.dfm}
+
+procedure TfrmBayarRepack.FormShow(Sender: TObject);
+begin
+  refreshdata;
+ end;
+
+procedure TfrmBayarRepack.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  Action := caFree;
+  Release;
+end;
+
+procedure TfrmBayarRepack.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+     SelectNext(ActiveControl,True,True);
+end;
+
+procedure TfrmBayarRepack.edtNomorExit(Sender: TObject);
+begin
+   edtNomor.Enabled := False;
+   loaddataall(edtNomor.Text);
+end;
+
+
+procedure TfrmBayarRepack.refreshdata;
+begin
+  NOMERATOR := 'BRP';
+  edtNomor.Text := getmaxkode;
+  FID:='';
+  FLAGEDIT :=False;
+  dttanggal.DateTime := Date;
+  edtKeterangan.Clear;
+  edtNilai.Text := '0.00';
+  edtTarif.Text := '0.00';
+
+//   cxLookupAccount.EditValue := '';
+//  cxLookupAccount.SetFocus;
+  initgrid;
+end;
+
+procedure TfrmBayarRepack.simpandata;
+var
+  s:string;
+  i:integer;
+  tt : TStrings;
+  anomor : string;
+begin
+   if flagedit then
+   begin
+   anomor := edtNomor.Text;
+      s:= 'update tbayarrepack_hdr set  '
+         + ' barep_tanggal = ' + QuotD(dttanggal.DateTime)+','
+         + ' barep_keterangan = ' + Quot(edtKeterangan.Text) + ','
+         + ' barep_nilai = ' + quot('Penerimaan Lain') +','
+         + ' date_modified  = ' + QuotD(cGetServerTime,True) + ','
+         + ' user_modified = ' + Quot(frmMenu.KDUSER)
+         + ' where barep_nomor = ' + Quot(edtNomor.Text) ;
+   end
+   else
+   begin
+     anomor := getmaxkode;
+     edtNomor.Text := anomor;
+      s:= ' insert into tbayarrepack_hdr '
+         + '( barep_nomor,barep_tanggal,barep_keterangan,barep_nilai,barep_tarif,date_create,user_create) values ( '
+         + Quot(anomor) + ','
+         + Quotd(dttanggal.DateTime)+','
+         + Quot(edtKeterangan.Text) + ','
+         + floattostr(cStrToFloat(edtNilai.Text))+','
+         + floattostr(cStrToFloat(edtTarif.Text))+','
+         + QuotD(cGetServerTime,True) + ','
+         + Quot(frmMenu.KDUSER)+')';
+   end;
+   // xExecQuery(s,frmMenu.conn);
+EnsureConnected(frmMenu.conn);
+ExecSQLDirect(frmMenu.conn, s);
+   tt := TStringList.Create;
+   s:= ' delete from tbayarrepack_dtl '
+      + ' where  barepd_barep_nomor =' + quot(FID) ;
+   tt.Append(s);
+   i:=1;
+   // insert detail di header
+//           s:='insert into tbayarrepack_dtl '
+//          + ' ( barepd_jur_no,jurd_rek_kode,jurd_kredit,jurd_debet,jurd_cc_kode,jurd_keterangan,jurd_nourut) values ( '
+//          +  Quot(anomor) + ','
+//          +  Quot(edtAccount.Text) + ',0,'
+//          +  floattostr(cStrToFloat(edtNilai.Text)) + ','
+//          +  Quot('') + ','
+//          +  Quot(edtKeterangan.text) +',0'
+//          +');';
+//       tt.Append(s);
+
+  CDS.First;
+  while not CDS.Eof do
+  begin
+   if (CDS.FieldByName('nilai').AsFloat >  0) and (CDS.FieldByName('account').AsString <> '') then
+   begin
+        s:='insert into tjurnalitem '
+          + ' (jurd_jur_no,jurd_rek_kode,jurd_kredit,jurd_debet,jurd_cc_kode,jurd_keterangan,jurd_nourut,jurd_cus_kode,jurd_kar_nik) values ( '
+          +  Quot(anomor) + ','
+          +  Quot(CDS.FieldByName('account').AsString) + ','
+          +  floattostr(CDS.FieldByName('nilai').AsFloat) + ',0,'
+          +  Quot(CDS.FieldByName('costcenter').Asstring) + ','
+          +  Quot(CDS.FieldByName('memo').Asstring)+','
+          +  IntToStr(i) + ','
+          +  Quot(CDS.FieldByName('supplier').Asstring)+','
+          +  Quot(CDS.FieldByName('nik').Asstring)
+          +');';
+       tt.Append(s);
+     end;
+     CDS.next;
+       Inc(i);
+   end;
+
+     try
+        for i:=0 to tt.Count -1 do
+        begin
+            // xExecQuery(tt[i],frmMenu.conn);
+EnsureConnected(frmMenu.conn);
+ExecSQLDirect(frmMenu.conn, tt[i]);
+        end;
+      finally
+        tt.Free;
+      end;
+end;
+procedure TfrmBayarRepack.loaddataall(akode : string);
+var
+  s: string ;
+  tsql,tsql2 : TmyQuery;
+  i:Integer;
+begin
+  if akode = '' then
+  begin
+    flagedit := false;
+    Exit ;
+  end;
+  s := ' select jur_no,jur_tanggal,jur_keterangan,jurd_debet,jurd_rek_kode,'
+     + ' jurd_kredit,jurd_keterangan,jurd_cc_kode,rek_nama ,jurd_kar_nik'
+     + ' from tjurnal a'
+     + ' inner join tjurnalitem d on a.jur_no=d.jurd_jur_no '
+     + ' inner join trekening b on d.jurd_rek_kode = b.rek_kode '
+     + ' where a.jur_no = '+ Quot(akode)
+     + ' and jurd_debet > 0 ';
+    tsql := xOpenQuery(s,frmMenu.conn) ;
+   try
+
+       with  tsql do
+       begin
+         if not eof then
+         begin
+            flagedit := True;
+            FID :=fieldbyname('jur_no').AsString;
+            edtNomor.Text   := fieldbyname('jur_no').AsString;
+            dttanggal.DateTime := fieldbyname('jur_tanggal').AsDateTime;
+//            edtAccount.text := fieldbyname('jurd_rek_kode').AsString;
+//            edtNamaAccount.Text := getnama('trekening','rek_kode',fieldbyname('jurd_rek_kode').AsString,'rek_nama');
+
+            edtketerangan.Text := fieldbyname('jur_keterangan').AsString;
+            edtNilai.Text := fieldbyname('jurd_debet').AsString;
+
+            s := ' select jur_no,jur_tanggal,jur_keterangan,jurd_debet,jurd_rek_kode,'
+                 + ' jurd_kredit,jurd_keterangan,jurd_cc_kode,rek_nama,jurd_cus_kode ,jurd_kar_nik'
+                 + ' from tjurnal a'
+                 + ' inner join tjurnalitem d on a.jur_no=d.jurd_jur_no '
+                 + ' inner join trekening b on d.jurd_rek_kode = b.rek_kode '
+                 + ' where a.jur_no = '+ Quot(akode)
+                 + ' and jurd_kredit > 0 order by jurd_nourut';
+                tsql := xOpenQuery(s,frmMenu.conn) ;
+
+           i:=1;
+             CDS.EmptyDataSet;
+            while  not Eof do
+             begin
+                      CDS.Append;
+
+                      CDS.FieldByName('account').AsString  := fieldbyname('jurd_rek_kode').AsString;
+                      CDS.fieldbyname('accountname').AsString  := fieldbyname('rek_nama').AsString;
+                      CDS.FieldByName('nilai').AsFloat   := fieldbyname('jurd_kredit').AsFloat;
+                      CDS.FieldByName('memo').AsString := fieldbyname('jurd_keterangan').AsString;
+                      CDS.FieldByName('costcenter').AsString  :=  fieldbyname('jurd_cc_kode').AsString;
+                      CDS.FieldByName('supplier').AsString  :=   fieldbyname('jurd_cus_kode').AsString;
+                      CDS.FieldByName('nik').AsString  :=   fieldbyname('jurd_kar_nik').AsString;
+                      cds.FieldByName('unit').AsString := getunitbisnis(fieldbyname('jurd_kar_nik').AsString);
+                      CDS.Post;
+                   i:=i+1;
+                   next;
+            end ;
+
+        end
+        else
+        begin
+          ShowMessage('Nomor Jurnal tidak di temukan');
+          edtNomor.Enabled:= true;
+          edtNomor.SetFocus;
+        end;
+      end;
+   finally
+     tsql.Free;
+   end;
+end;
+
+
+procedure TfrmBayarRepack.doslipmutasi(anomor : string );
+var
+  s: string ;
+  ftsreport : TTSReport;
+begin
+  insertketampungan(anomor);
+  ftsreport := TTSReport.Create(nil);
+  try
+    ftsreport.Nama := 'penerimaanlain';
+
+    s:= ' select '
+       + ' *,'
+       + ' (select rek_nama from tjurnalitem a ,trekening b  where a.jurd_jur_no=jur_no and jurd_debet > 0  and rek_kode=jurd_rek_kode) rekdebet,'
+       + '(select sum(jurd_debet) from tjurnalitem a where a.jurd_jur_no=jur_no) debet, '
+       + ' terbilang((select sum(jurd_debet) from tjurnalitem a where a.jurd_jur_no=jur_no)) bilang '
+       + ' from tjurnal a inner join tjurnalitem b on a.jur_no = b.jurd_jur_no '
+       + ' inner join trekening c on c.rek_kode= b.jurd_rek_kode '
+       + ' left join  tcostcenter d on cc_kode=jurd_cc_kode '
+       + ' where '
+       + ' jur_no=' + quot(anomor)
+       + ' and jurd_kredit > 0 ';
+
+    ftsreport.AddSQL(s);
+    ftsreport.ShowReport;
+  finally
+     ftsreport.Free;
+  end;
+end;
+
+
+procedure TfrmBayarRepack.insertketampungan(anomor:string);
+var
+  s,ss:string;
+  tsql : TmyQuery;
+  a,i,x:integer;
+  tt : TStrings;
+begin
+  a:=8;
+  s:='delete from tampung ';
+  // xExecQuery(s,frmMenu.conn);
+EnsureConnected(frmMenu.conn);
+ExecSQLDirect(frmMenu.conn, s);
+  // xCommit(frmMenu.conn);
+   ss := 'select jurd_rek_kode from tjurnalitem where jurd_jur_no =' + Quot(anomor) ;
+  tsql := xOpenQuery(ss,frmMenu.conn) ;
+  x:=0;
+  tt:=TStringList.Create;
+
+    with tsql do
+    begin
+      try
+       while not Eof do
+       begin
+         x:=x+1;
+          s :=   'insert  into tampung '
+                  + '(nomor,tam_nama'
+                  + ')values ('
+                  + Quot(anomor) + ','
+                  + Quot(Fields[0].Asstring)
+                  + ');';
+          tt.Append(s);
+        Next
+       end;
+       finally
+          free;
+      end;
+    end;
+
+
+  for i := x to a do
+   begin
+
+
+        s :='insert  into tampung '
+            + '(nomor,tam_nama'
+            + ')values ('
+            + Quot(anomor) + ','
+            + Quot('-')
+            + ');';
+        tt.Append(s);
+
+   end;
+   try
+    for i:=0 to tt.Count -1 do
+    begin
+        // xExecQuery(tt[i],frmMenu.conn);
+EnsureConnected(frmMenu.conn);
+ExecSQLDirect(frmMenu.conn, tt[i]);
+    end;
+  finally
+    tt.Free;
+  end;
+    // xCommit(frmMenu.conn);
+
+end;
+
+function TfrmBayarRepack.getmaxkode:string;
+var
+  s:string;
+begin
+  s:='select max(right(barep_nomor,4)) from tbayarrepack_hdr  where barep_nomor like ' + quot(frmMenu.kdcabang + '-' +NOMERATOR+'.'+FormatDateTime('yymm',dtTanggal.Date)+'.%') ;
+
+  with xOpenQuery(s,frmMenu.conn) do
+  begin
+    try
+      if Fields[0].AsString = '' then
+         result:= frmMenu.kdcabang + '-' +NOMERATOR+'.'+FormatDateTime('yymm',dtTanggal.Date)+'.'+RightStr(IntToStr(10000+1),4)
+      else
+         result:= frmMenu.kdcabang + '-' +NOMERATOR+'.'+FormatDateTime('yymm',dtTanggal.Date)+'.'+RightStr(IntToStr(10000+fields[0].AsInteger+1),4);
+
+    finally
+      free;
+    end;
+  end;
+end;
+
+
+procedure TfrmBayarRepack.FormCreate(Sender: TObject);
+begin
+// with TcxExtLookupHelper(cxLookupACCOUNT.Properties) do
+//    LoadFromCDS(CDSAccount, 'Kode','AccountName',['Kode'],Self);
+  TcxDBGridHelper(cxGrdMain).LoadFromCDS(CDS, False, False);
+
+end;
+
+function TfrmBayarRepack.GetCDS: TClientDataSet;
+begin
+  If not Assigned(FCDS) then
+  begin
+    FCDS := TClientDataSet.Create(Self);
+    zAddField(FCDS, 'No', ftInteger, False);
+    zAddField(FCDS, 'Nomor', ftString, False,20);
+    zAddField(FCDS, 'Tanggal', ftDate, False);
+    zAddField(FCDS, 'Qty', ftFloat, False,18);
+    zAddField(FCDS, 'Tarif', ftFloat, False,18);
+    zAddField(FCDS, 'Nilai', ftFloat, False,18);
+    FCDS.CreateDataSet;
+  end;
+  Result := FCDS;
+end;
+
+
+
+
+
+procedure TfrmBayarRepack.cxButton8Click(Sender: TObject);
+begin
+Release;
+end;
+
+procedure TfrmBayarRepack.cxButton2Click(Sender: TObject);
+begin
+  try
+      if cekTutupPeriode(dtTanggal.Date) then
+      Exit;
+  
+     If not cekdata then exit;
+
+      if (FLAGEDIT) and ( not cekedit(frmMenu.KDUSER,self.name)) then
+        begin
+           MessageDlg('Anda tidak berhak Edit di Modul ini',mtWarning, [mbOK],0);
+           Exit;
+        End;
+         if (not FLAGEDIT) and ( not cekinsert(frmMenu.KDUSER,self.name)) then
+        begin
+           MessageDlg('Anda tidak berhak Insert di Modul ini',mtWarning, [mbOK],0);;
+           Exit;
+        End;
+
+      if MessageDlg('Yakin ingin simpan ?',mtCustom,
+                                  [mbYes,mbNo], 0)= mrNo
+      then Exit ;
+
+      simpandata;
+      refreshdata;
+   except
+     ShowMessage('Gagal Simpan');
+     // xRollback(frmMenu.conn);
+     Exit;
+   end;
+    // xCommit(frmMenu.conn);
+    Release;
+end;
+
+procedure TfrmBayarRepack.cxButton1Click(Sender: TObject);
+begin
+ try
+      if cekTutupPeriode(dtTanggal.Date) then
+      Exit;
+ 
+      If not cekdata then exit;
+
+      if (FLAGEDIT) and ( not cekedit(frmMenu.KDUSER,self.name)) then
+        begin
+           MessageDlg('Anda tidak berhak Edit di Modul ini',mtWarning, [mbOK],0);
+           Exit;
+        End;
+         if (not FLAGEDIT) and ( not cekinsert(frmMenu.KDUSER,self.name)) then
+        begin
+           MessageDlg('Anda tidak berhak Insert di Modul ini',mtWarning, [mbOK],0);;
+           Exit;
+        End;
+
+      if MessageDlg('Yakin ingin simpan ?',mtCustom,
+                                  [mbYes,mbNo], 0)= mrNo
+      then Exit ;
+
+      simpandata;
+      refreshdata;
+   except
+     ShowMessage('Gagal Simpan');
+     // xRollback(frmMenu.conn);
+     Exit;
+   end;
+    // xCommit(frmMenu.conn);
+end;
+
+
+function TfrmBayarRepack.cekdata:Boolean;
+var
+  i:integer;
+  ATOTAL : DOUBLE;
+begin
+  atotal := 0;
+  result:=true;
+   i := 1;
+//   If edtAccount.Text = '' then
+//    begin
+//      ShowMessage('Account belum di pilih');
+//      result:=false;
+//      Exit;
+//    end;
+
+  CDS.First;
+  While not CDS.Eof do
+  begin
+    if cekkembar(CDS.FieldByName('account').AsString,CDS.FieldByName('memo').AsString,cds.RecNo ) then
+    begin
+          ShowMessage('Ada account dan keterangan Kembar');
+          result:=false;
+          Exit;
+    end;
+    CDS.Next;
+  end;
+
+  CDS.First;
+  While not CDS.Eof do
+  begin
+
+    If CDS.FieldByName('nilai').asfloat > 0 then
+    begin
+      atotal :=atotal + CDS.FieldByName('nilai').asfloat;
+    end;
+
+    If cekbiaya2(CDS.FieldByName('account').AsString) then
+    begin
+      if CDS.FieldByName('supplier').AsString = ''  then
+      begin
+           ShowMessage('Supplier UM DAN PROMOSI Harus  di isi');
+          result:=false;
+          Exit;
+      end;
+    end;
+    inc(i);
+    CDS.Next;
+  end;
+ if floattostr(atotal) <> floattostr(cStrToFloat(edtNilai.Text)) then
+    begin
+      ShowMessage('Nilai debet dan kredit tidak sama');
+      result:=false;
+      Exit;
+    end;
+
+end;
+
+
+
+procedure TfrmBayarRepack.initgrid;
+begin
+  CDS.EmptyDataSet;
+  CDS.Append;
+  CDS.FieldByName('nilai').AsFloat   := 0;
+  CDS.FIELDBYname('tarif').AsFloat   := 0;
+  CDS.FIELDBYname('qty').AsFloat   := 0;
+
+
+  CDS.Post;
+
+end;
+
+
+
+procedure TfrmBayarRepack.HapusRecord1Click(Sender: TObject);
+begin
+ If CDS.Eof then exit;
+  CDS.Delete;
+  If CDS.Eof then initgrid;
+end;
+
+procedure TfrmBayarRepack.clNoGetDisplayText(
+  Sender: TcxCustomGridTableItem; ARecord: TcxCustomGridRecord;
+  var AText: String);
+begin
+  If Assigned(ARecord) then
+  begin
+    AText := Inttostr(ARecord.Index+1);
+  end;
+end;
+
+procedure TfrmBayarRepack.cxLookupGudangAsalPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+//initViewSKU;
+end;
+
+procedure TfrmBayarRepack.clQTYPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+ If CDS.State <> dsEdit then
+   CDS.Edit;
+  cxGrdMain.DataController.Post;
+end;
+
+procedure TfrmBayarRepack.clSKUPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+begin
+ bantuanAccount;
+end;
+
+procedure TfrmBayarRepack.bantuanaccount;
+  var
+    s:string;
+    tsql:TmyQuery;
+    i:Integer;
+begin
+    sqlbantuan := 'select rek_kode Account, rek_nama AccountName from Trekening where rek_isaktif=1';
+
+  Application.CreateForm(Tfrmbantuan,frmbantuan);
+  frmBantuan.SQLMaster := SQLbantuan;
+  frmBantuan.ShowModal;
+  if varglobal <> '' then
+   begin
+   If CDS.State <> dsEdit then
+   CDS.Edit;
+
+      CDS.FieldByName('account').AsString := varglobal;
+      CDS.FieldByName('accountName').AsString := varglobal1;
+
+
+
+  end;
+end;
+
+
+procedure TfrmBayarRepack.clAccountPropertiesEditValueChanged(
+  Sender: TObject);
+  var
+    s:string;
+    tsql:TmyQuery;
+    i:integer;
+begin
+   cxGrdMain.DataController.Post;
+   i := cxGrdMain.DataController.FocusedRecordIndex;
+//  s:= 'select rek_kode,rek_nama from trekening where rek_isaktif=1 and rek_kode='
+//  + Quot(cxGrdMain.DataController.Values[i, claccount.Index]);
+//  tsql := xOpenQuery(s,frmMenu.conn);
+//  with tsql do
+//  begin
+//    try
+//      if not eof then
+//      begin
+//         If CDS.State <> dsEdit then
+//           CDS.Edit;
+//
+//          CDS.FieldByName('account').AsString := Fields[0].AsString;
+//          CDS.FieldByName('accountName').AsString := Fields[1].AsString;
+//
+//      end
+//      else
+//      bantuanaccount;
+//    finally
+//      Free;
+//    end;
+//  end;
+
+end;
+
+
+
+procedure TfrmBayarRepack.edtAccountClickBtn(Sender: TObject);
+  var
+    s:string;
+    tsql:TmyQuery;
+    i:Integer;
+    sfilter : string;
+begin
+//  if rbkas.Checked then
+//     sfilter := ' and rek_kode like  '+Quot('11%')
+//  else
+//     sfilter := ' and rek_kode like  '+Quot('12%') ;
+//
+//  sqlbantuan := ' select rek_kode,rek_nama from trekening where rek_kol_id=1'
+//              + ' and rek_isaktif=1'
+//              + sfilter ;
+//  Application.CreateForm(Tfrmbantuan,frmbantuan);
+//  frmBantuan.SQLMaster := SQLbantuan;
+//  frmBantuan.ShowModal;
+//  if varglobal <> '' then
+//  begin
+//    edtAccount.Text := varglobal;
+//    edtNamaAccount.Text := varglobal1;
+//  end;
+end;
+
+procedure TfrmBayarRepack.rbKasClick(Sender: TObject);
+begin
+//if rbKas.Checked then
+//   NOMERATOR := 'KM'
+//else
+//   NOMERATOR := 'BM';
+// if not FLAGEDIT then
+//   edtNomor.Text := getmaxkode;
+end;
+
+procedure TfrmBayarRepack.rbBankClick(Sender: TObject);
+begin
+// if rbBank.Checked then
+//   NOMERATOR := 'BM'
+//else
+//   NOMERATOR := 'KM';
+//if not FLAGEDIT then
+//   edtNomor.Text := getmaxkode;
+
+end;
+
+procedure TfrmBayarRepack.clSupplierPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+  var
+    s:string;
+    tsql:TmyQuery;
+    i:Integer;
+    sfilter : string;
+begin
+
+  sqlbantuan := ' select sup_kode,sup_nama from tsupplier ';
+  Application.CreateForm(Tfrmbantuan,frmbantuan);
+  frmBantuan.SQLMaster := SQLbantuan;
+  frmBantuan.ShowModal;
+  if varglobal <> '' then
+  begin
+      If CDS.State <> dsEdit then
+         CDS.Edit;
+     CDS.FieldByName('supplier').AsString := varglobal;
+  end;
+end;
+
+function TfrmBayarRepack.cekbiaya2(akode:string):Boolean;
+var
+  s:string;
+  tsql : TmyQuery;
+
+begin
+    result:=False;
+  s:= 'select * from trekening where REK_STATUS=1 AND rek_kode='+Quot(akode) ;
+  tsql := xOpenQuery(s,frmMenu.conn) ;
+  with tsql  do
+  begin
+    try
+      if not eof then
+      Result := True;
+    finally
+      Free;
+    end;
+  end;
+
+
+end;
+
+
+function TfrmBayarRepack.cekkembar(akode:string;amemo:String;abaris:Integer):Boolean;
+var
+  s:string;
+  i:Integer;
+begin
+  result:=False;
+  CDS.First;
+  i:=1 ;
+  while not CDS.Eof do
+  begin
+    if i <> abaris then
+    begin
+      if (akode = CDS.FieldByName('Account').AsString) and (amemo=CDS.FieldByName('memo').AsString) then
+         Result :=  True;
+    end;
+    inc(i);
+    CDS.next;
+  end;
+
+end;
+
+
+procedure TfrmBayarRepack.cxButton3Click(Sender: TObject);
+var
+  s:String;
+  tsql:TmyQuery;
+  i:integer;
+begin
+  s:=' SELECT "19.014" jurd_rek_kode,"HUTANG SIMPANAN" rek_nama,kar_nik jurd_cus_kode,kar_nama jurd_keterangan,kar_defaultsimpanan jurd_kredit'
+  + ' FROM tkaryawanall WHERE kar_isaktif="Y" AND kar_defaultsimpanan> 0';
+  tsql := xOpenQuery(s,frmmenu.conn);
+  with tsql do
+  begin
+    try
+         CDS.EmptyDataSet;
+             while  not Eof do
+             begin
+                      CDS.Append;
+
+                       CDS.FieldByName('account').AsString  := fieldbyname('jurd_rek_kode').AsString;
+                      CDS.fieldbyname('accountname').AsString  := fieldbyname('rek_nama').AsString;
+                      CDS.FieldByName('nilai').AsFloat   := fieldbyname('jurd_kredit').AsFloat;
+                      CDS.FieldByName('memo').AsString := fieldbyname('jurd_keterangan').AsString;
+//                      CDS.FieldByName('costcenter').AsString  :=  fieldbyname('jurd_cc_kode').AsString;
+                      CDS.FieldByName('nik').AsString  :=   fieldbyname('jurd_cus_kode').AsString;
+                      cds.FieldByName('unit').AsString  :=   getunitbisnis(fieldbyname('jurd_cus_kode').AsString);
+                      CDS.Post;
+                   i:=i+1;
+                   next;
+            end ;
+
+    finally
+      free;
+    end;
+  end;
+
+end;
+
+function TfrmBayarRepack.getunitbisnis(anik:string):string;
+var
+  s:string;
+  tsql:TmyQuery;
+begin
+  s:='SELECT  nama FROM bsm.tkaryawanall INNER JOIN bsm.tunit ON id=kar_id_unit WHERE kar_Nik='+Quot(anik);
+  tsql := xOpenQuery(s,frmmenu.conn);
+  with tsql do
+  begin
+    try
+      if not eof then
+         result :=fields[0].asstring;
+    finally
+      Free;
+    end;
+  end;
+end;
+procedure TfrmBayarRepack.clNikPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+ var
+    s:string;
+    tsql:TmyQuery;
+    i:Integer;
+    sfilter : string;
+begin
+
+  sqlbantuan := ' select kar_nik,kar_nama from tkaryawanALL ';
+  Application.CreateForm(Tfrmbantuan,frmbantuan);
+  frmBantuan.SQLMaster := SQLbantuan;
+  frmBantuan.ShowModal;
+  if varglobal <> '' then
+  begin
+      If CDS.State <> dsEdit then
+         CDS.Edit;
+     CDS.FieldByName('nik').AsString := varglobal;
+     cds.FieldByName('Memo').AsString := varglobal1;
+  end;
+end;
+
+procedure TfrmBayarRepack.cxButton4Click(Sender: TObject);
+var
+  s:String;
+  tsql:TmyQuery;
+  i:integer;
+begin
+  s:=' SELECT "14.017" jurd_rek_kode,"PIUTANG KARYAWAN " rek_nama,kar_nik jurd_cus_kode,kar_nama jurd_keterangan,kar_cicilanterakhir jurd_kredit,'
+  + ' (SELECT ifnull(SUM(jurd_debet-jurd_kredit),0) FROM tjurnalitem inner join tjurnal on jurd_jur_no=jur_no'
+  + '  WHERE jur_tanggal <= '+quotd(dttanggal.DateTime)+' and jurd_kar_nik=kar_nik AND jurd_rek_kode="14.017")  piutang '
+  + ' FROM tkaryawanall WHERE kar_isaktif="Y" '
+  + ' having piutang > 0 ';
+  tsql := xOpenQuery(s,frmmenu.conn);
+  with tsql do
+  begin
+    try
+         CDS.EmptyDataSet;
+             while  not Eof do
+             begin
+                      CDS.Append;
+                       IF fieldbyname('jurd_kredit').AsFloat > fieldbyname('PIUTANG').AsFloat THEN
+                          showmessage('cicilan '+ fieldbyname('jurd_keterangan').asstring + ' melebihi sisa piutang');
+                          
+                      CDS.FieldByName('account').AsString  := fieldbyname('jurd_rek_kode').AsString;
+                      CDS.fieldbyname('accountname').AsString  := fieldbyname('rek_nama').AsString;
+                      CDS.FieldByName('nilai').AsFloat   := fieldbyname('jurd_kredit').AsFloat;
+                      CDS.FieldByName('memo').AsString := fieldbyname('jurd_keterangan').AsString;
+//                      CDS.FieldByName('costcenter').AsString  :=  fieldbyname('jurd_cc_kode').AsString;
+                      CDS.FieldByName('nik').AsString  :=   fieldbyname('jurd_cus_kode').AsString;
+                      cds.FieldByName('unit').AsString := getunitbisnis(fieldbyname('jurd_cus_kode').AsString);
+                      CDS.Post;
+                   i:=i+1;
+                   next;
+            end ;
+
+    finally
+      free;
+    end;
+  end;
+
+end;
+
+end.

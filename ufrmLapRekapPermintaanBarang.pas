@@ -242,7 +242,7 @@ begin
      + ' (po_nomor,po_tanggal,po_istax,po_sup_kode) values ('
      +  QuotedStr(anomor)+','
      + QuotD(Date)+','
-     + Quot(aistax)+','
+     + Quot(IntToStr(aistax))+','
      + Quot(CDS.FieldByName('kode_supplier').AsString)+')';
   // xExecQuery(s,frmMenu.conn);
 EnsureConnected(frmMenu.conn);

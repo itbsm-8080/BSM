@@ -3,14 +3,14 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
   Top = 118
   Caption = 'Laporan Rekap Permintaan Barang'
   ClientHeight = 599
-  ClientWidth = 1377
+  ClientWidth = 1378
   OldCreateOrder = True
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   inherited AdvPanel1: TAdvPanel
     Top = 563
-    Width = 1377
+    Width = 1378
     FullHeight = 0
     inherited cxButton1: TcxButton
       Visible = False
@@ -28,7 +28,7 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
       Visible = False
     end
     inherited cxButton8: TcxButton
-      Left = 1288
+      Left = 1289
     end
     object cxButton5: TcxButton
       Left = 538
@@ -79,7 +79,7 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
     end
   end
   inherited AdvPanel2: TAdvPanel
-    Width = 1377
+    Width = 1378
     FullHeight = 0
     inherited Label1: TLabel
       Width = 71
@@ -89,24 +89,24 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
       Visible = False
     end
     inherited btnRefresh: TcxButton
-      Left = 1288
+      Left = 1289
     end
     inherited enddate: TDateTimePicker
       Visible = False
     end
   end
   inherited AdvPanel3: TAdvPanel
-    Width = 1377
+    Width = 1378
     Height = 530
     FullHeight = 0
     inherited cxGrid: TcxGrid
-      Width = 1373
+      Width = 1374
       Height = 526
     end
     object cxGrid1: TcxGrid
       Left = 2
       Top = 2
-      Width = 1373
+      Width = 1374
       Height = 526
       Align = alClient
       Font.Charset = ANSI_CHARSET

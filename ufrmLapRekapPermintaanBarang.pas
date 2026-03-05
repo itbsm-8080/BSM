@@ -18,7 +18,7 @@ uses
   ComCtrls, StdCtrls, cxGridLevel, cxClasses, cxControls, cxGridCustomView,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
   cxButtons, ExtCtrls, AdvPanel, DBClient, cxLookAndFeels, cxSpinEdit,
-  cxTextEdit, cxButtonEdit, MyAccess;
+  cxTextEdit, cxButtonEdit, MyAccess, cxCurrencyEdit;
 
 type
   TfrmLapRekapPermintaanBarang = class(TfrmCxBrowse)
@@ -47,6 +47,8 @@ type
     cxStyleRepository1: TcxStyleRepository;
     cxStyle1: TcxStyle;
     cxButton5: TcxButton;
+    cxGrdMainColumn2: TcxGridDBColumn;
+    cxGrdMainColumn12: TcxGridDBColumn;
   procedure btnRefreshClick(Sender: TObject);
   function GetCDS: TClientDataSet;
   procedure FormShow(Sender: TObject);
@@ -121,6 +123,8 @@ begin
 + ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="10") Jakarta,'
 + ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode ) Total,'
 + ' Stok ,'
++ ' (select sum(stok) from allstokcabang where kode=x.kode) StokCabang,'
++ ' (select sum(pod_qty-pod_qty_terima) from popending where pod_brg_kode=x.kode) popending,'
 + ' Stok-(select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode ) Sisa'
 + ' from permintaanbarang x'
 + ' where Tanggal<='+quotd(startdate.date) ;
@@ -153,6 +157,8 @@ begin
                       CDS.FieldByName('Jakarta').asfloat                  := fieldbyname('Jakarta').asfloat;
                       CDS.FieldByName('Total').asfloat                  := fieldbyname('Total').asfloat;
                       CDS.FieldByName('Stok').asfloat                  := fieldbyname('Stok').asfloat;
+                      CDS.FieldByName('Stokcabang').asfloat                  := fieldbyname('Stokcabang').asfloat;
+                      CDS.FieldByName('popending').asfloat                  := fieldbyname('popending').asfloat;
                       CDS.FieldByName('sisa').asfloat                  := fieldbyname('sisa').asfloat;
                       CDS.FieldByName('order').AsFloat                   := 0;
 
@@ -191,9 +197,11 @@ begin
     zAddField(FCDS, 'Jakarta', ftFloat, False);
     zAddField(FCDS, 'Total', ftFloat, False);
     zAddField(FCDS, 'Stok', ftFloat, False);
+    zAddField(FCDS, 'Stokcabang', ftFloat, False);
+    zAddField(FCDS, 'popending', ftFloat, False);    
     zAddField(FCDS, 'Sisa', ftFloat, False);
     zAddField(FCDS, 'order', ftFloat, False);
-    
+
 
 
     FCDS.CreateDataSet;

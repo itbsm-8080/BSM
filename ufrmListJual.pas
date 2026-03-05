@@ -225,7 +225,7 @@ ExecSQLDirect(frmMenu.conn, s);
 + ' (SELECT IF(ktg_nama like '+QUOT('%N3%')+',"YA","TIDAK") FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=brg_ktg_kode WHERE brg_kode=fpd_brg_kode) IsN3,'
 + ' (SELECT ktg_nama FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=brg_ktg_kode WHERE brg_kode=fpd_brg_kode) kategori,'
 + ' (SELECT ktg_nama FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=left(brg_ktg_kode,3) WHERE brg_kode=fpd_brg_kode) SubDepartemen,'
-+ ' (SELECT ktg_nama FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=left(brg_ktg_kode,1) WHERE brg_kode=fpd_brg_kode) Departemen ,cast(0 as signed) kunjunganmarketing,cast(0 as signed) kunjungansales,biayapromosi'
++ ' (SELECT ktg_nama FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=left(brg_ktg_kode,1) WHERE brg_kode=fpd_brg_kode) Departemen ,cast(0 as signed) kunjunganmarketing,cast(0 as signed) kunjungansales,biayapromosi,feemarketing'
 + asuper
 + ' FROM penjualan2022'
 + afilter;
@@ -260,9 +260,9 @@ ExecSQLDirect(frmMenu.conn, s);
 
 //
 if frmmenu.KDUSER = 'SUPER' then
-        Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,Hpp,Margin,kunjunganmarketing,kunjungansales,isecer,Biayapromosi'
+        Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,Hpp,Margin,kunjunganmarketing,kunjungansales,isecer,Biayapromosi,FeeMarketing'
 else
-        Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales,isecer,Biayapromosi';
+        Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales,isecer,Biayapromosi,FeeMarketing';
         QueryToDBGrid(cxGrid1DBTableView1, s,skolom ,ds2);
 
            jmlkolom :=cxGrid1DBTableView1.ColumnCount-2;
@@ -296,15 +296,15 @@ var
 begin
 if frmmenu.KDUSER = 'SUPER' then
   s:='select Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales, '
-  + ' isecer,Biayapromosi,(Nilaiblmppn - Kontrak - Biayapromosi) NilaiNet, '
+  + ' isecer,Biayapromosi,FeeMarketing,(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) NilaiNet, '
   + ' hpp,margin-kontrak-biayapromosi margin,JenisCustomer'
   + '  from (select * from tampung2_2022 union select * from tampung2_2023 union select * from tampung2_2024) x '
-  + ' left join fpcus y on y.fp_nomor=x.nomor '
+  + ' left join vfpcus y on y.fp_nomor=x.nomor '
   + ' where tanggal between '+ QuotD2(startdate.Date) + ' and ' + QuotD2(enddate.Date)
 else
-  s:='select * from (select *,(Nilaiblmppn - Kontrak - Biayapromosi) NilaiNet from tampung_2022 union select *, '
-  + ' (Nilaiblmppn - Kontrak - Biayapromosi) NilaiNet from tampung_2023 union select *, (Nilaiblmppn - Kontrak - Biayapromosi) NilaiNet from tampung_2024) x '
-  + ' left join fpcus y on y.fp_nomor=x.nomor '
+  s:='select * from (select *,(Nilaiblmppn - Kontrak - Biayapromosi-feemarketing) NilaiNet from tampung_2022 union select *, '
+  + ' (Nilaiblmppn - Kontrak - Biayapromosi-feemarketing) NilaiNet from tampung_2023 union select *, (Nilaiblmppn - Kontrak - Biayapromosi-feemarketing) NilaiNet from tampung_2024) x '
+  + ' left join v fpcus y on y.fp_nomor=x.nomor '
   + ' where tanggal between '+ QuotD2(startdate.Date) + ' and ' + QuotD2(enddate.Date) ;
 
         ds3.Close;
@@ -314,9 +314,10 @@ else
 
 if frmmenu.KDUSER = 'SUPER' then
         Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,Hpp,Margin, '
-        + ' kunjunganmarketing,kunjungansales,isecer,Biayapromosi,NilaiNet,JenisCustomer'
+        + ' kunjunganmarketing,kunjungansales,isecer,Biayapromosi,FeeMarketing,NilaiNet,JenisCustomer'
 else
-        Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales,isecer,Biayapromosi,NilaiNet,JenisCustomer';
+        Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales,'
+        + ' isecer,Biayapromosi,FeeMarketing,NilaiNet,JenisCustomer';
         QueryToDBGrid(cxGrid1DBTableView1, s,skolom ,ds2);
 
            jmlkolom :=cxGrid1DBTableView1.ColumnCount-2;

@@ -3,14 +3,14 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
   Top = 118
   Caption = 'Laporan Rekap Permintaan Barang'
   ClientHeight = 599
-  ClientWidth = 1378
+  ClientWidth = 1386
   OldCreateOrder = True
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   inherited AdvPanel1: TAdvPanel
     Top = 563
-    Width = 1378
+    Width = 1386
     FullHeight = 0
     inherited cxButton1: TcxButton
       Visible = False
@@ -28,7 +28,7 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
       Visible = False
     end
     inherited cxButton8: TcxButton
-      Left = 1289
+      Left = 1297
     end
     object cxButton5: TcxButton
       Left = 538
@@ -79,7 +79,7 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
     end
   end
   inherited AdvPanel2: TAdvPanel
-    Width = 1378
+    Width = 1386
     FullHeight = 0
     inherited Label1: TLabel
       Width = 71
@@ -89,24 +89,24 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
       Visible = False
     end
     inherited btnRefresh: TcxButton
-      Left = 1289
+      Left = 1297
     end
     inherited enddate: TDateTimePicker
       Visible = False
     end
   end
   inherited AdvPanel3: TAdvPanel
-    Width = 1378
+    Width = 1386
     Height = 530
     FullHeight = 0
     inherited cxGrid: TcxGrid
-      Width = 1374
+      Width = 1382
       Height = 526
     end
     object cxGrid1: TcxGrid
       Left = 2
       Top = 2
-      Width = 1374
+      Width = 1382
       Height = 526
       Align = alClient
       Font.Charset = ANSI_CHARSET
@@ -217,6 +217,8 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
         end
         object cxGrdMainColumn1: TcxGridDBColumn
           DataBinding.FieldName = 'Purwokerto'
+          HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
           HeaderGlyphAlignmentHorz = taCenter
           Options.Editing = False
           Width = 66
@@ -225,18 +227,21 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
           DataBinding.FieldName = 'Semarang'
           GroupSummaryAlignment = taCenter
           HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
           Options.Editing = False
         end
         object cxGrdMainColumn4: TcxGridDBColumn
           DataBinding.FieldName = 'Surabaya'
           GroupSummaryAlignment = taCenter
           HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
           Options.Editing = False
         end
         object cxGrdMainColumn5: TcxGridDBColumn
           DataBinding.FieldName = 'Cirebon'
           GroupSummaryAlignment = taCenter
           HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
           Options.Editing = False
         end
         object cxGrdMainColumn6: TcxGridDBColumn
@@ -244,12 +249,14 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
           DataBinding.FieldName = 'lab'
           GroupSummaryAlignment = taCenter
           HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
           Options.Editing = False
         end
         object cxGrdMainColumn7: TcxGridDBColumn
           DataBinding.FieldName = 'Jakarta'
           GroupSummaryAlignment = taCenter
           HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
           Options.Editing = False
         end
         object cxGrdMainColumn8: TcxGridDBColumn
@@ -257,12 +264,14 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
           DataBinding.FieldName = 'total'
           GroupSummaryAlignment = taCenter
           HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
           Options.Editing = False
         end
         object cxGrdMainColumn9: TcxGridDBColumn
           DataBinding.FieldName = 'Stok'
           GroupSummaryAlignment = taCenter
           HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
           Options.Editing = False
         end
         object cxGrdMainColumn10: TcxGridDBColumn
@@ -270,6 +279,7 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
           DataBinding.FieldName = 'sisa'
           GroupSummaryAlignment = taCenter
           HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
           Options.Editing = False
         end
         object cxGrdMainColumn11: TcxGridDBColumn
@@ -277,7 +287,28 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
           DataBinding.FieldName = 'order'
           GroupSummaryAlignment = taCenter
           HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
           Styles.Content = cxStyle1
+        end
+        object cxGrdMainColumn2: TcxGridDBColumn
+          Caption = 'Stok Cabang'
+          DataBinding.FieldName = 'stokcabang'
+          PropertiesClassName = 'TcxCurrencyEditProperties'
+          Properties.DisplayFormat = ',0.;(,0.)'
+          HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
+          Options.Editing = False
+          Options.Focusing = False
+          Width = 102
+        end
+        object cxGrdMainColumn12: TcxGridDBColumn
+          Caption = 'PO Pending'
+          DataBinding.FieldName = 'popending'
+          PropertiesClassName = 'TcxCurrencyEditProperties'
+          Properties.DisplayFormat = ',0.;(,0.)'
+          HeaderAlignmentHorz = taCenter
+          HeaderAlignmentVert = vaCenter
+          Options.Editing = False
         end
       end
       object cxGridDBTableView1: TcxGridDBTableView

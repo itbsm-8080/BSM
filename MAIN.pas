@@ -420,7 +420,7 @@ begin
   StatusBar1.Panels[1].Text := 'Connected to ' + aHost;
   StatusBar1.Panels[2].Text := 'Database ' + aDatabase;
 
-  conn := xCreateConnection(ctMySQL, aHost, aDatabase, auser, apassword);
+  conn := xCreateConnection(ctMySQL, aHost, aDatabase, auser, apassword, aport);
 
   ThousandSeparator := ',';
   ShortDateFormat := 'M/d/yyyy';

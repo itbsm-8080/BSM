@@ -794,7 +794,7 @@ begin
             + ' inner join tcabang b on a.mutc_cbg_asal=b.cbg_kode'
             + ' inner join tcabang c on a.mutc_cbg_tujuaN=c.cbg_kode'
             + ' left join tmutcabin_hdr d on a.mutc_nomor=mutci_nomormutasi '
-            + ' where mutci_nomor is null '
+            + ' where mutci_nomor is null and a.mutc_status = 0 '
             + ' and a.mutc_cbg_tujuan = ' + Quot(frmMenu.KDCABANG) + ' and a.mutc_cbg_asal = ' + Quot(cxLookupCabangAsal.EditValue);
  Application.CreateForm(Tfrmbantuan,frmbantuan);
  frmBantuan.SQLMaster := SQLbantuan;
@@ -812,10 +812,11 @@ var
   i:Integer;
 begin
 
- 
+  adatabase := getdatabase(cxLookupCabangAsal.EditValue)+'.';
+
   s := ' select *'
-     + ' from tMUTCAB_hdr a'
-     + ' inner join tmutcab_dtl b on a.mutc_nomor=b.mutcd_mutc_nomor'
+     + ' from '+adatabase+'tMUTCAB_hdr a'
+     + ' inner join '+adatabase+'tmutcab_dtl b on a.mutc_nomor=b.mutcd_mutc_nomor'
      + ' inner join tbarang c on B.mutcd_brg_kode=c.brg_kode '
      + ' where a.mutc_nomor = '+ Quot(akode)
      + ' order by mutcd_nourut';

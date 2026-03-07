@@ -216,10 +216,10 @@ begin
      tt.SaveToFile(SaveDialog1.FileName);
   end;
   end;
-  s:='update tmutcab_hdr set mutc_status=1 where mutc_nomor ='+ Quot(CDSMaster.FieldByname('Nomor').AsString) + ';';
+  { s:='update tmutcab_hdr set mutc_status=1 where mutc_nomor ='+ Quot(CDSMaster.FieldByname('Nomor').AsString) + ';';
    // xExecQuery(s,frmMenu.conn);
 EnsureConnected(frmMenu.conn);
-ExecSQLDirect(frmMenu.conn, s);
+ExecSQLDirect(frmMenu.conn, s);   }
    // xCommit(frmMenu.conn);
   end;
 end;

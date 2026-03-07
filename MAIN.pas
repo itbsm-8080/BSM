@@ -427,7 +427,7 @@ begin
   DateSeparator := '/';
   DecimalSeparator := '.';
   Application.UpdateFormatSettings := True;
-  zVersi := '1.0.61';
+  zVersi := '1.0.62';
   StatusBar1.Panels[4].Text := 'Versi ' + zVersi;
 
   // cek versi

@@ -970,6 +970,12 @@ object frmPO: TfrmPO
           Styles.Content = cxStyle2
           Width = 115
         end
+        object cxGrdMainColumn2: TcxGridDBColumn
+          Caption = 'Stok Cabang'
+          DataBinding.FieldName = 'stokcabang'
+          HeaderAlignmentHorz = taCenter
+          Width = 94
+        end
       end
       object cxGrdDetail: TcxGridDBTableView
         NavigatorButtons.ConfirmDelete = False

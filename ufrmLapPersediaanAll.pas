@@ -46,7 +46,7 @@ implementation
 procedure TfrmLapPersediaanAll.btnRefreshClick(Sender: TObject);
 begin
 
-  Self.SQLMaster := ' select Cabang,brg_kode Kode ,brg_nama Nama,brg_satuan Satuan,Stok,IN_Terakhir'
+  Self.SQLMaster := ' select Cabang,brg_kode Kode ,brg_nama Nama,brg_satuan Satuan,Stok,IN_Terakhir,AvgSales,stok/Avgsales TOR'
                   + ' from StokAll ';
 
 //  Self.SQLMaster := 'select brg_kode Kode ,brg_nama Nama,brg_satuan Satuan,ktg_nama Kategori,'
@@ -72,7 +72,7 @@ procedure TfrmLapPersediaanAll.FormShow(Sender: TObject);
 begin
     ShowWindowAsync(Handle, SW_MAXIMIZE);
   inherited;
-  btnRefreshClick(Self);
+//  btnRefreshClick(Self);
 end;
 
 procedure TfrmLapPersediaanAll.cxButton2Click(Sender: TObject);

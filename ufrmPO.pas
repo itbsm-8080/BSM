@@ -84,6 +84,7 @@ type
     cxStyleRepository1: TcxStyleRepository;
     cxStyle1: TcxStyle;
     cxStyle2: TcxStyle;
+    cxGrdMainColumn2: TcxGridDBColumn;
     procedure refreshdata;
    procedure initgrid;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -358,6 +359,7 @@ begin
     zAddField(FCDS, 'otorisasi', ftInteger, False);
     zAddField(FCDS, 'Stok', ftFloat, False);
     zAddField(FCDS, 'avgsales', ftFloat, False);
+    zAddField(FCDS, 'stokcabang', ftFloat, False);
     FCDS.CreateDataSet;
   end;
   Result := FCDS;
@@ -781,6 +783,8 @@ begin
                       CDS.FieldByName('disc').AsFloat        := fieldbyname('pod_discpr').AsFloat;
                       CDS.FieldByName('total').AsFloat        := fieldbyname('nilai').AsFloat;
                       CDS.FieldByName('keterangan').AsString  := fieldbyname('pod_keterangan').AsString;
+                      CDS.FieldByName('STOK').asfloat := getstok(CDS.FieldByName('SKU').AsString);
+                      CDS.FieldByName('avgsales').asfloat := getavgsales(CDS.FieldByName('SKU').AsString);
 
                       CDS.Post;
                    i:=i+1;

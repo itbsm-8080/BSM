@@ -49,6 +49,8 @@ type
     cxButton5: TcxButton;
     cxGrdMainColumn2: TcxGridDBColumn;
     cxGrdMainColumn12: TcxGridDBColumn;
+    PopupMenu1: TPopupMenu;
+    LihatDetailStokdanTOR1: TMenuItem;
   procedure btnRefreshClick(Sender: TObject);
   function GetCDS: TClientDataSet;
   procedure FormShow(Sender: TObject);
@@ -57,6 +59,7 @@ type
     procedure cxButton5Click(Sender: TObject);
     function gethargabeli(akode:string):double;
     procedure cxButton7Click(Sender: TObject);
+    procedure LihatDetailStokdanTOR1Click(Sender: TObject);
   private
     { Private declarations }
       protected
@@ -70,7 +73,7 @@ var
   frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang;
 
 implementation
-   uses cxGridExportLink,ufrmCostCenter,Ulib, MAIN, uModuleConnection,ufrmpo;
+   uses cxGridExportLink,ufrmCostCenter,Ulib, MAIN, uModuleConnection,ufrmpo,uFrmbantuan;
 {$R *.dfm}
 
 procedure TfrmLapRekapPermintaanBarang.btnRefreshClick(Sender: TObject);
@@ -111,23 +114,25 @@ begin
 //    cxGrdMaster.Columns[13].Width :=70;
 //    cxGrdMaster.Columns[14].Width :=70;
 //    cxGrdMaster.Columns[15].Width :=70;
-    s:= 'select distinct Kode,Nama,Kode_supplier,Supplier,'
-+ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="01") Solo,'
-+ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="02") Jogja,'
-+ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="03") Madiun,'
-+ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="04") Purwokerto,'
-+ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="05") Semarang,'
-+ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="06") Surabaya,'
-+ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="07") Cirebon,'
-+ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="08") Lab,'
-+ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode and cabang="10") Jakarta,'
-+ ' (select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode ) Total,'
+    s:= 'select distinct x.Kode,Nama,Kode_supplier,Supplier,'
++ ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode and cabang="01") Solo,'
++ ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode and cabang="02") Jogja,'
++ ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode and cabang="03") Madiun,'
++ ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode and cabang="04") Purwokerto,'
++ ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode and cabang="05") Semarang,'
++ ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode and cabang="06") Surabaya,'
++ ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode and cabang="07") Cirebon,'
++ ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode and cabang="08") Lab,'
++ ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode and cabang="10") Jakarta,'
++ ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode ) Total,'
 + ' Stok ,'
-+ ' (select sum(stok) from allstokcabang where kode=x.kode) StokCabang,'
-+ ' (select sum(pod_qty-pod_qty_terima) from popending where pod_brg_kode=x.kode) popending,'
-+ ' Stok-(select sum(qty) from permintaanbarang where tanggal<='+quotd(startdate.date)+' and kode=x.kode ) Sisa'
++ '  StokCabang,'
++ '  popending,'
++ ' Stok-(select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode ) Sisa'
 + ' from permintaanbarang x'
-+ ' where Tanggal<='+quotd(startdate.date) ;
++ ' left join (select kode,sum(stok) stokcabang from allstokcabang group by kode) Z on z.kode=x.kode '
++ ' left join (select pod_brg_kode,sum(pod_qty-pod_qty_terima) popending from popending group by pod_brg_kode) Y on y.pod_brg_kode=x.kode'
++ ' where Tanggal>='+quotd(startdate.date) ;
 
    tsql := xOpenQuery(s,frmMenu.conn) ;
    try
@@ -212,7 +217,7 @@ procedure TfrmLapRekapPermintaanBarang.FormShow(Sender: TObject);
 begin
     ShowWindowAsync(Handle, SW_MAXIMIZE);
   inherited;
-  btnRefreshClick(Self);
+//  btnRefreshClick(Self);
 end;
 
 procedure TfrmLapRekapPermintaanBarang.cxButton6Click(Sender: TObject);
@@ -335,6 +340,21 @@ begin
     ExportGridToExcel(SaveDlg.FileName, cxGrid1,True,True,True);
 
   cxGrdMain.DataController.CollapseDetails;
+
+end;
+
+procedure TfrmLapRekapPermintaanBarang.LihatDetailStokdanTOR1Click(
+  Sender: TObject);
+  var
+    sqlbantuan:String;
+begin
+  inherited;
+  sqlbantuan:='select Cabang,brg_kode Kode ,brg_nama Nama,brg_satuan Satuan,Stok,stok/Avgsales TOR ,IN_Terakhir,AvgSales'
+    + ' from stokall WHERE brg_kode= '+ quot(CDS.FieldByname('kode').AsString);
+ Application.CreateForm(Tfrmbantuan,frmbantuan);
+ frmBantuan.SQLMaster := SQLbantuan;
+ frmBantuan.ShowModal;
+
 
 end;
 

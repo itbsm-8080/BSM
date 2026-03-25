@@ -1,6 +1,6 @@
 inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
-  Left = 120
-  Top = 118
+  Left = 65
+  Top = 88
   Caption = 'Laporan Rekap Permintaan Barang'
   ClientHeight = 599
   ClientWidth = 1386
@@ -119,6 +119,7 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
       LookAndFeel.Kind = lfUltraFlat
       LookAndFeel.NativeStyle = False
       object cxGrdMain: TcxGridDBTableView
+        PopupMenu = PopupMenu1
         NavigatorButtons.ConfirmDelete = False
         DataController.Filter.Options = [fcoCaseInsensitive]
         DataController.Summary.DefaultGroupSummaryItems = <>
@@ -334,6 +335,14 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
     object cxStyle1: TcxStyle
       AssignedValues = [svColor]
       Color = clAqua
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 1160
+    Top = 89
+    object LihatDetailStokdanTOR1: TMenuItem
+      Caption = 'Lihat Detail  Stok dan TOR'
+      OnClick = LihatDetailStokdanTOR1Click
     end
   end
 end

@@ -295,12 +295,12 @@ var
   i,jmlkolom:integer;
 begin
 
-s:='drop table zk';
-EnsureConnected(frmMenu.conn);
-ExecSQLDirect(frmMenu.conn, s);
-s:= 'CREATE TABLE zk AS SELECT * FROM zkunjungan ';
-EnsureConnected(frmMenu.conn);
-ExecSQLDirect(frmMenu.conn, s);
+//s:='drop table IF EXISTS zk';
+//EnsureConnected(frmMenu.conn);
+//ExecSQLDirect(frmMenu.conn, s);
+//s:= 'CREATE TABLE zk AS SELECT * FROM zkunjungan ';
+//EnsureConnected(frmMenu.conn);
+//ExecSQLDirect(frmMenu.conn, s);
 
 
    s:='SET @tg1='+QuotD(startdate.DateTime);
@@ -323,8 +323,14 @@ BEGIN
  asuper2 := ' ,0 hpp,0 margin,"" JenisCustomer'
 END
 else
-  s:='select * from (select *,(Nilaiblmppn - Kontrak - Biayapromosi-feemarketing) NilaiNet from tampung_2022 union select *, '
-  + ' (Nilaiblmppn - Kontrak - Biayapromosi-feemarketing) NilaiNet from tampung_2023 union select *, (Nilaiblmppn - Kontrak - Biayapromosi-feemarketing) NilaiNet from tampung_2024) x '
+//  s:='select x.* from (select *,(Nilaiblmppn - Kontrak - Biayapromosi-feemarketing) NilaiNet from tampung_2022 union select *, '
+//  + ' (Nilaiblmppn - Kontrak - Biayapromosi-feemarketing) NilaiNet from tampung_2023 union select *, (Nilaiblmppn - Kontrak - Biayapromosi-feemarketing) NilaiNet from tampung_2024) x '
+//  + ' left join vfpcus y on y.fp_nomor=x.nomor '
+//  + ' where tanggal between '+ QuotD2(startdate.Date) + ' and ' + QuotD2(enddate.Date) ;
+
+  s:='select x.* from (select *,(IFNULL(Nilaiblmppn,0) - IFNULL(Kontrak,0) - IFNULL(Biayapromosi,0) - IFNULL(feemarketing,0)) AS NilaiNet from tampung_2022 union select *, '
+  + ' (IFNULL(Nilaiblmppn,0) - IFNULL(Kontrak,0) - IFNULL(Biayapromosi,0) - IFNULL(feemarketing,0)) AS NilaiNet from tampung_2023 union select *, (IFNULL(Nilaiblmppn,0) '
+  + ' - IFNULL(Kontrak,0) - IFNULL(Biayapromosi,0) - IFNULL(feemarketing,0)) AS NilaiNet from tampung_2024) x '
   + ' left join vfpcus y on y.fp_nomor=x.nomor '
   + ' where tanggal between '+ QuotD2(startdate.Date) + ' and ' + QuotD2(enddate.Date) ;
 

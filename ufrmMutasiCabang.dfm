@@ -905,7 +905,6 @@ object frmMutasiCabang: TfrmMutasiCabang
           OptionsBehavior.GoToNextCellOnEnter = True
           OptionsBehavior.FocusCellOnCycle = True
           OptionsCustomize.ColumnHiding = True
-          OptionsCustomize.ColumnSorting = False
           OptionsData.Appending = True
           OptionsData.CancelOnExit = False
           OptionsData.Deleting = False

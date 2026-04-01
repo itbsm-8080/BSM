@@ -1298,7 +1298,7 @@ begin
 
   sqlbantuan := ' SELECT pb_nomor Nomor, pb_tanggal Tanggal, pb_memo Keterangan '
                  +' FROM '+adatabase+'tpermintaanbarang_hdr '
-                 +' WHERE pb_isclosed = 0';
+                 +' WHERE pb_isclosed <> 1';
 
   Application.CreateForm(Tfrmbantuan,frmbantuan);
   frmBantuan.SQLMaster := SQLbantuan;

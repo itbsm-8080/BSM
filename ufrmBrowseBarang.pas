@@ -55,7 +55,7 @@ begin
 + ' select brg_kode Kode ,brg_nama Nama,brg_satuan Satuan,ktg_nama Kategori, gr_nama Tipe,brg_hrgjual HargaJual, (select sum(mst_stok_in-mst_stok_out) from tmasterstok where mst_brg_kode=brg_kode) Stok ,'
 + ' (select sum(mst_stok_in-mst_stok_out) from tmasterstok where mst_brg_kode=brg_kode and mst_gdg_kode <> "WH-10") StokTnpRepack , brg_min_stok Min,brg_lastcost Lastcost,brg_hrgbeli HargaBeli , '
 + ' if((select count(*) from tbarangkomposisi where bk_brg_kode=brg_kode)>0 ,"Ada","") Komposisi, '
-+ '  ifnull(sum(mst_stok_in-mst_stok_out) ,0) Stok_Pusat,avgsales,brg_tgl_beli Beli_Terakhir'
++ '  ifnull(sum(mst_stok_in-mst_stok_out) ,0) Stok_Pusat,avgsales,brg_tgl_beli Beli_Terakhir,if(brg_isaktif=1,"Aktif","Tidak Aktif") Status'
 + '  from tbarang'
 + '  inner join tkategori on ktg_kode=brg_ktg_kode'
 + '  inner join tgroup on gr_kode=brg_gr_kode'

@@ -311,35 +311,38 @@ begin
    // xExecQuery(s,frmMenu.conn);
     EnsureConnected(frmMenu.conn);
     ExecSQLDirect(frmMenu.conn, s);
-
+ s:='select Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales, '
+  + ' isecer,Biayapromosi,FeeMarketing,(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) NilaiNet,JenisCustomer';
 if frmmenu.KDUSER = 'SUPER' then
-BEGIN
-  s:='select Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales, '
-  + ' isecer,Biayapromosi,FeeMarketing,(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) NilaiNet, '
-  + ' hpp,margin-kontrak-biayapromosi-feemarketing margin,JenisCustomer'
-  + '  from (select * from tampung2_2022 union select * from tampung2_2023 union select * from tampung2_2024) x '
+  s:=s  + ' ,hpp,margin-kontrak-biayapromosi-feemarketing margin';
+
+  s:= s + '  from (select * from tampung2_2022 union select * from tampung2_2023 union select * from tampung2_2024) x '
   + ' left join vfpcus y on y.fp_nomor=x.nomor '
   + ' where tanggal between '+ QuotD2(startdate.Date) + ' and ' + QuotD2(enddate.Date);
- asuper2 := ' ,0 hpp,0 margin,"" JenisCustomer'
+if frmmenu.KDUSER = 'SUPER' then
+BEGIN
+
+ asuper2 := ' ,0 hpp,0 margin'
 END
 else
+asuper2:='';
 //  s:='select x.* from (select *,(Nilaiblmppn - Kontrak - Biayapromosi-feemarketing) NilaiNet from tampung_2022 union select *, '
 //  + ' (Nilaiblmppn - Kontrak - Biayapromosi-feemarketing) NilaiNet from tampung_2023 union select *, (Nilaiblmppn - Kontrak - Biayapromosi-feemarketing) NilaiNet from tampung_2024) x '
 //  + ' left join vfpcus y on y.fp_nomor=x.nomor '
 //  + ' where tanggal between '+ QuotD2(startdate.Date) + ' and ' + QuotD2(enddate.Date) ;
 
-  s:='select x.* from (select *,(IFNULL(Nilaiblmppn,0) - IFNULL(Kontrak,0) - IFNULL(Biayapromosi,0) - IFNULL(feemarketing,0)) AS NilaiNet from tampung_2022 union select *, '
-  + ' (IFNULL(Nilaiblmppn,0) - IFNULL(Kontrak,0) - IFNULL(Biayapromosi,0) - IFNULL(feemarketing,0)) AS NilaiNet from tampung_2023 union select *, (IFNULL(Nilaiblmppn,0) '
-  + ' - IFNULL(Kontrak,0) - IFNULL(Biayapromosi,0) - IFNULL(feemarketing,0)) AS NilaiNet from tampung_2024) x '
-  + ' left join vfpcus y on y.fp_nomor=x.nomor '
-  + ' where tanggal between '+ QuotD2(startdate.Date) + ' and ' + QuotD2(enddate.Date) ;
+//  s:='select * from (select *,(IFNULL(Nilaiblmppn,0) - IFNULL(Kontrak,0) - IFNULL(Biayapromosi,0) - IFNULL(feemarketing,0)) AS NilaiNet from tampung_2022 union select *, '
+//  + ' (IFNULL(Nilaiblmppn,0) - IFNULL(Kontrak,0) - IFNULL(Biayapromosi,0) - IFNULL(feemarketing,0)) AS NilaiNet from tampung_2023 union select *, (IFNULL(Nilaiblmppn,0) '
+//  + ' - IFNULL(Kontrak,0) - IFNULL(Biayapromosi,0) - IFNULL(feemarketing,0)) AS NilaiNet from tampung_2024) x '
+//  + ' left join vfpcus y on y.fp_nomor=x.nomor '
+//  + ' where tanggal between '+ QuotD2(startdate.Date) + ' and ' + QuotD2(enddate.Date) ;
 
 
 s:=s  + ' union '
 + ' SELECT upper(kar_cabang) Cabang,"" Nomor,date_format(tanggal,"%Y-%m-%d") Tanggal,cast(date_format(tanggal,"%m") as signed)  bulan ,'
 + ' cast(date_format(tanggal,"%Y") as signed)  Tahun,cus_nama,"" Kode,"" Nama,0 qty,0 nilai  ,0 kontrak ,"" Departemen,"" SubDepartemen,"" Kategori,"" group_produk, 0 pajak,if(kar_jabatan="Marketing",1,0) ISpf,'
 + ' if(kar_jabatan="Sales Marketing",kar_nama,"") salesman,if(kar_jabatan="Marketing",kar_nama,"") marketing,0 nilaibyHna,0 nilaiblmppn,0 isecer,"" ISn3,'
-+ ' cast(if(kar_jabatan="Marketing",1,0) as signed) kunjunganmarketing,cast(if(kar_jabatan="Sales Marketing",1,0) as signed) kunjungansales,0 biayapromosi,0 feemarketing,0 nilainet'
++ ' cast(if(kar_jabatan="Marketing",1,0) as signed) kunjunganmarketing,cast(if(kar_jabatan="Sales Marketing",1,0) as signed) kunjungansales,0 biayapromosi,0 feemarketing,0 nilainet,"" JenisCustomer'
 
 + asuper2
 

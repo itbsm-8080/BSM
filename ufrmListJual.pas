@@ -377,8 +377,8 @@ else
         cxGrid1DBTableView1.Columns[9].Summary.FooterFormat:='###,###,###,###';
       cxGrid1DBTableView1.Columns[19].Summary.FooterKind:=skSum;
         cxGrid1DBTableView1.Columns[19].Summary.FooterFormat:='###,###,###,###';
-           cxGrid1DBTableView1.Columns[20].Summary.FooterKind:=skSum;
-        cxGrid1DBTableView1.Columns[20].Summary.FooterFormat:='###,###,###,###';
+//           cxGrid1DBTableView1.Columns[20].Summary.FooterKind:=skSum;
+//        cxGrid1DBTableView1.Columns[20].Summary.FooterFormat:='###,###,###,###';
 if frmmenu.KDUSER = 'SUPER' then
 BEGIN
         cxGrid1DBTableView1.Columns[22].Summary.FooterKind:=skSum;

@@ -91,6 +91,11 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
     inherited btnRefresh: TcxButton
       Left = 1297
     end
+    inherited startdate: TDateTimePicker
+      Date = 46082.468570856480000000
+      Time = 46082.468570856480000000
+      Enabled = False
+    end
     inherited enddate: TDateTimePicker
       Visible = False
     end

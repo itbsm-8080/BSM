@@ -216,8 +216,9 @@ end;
 procedure TfrmLapRekapPermintaanBarang.FormShow(Sender: TObject);
 begin
     ShowWindowAsync(Handle, SW_MAXIMIZE);
-  inherited;
+//  inherited;
 //  btnRefreshClick(Self);
+//startdate.DateTime := StrToDate('2026/03/01') ;
 end;
 
 procedure TfrmLapRekapPermintaanBarang.cxButton6Click(Sender: TObject);

@@ -1,8 +1,8 @@
 object frmMutasiCabang: TfrmMutasiCabang
   Left = 173
-  Top = 80
-  Width = 1195
-  Height = 666
+  Top = 23
+  Width = 1324
+  Height = 723
   Caption = 'Mutasi Cabang'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -23,7 +23,7 @@ object frmMutasiCabang: TfrmMutasiCabang
   object AdvPanel1: TAdvPanel
     Left = 0
     Top = 0
-    Width = 1179
+    Width = 1308
     Height = 41
     Align = alTop
     TabOrder = 0
@@ -102,7 +102,7 @@ object frmMutasiCabang: TfrmMutasiCabang
   object AdvPanel2: TAdvPanel
     Left = 0
     Top = 41
-    Width = 1179
+    Width = 1308
     Height = 84
     Align = alTop
     TabOrder = 1
@@ -248,6 +248,7 @@ object frmMutasiCabang: TfrmMutasiCabang
       Width = 53
       Height = 13
       Caption = 'Permintaan'
+      Visible = False
     end
     object dttanggal: TDateTimePicker
       Left = 655
@@ -324,6 +325,7 @@ object frmMutasiCabang: TfrmMutasiCabang
       Top = 34
       Properties.ImmediatePost = True
       Properties.MaxLength = 0
+      Properties.OnEditValueChanged = cxLookupCabangTujuanPropertiesEditValueChanged
       Properties.OnValidate = cxLookupGudangAsalPropertiesValidate
       Style.Color = clWindow
       Style.LookAndFeel.Kind = lfFlat
@@ -505,7 +507,7 @@ object frmMutasiCabang: TfrmMutasiCabang
       Signed = False
       TabOrder = 8
       Transparent = False
-      Visible = True
+      Visible = False
       OnKeyPress = FormKeyPress
       ButtonWidth = 16
       Etched = False
@@ -515,8 +517,8 @@ object frmMutasiCabang: TfrmMutasiCabang
   object AdvPanel3: TAdvPanel
     Left = 0
     Top = 125
-    Width = 1179
-    Height = 467
+    Width = 1308
+    Height = 524
     Align = alClient
     TabOrder = 2
     UseDockManager = True
@@ -580,7 +582,7 @@ object frmMutasiCabang: TfrmMutasiCabang
     object advpnl1: TAdvPanel
       Left = 1
       Top = 1
-      Width = 1177
+      Width = 1306
       Height = 392
       Align = alTop
       TabOrder = 0
@@ -658,7 +660,7 @@ object frmMutasiCabang: TfrmMutasiCabang
       object cxGrid: TcxGrid
         Left = 1
         Top = 1
-        Width = 1175
+        Width = 1304
         Height = 390
         Align = alClient
         Font.Charset = ANSI_CHARSET
@@ -810,8 +812,8 @@ object frmMutasiCabang: TfrmMutasiCabang
     object advpnl2: TAdvPanel
       Left = 1
       Top = 393
-      Width = 746
-      Height = 73
+      Width = 875
+      Height = 130
       Align = alClient
       TabOrder = 1
       UseDockManager = True
@@ -875,8 +877,8 @@ object frmMutasiCabang: TfrmMutasiCabang
       object cxgrd1: TcxGrid
         Left = 1
         Top = 1
-        Width = 744
-        Height = 71
+        Width = 873
+        Height = 128
         Align = alClient
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -1002,9 +1004,8 @@ object frmMutasiCabang: TfrmMutasiCabang
           object cxgrdbclmnGrdcxgrdbclmn11: TcxGridDBColumn
             Caption = 'Permintaan'
             DataBinding.FieldName = 'no_penerimaan'
-            Visible = False
             Options.Editing = False
-            Width = 100
+            Width = 163
           end
         end
         object cxgrdbtblvw2: TcxGridDBTableView
@@ -1026,10 +1027,10 @@ object frmMutasiCabang: TfrmMutasiCabang
       end
     end
     object advpnl3: TAdvPanel
-      Left = 747
+      Left = 876
       Top = 393
       Width = 431
-      Height = 73
+      Height = 130
       Align = alRight
       TabOrder = 2
       UseDockManager = True
@@ -1094,7 +1095,7 @@ object frmMutasiCabang: TfrmMutasiCabang
         Left = 1
         Top = 1
         Width = 429
-        Height = 40
+        Height = 97
         Align = alClient
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -1246,7 +1247,7 @@ object frmMutasiCabang: TfrmMutasiCabang
       end
       object advpnl4: TAdvPanel
         Left = 1
-        Top = 41
+        Top = 98
         Width = 429
         Height = 31
         Align = alBottom
@@ -1379,8 +1380,8 @@ object frmMutasiCabang: TfrmMutasiCabang
   end
   object AdvPanel4: TAdvPanel
     Left = 0
-    Top = 592
-    Width = 1179
+    Top = 649
+    Width = 1308
     Height = 35
     Align = alBottom
     BevelInner = bvRaised
@@ -1445,7 +1446,7 @@ object frmMutasiCabang: TfrmMutasiCabang
     URLColor = clBlue
     FullHeight = 0
     object cxButton8: TcxButton
-      Left = 1090
+      Left = 1219
       Top = 2
       Width = 87
       Height = 31

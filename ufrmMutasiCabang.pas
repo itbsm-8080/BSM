@@ -144,6 +144,8 @@ type
     procedure cxgrdbclmn15PropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption;
       var Error: Boolean);
+    procedure cxLookupCabangTujuanPropertiesEditValueChanged(
+      Sender: TObject);
     private
      buttonSelected  : integer;
      FID : STRING;
@@ -547,11 +549,11 @@ begin
     zAddField(FCDS2, 'Satuan', ftString, False,10);
     zAddField(FCDS2, 'QTY', ftInteger, False);
     zAddField(FCDS2, 'kurang', ftInteger, False);
-    zAddField(FCDS2, 'stok', ftInteger, False);
-    zAddField(FCDS2, 'expired', ftDate, False,255);
+//    zAddField(FCDS2, 'stok', ftInteger, False);
+//    zAddField(FCDS2, 'expired', ftDate, False,255);
     zAddField(FCDS2, 'Keterangan', ftString, False,255);
     zAddField(FCDS2, 'no_penerimaan', ftString, False,255);
-    zAddField(FCDS2, 'harga', ftFloat, False);
+//    zAddField(FCDS2, 'harga', ftFloat, False);
     FCDS2.CreateDataSet;
   end;
   Result := FCDS2;
@@ -1269,9 +1271,9 @@ begin
           CDS.FieldByName('qty').AsInteger := CDS3.FieldByName('QTY').AsInteger;
           CDS.FieldByName('kurang').AsInteger := CDS2.FieldByName('kurang').AsInteger;
           CDS.FieldByName('Satuan').AsString := CDS2.FieldByName('Satuan').AsString;
-          CDS.FieldByName('expired').AsDateTime := CDS2.fieldbyname('Expired').AsDateTime;
+          CDS.FieldByName('expired').AsDateTime := CDS3.fieldbyname('Expired').AsDateTime;
           CDS.FieldByName('keterangan').AsString := CDS2.FieldByName('keterangan').AsString;
-          CDS.FieldByName('harga').AsFloat := CDS2.FieldByName('harga').AsFloat;
+          CDS.FieldByName('harga').AsFloat := CDS3.FieldByName('harga').AsFloat;
           CDS.FieldByName('no_penerimaan').AsString := CDS2.FieldByName('no_penerimaan').AsString;
           CDS.Post;
      end;
@@ -1381,7 +1383,10 @@ begin
   begin
     lbl3.Caption := 'Stok '+ CDS2.FieldByName('NamaBarang').AsString;
 //        ShowMessage(vartostr(cxLookupGudang.EditValue) + ' ' + CDS2.FieldByName('SKU').AsString);
-        s := ' SELECT SUM(mst_stok_in - mst_stok_out) stok, mst_expired_date AS Expired '
+        s := ' SELECT SUM(mst_stok_in - mst_stok_out) stok, mst_expired_date AS Expired ,'
+           + ' (select ifnull(MST_HARGABELI,0) from tmasterstok where mst_brg_kode=brg_kode and mst_hargabeli > 1 '
+           + ' and (mst_noreferensi like "RI%" or mst_noreferensi like "%KOR%") '
+           + ' order by mst_tanggal desc LIMIT 1) harga'
            + ' FROM tbarang '
            + ' INNER JOIN tmasterstok ON mst_brg_kode = brg_kode '
            + ' AND mst_gdg_kode = ' + Quot(vartostr(cxLookupGudang.EditValue))
@@ -1405,7 +1410,7 @@ begin
                       CDS3.FieldByName('Satuan').AsString := CDS2.FieldByName('Satuan').AsString;
                       CDS3.FieldByName('expired').AsDateTime := fieldbyname('Expired').AsDateTime;
                       CDS3.FieldByName('keterangan').AsString := CDS2.FieldByName('keterangan').AsString;
-                      CDS3.FieldByName('harga').AsFloat := CDS2.FieldByName('harga').AsFloat;
+                      CDS3.FieldByName('harga').AsFloat := fieldbyname('harga').AsFloat;
                       CDS3.FieldByName('no_penerimaan').AsString := CDS2.FieldByName('no_penerimaan').AsString;
                       CDS3.Post;
                       next;
@@ -1566,6 +1571,60 @@ QtyInput := cVarToInt(DisplayValue);
 
     cxgrdbtblvwGrdMain.DataController.Refresh;
   end;
+end;
+
+procedure TfrmMutasiCabang.cxLookupCabangTujuanPropertiesEditValueChanged(
+  Sender: TObject);
+var
+    s:String;
+    tsql : TmyQuery;
+    i:Integer;
+begin
+if cxLookupCabangTujuan.Text = '' then
+   Exit
+else
+  adatabase := getdatabase2(cxLookupCabangTujuan.Text)+'.';
+
+
+        s := ' SELECT * FROM ( '
+           + '     SELECT a.brg_kode AS Sku, '
+//           + '            mst_expired_date AS Expired, '
+           + '            brg_nama AS NamaBarang, '
+           + '            brg_satuan AS Satuan, '
+           + '            (pbd_qty - pbd_qtyterima) qtykurang ,pbd_pb_nomor'
+           + '     FROM tbarang a '
+           + '     INNER JOIN ' + adatabase + 'tpermintaanbarang_dtl ON brg_kode = pbd_brg_kode '
+           + '     inner join ' + adatabase + 'tpermintaanbarang_hdr ON pbd_pb_nomor=pb_nomor '
+           + '     WHERE pbd_qty > pbd_qtyterima  and pb_isclosed <> 1'
+           + '     GROUP BY brg_kode, brg_nama, brg_satuan'
+           + ' ) x ';
+//           + ' WHERE rn = 1 '
+//           + ' ORDER BY stok DESC ';
+          tsql := xOpenQuery(s,frmMenu.conn);
+         try
+                with tsql do
+                begin
+                  CDS2.emptydataset;
+                  while  not Eof do
+                  begin
+                            CDS2.Append;
+                            CDS2.FieldByName('no_penerimaan').AsString :=fieldbyname('pbd_pb_nomor').AsString;
+                            CDS2.FieldByName('sku').AsInteger := fieldbyname('sku').AsInteger;
+                            CDS2.FieldByName('qty').AsInteger := 0;
+                            CDS2.FieldByName('NamaBarang').AsString := fieldbyname('namabarang').AsString;
+                            CDS2.FieldByName('kurang').AsInteger := fieldbyname('qtykurang').asinteger;
+                            CDS2.FieldByName('Satuan').AsString := fieldbyname('satuan').Asstring;
+//                            CDS2.FieldByName('expired').AsDateTime := fieldbyname('expired').AsDateTime;
+//                            CDS2.FieldByName('harga').AsFloat := fieldbyname('hargabeli').asfloat;
+//                            CDS2.FieldByName('stok').AsInteger := fieldbyname('stok').asinteger;
+                            CDS2.Post;
+                            next;
+                  end ;
+                end;
+          finally
+            tsql.free;
+          end;
+          chkPermintaan.Checked := True;
 end;
 
 end.

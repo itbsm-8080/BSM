@@ -91,6 +91,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     function getmaxkode:string;
     function getmaxkode2:string;
+    function getmaxkode3:string;
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton8Click(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
@@ -259,6 +260,29 @@ begin
          result:= NOMERATOR+'.'+FormatDateTime('yymm',Date)+'.'+RightStr(IntToStr(10000+1),4)
       else
          result:= NOMERATOR+'.'+FormatDateTime('yymm',Date)+'.'+RightStr(IntToStr(10000+fields[0].AsInteger+1),4);
+
+    finally
+      free;
+    end;
+  end;
+
+end;
+
+function TfrmPO.getmaxkode3:string;
+var
+  s:string;
+begin
+
+ s:='select max(right(po_nomor,3)) from tpo_hdr where po_nomor like ' + quot(NOMERATOR+'.'+FormatDateTime('yymm',dtTanggal.Date)+'.%')
+      + ' and po_istax =0 ';
+  with xOpenQuery(s,frmMenu.conn) do
+  begin
+    try
+      if Fields[0].AsString = '' then
+         result:= NOMERATOR+'.'+FormatDateTime('yymm',dtTanggal.Date)+'.'+RightStr(IntToStr(15000+1),4)
+      else
+         result:= NOMERATOR+'.'+FormatDateTime('yymm',dtTanggal.Date)+'.'+RightStr(IntToStr(15000+fields[0].AsInteger+1),4);
+
 
     finally
       free;

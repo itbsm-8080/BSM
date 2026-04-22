@@ -245,13 +245,18 @@ var
 begin
   inherited;
   aistax := 1;
+    anomor:=frmpo.getmaxkode2;
 //  showmessage(CDS.FieldByName('kode_supplier').AsString);
 
   if MessageDlg('Ingin membuat PO dengan pajak ?',mtCustom,
                               [mbYes,mbNo], 0)= mrNo
-  then aistax := 0 ;
+  then
+  begin
+    aistax := 0 ;
+    anomor:=frmpo.getmaxkode3;
+  end;
 
-  anomor:=frmpo.getmaxkode2;
+
   s:='insert into Tpo_HDR '
      + ' (po_nomor,po_tanggal,po_istax,po_sup_kode) values ('
      +  QuotedStr(anomor)+','

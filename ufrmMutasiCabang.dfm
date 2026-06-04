@@ -1587,21 +1587,6 @@ object frmMutasiCabang: TfrmMutasiCabang
       LookAndFeel.SkinName = 'LondonLiquidSky'
     end
   end
-  object RAWPrinter1: TRAWPrinter
-    CommandType = rpcEpson
-    PrintingMode = rpmText
-    DocumentTitle = 'RAW Printing'
-    FontName = rfnCourier
-    FontPitch = rfpNormal
-    FontStyle = []
-    EjectOnFinish = False
-    TopMargin = 0
-    LeftMargin = 0
-    PageWidth = 98
-    PageHeight = 68
-    Left = 1088
-    Top = 97
-  end
   object PopupMenu1: TPopupMenu
     Left = 120
     Top = 217

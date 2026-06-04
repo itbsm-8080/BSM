@@ -832,9 +832,9 @@ begin
     adatabase := getdatabase(cxLookupCabangTujuan.EditValue)+'.';
 
     swhere := '';
-    if chkPermintaan.Checked then
-      swhere := ' inner join '+adatabase+'tpermintaanbarang_dtl ON brg_kode = pbd_brg_kode and pbd_pb_nomor = ' + Quot(edtNomorPB.Text)
-              + ' where pbd_qty > pbd_qtyterima';
+//    if chkPermintaan.Checked then
+//      swhere := ' inner join '+adatabase+'tpermintaanbarang_dtl ON brg_kode = pbd_brg_kode and pbd_pb_nomor = ' + Quot(edtNomorPB.Text)
+//              + ' where pbd_qty > pbd_qtyterima';
 
     sqlbantuan := 'select brg_kode Sku, mst_expired_date Expired,brg_nama NamaBarang, brg_satuan Satuan,sum(mst_stok_in-mst_stok_out) stok from Tbarang '
                 + ' inner join tmasterstok  on mst_brg_kode=brg_kode and mst_gdg_kode= '+ Quot(vartostr(cxLookupGudang.EditValue))
@@ -848,7 +848,7 @@ begin
 
   if varglobal <> '' then
   begin
-    if chkPermintaan.Checked then
+    { if chkPermintaan.Checked then
     begin
       for i := 0 to cxgrdbtblvwGrdMain.DataController.RecordCount-1 do
       begin
@@ -902,7 +902,7 @@ begin
       end;
     end
     else
-    begin
+    begin  }
       for i := 0 to cxgrdbtblvwGrdMain.DataController.RecordCount-1 do
       begin
 
@@ -948,7 +948,7 @@ begin
             free;
         end;
       end;
-    end;
+//    end;
   end;
 end;
 
@@ -1596,7 +1596,7 @@ else
            + '     INNER JOIN ' + adatabase + 'tpermintaanbarang_dtl ON brg_kode = pbd_brg_kode '
            + '     inner join ' + adatabase + 'tpermintaanbarang_hdr ON pbd_pb_nomor=pb_nomor '
            + '     WHERE pbd_qty > pbd_qtyterima  and pb_isclosed <> 1'
-           + '     GROUP BY brg_kode, brg_nama, brg_satuan'
+           + '     GROUP BY brg_kode, brg_nama, brg_satuan,pbd_pb_nomor'
            + ' ) x ';
 //           + ' WHERE rn = 1 '
 //           + ' ORDER BY stok DESC ';

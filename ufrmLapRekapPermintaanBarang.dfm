@@ -84,6 +84,7 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
     inherited Label1: TLabel
       Width = 71
       Caption = 'Tgl Permintaan'
+      Visible = False
     end
     inherited Label2: TLabel
       Visible = False
@@ -95,6 +96,7 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
       Date = 46082.468570856480000000
       Time = 46082.468570856480000000
       Enabled = False
+      Visible = False
     end
     inherited enddate: TDateTimePicker
       Visible = False

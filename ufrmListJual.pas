@@ -226,7 +226,7 @@ ExecSQLDirect(frmMenu.conn, s);
 + ' (SELECT ktg_nama FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=brg_ktg_kode WHERE brg_kode=fpd_brg_kode) kategori,'
 + ' (SELECT ktg_nama FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=left(brg_ktg_kode,3) WHERE brg_kode=fpd_brg_kode) SubDepartemen,'
 + ' (SELECT ktg_nama FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=left(brg_ktg_kode,1) WHERE brg_kode=fpd_brg_kode) Departemen ,cast(0 as signed) kunjunganmarketing,cast(0 as signed) kunjungansales,biayapromosi,feemarketing,'
-+ ' gc_nama GolonganCustomer,'
++ ' gc_nama GolonganCustomer'
 + asuper
 + ' FROM penjualan2022'
 + afilter

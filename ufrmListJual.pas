@@ -225,7 +225,8 @@ ExecSQLDirect(frmMenu.conn, s);
 + ' (SELECT IF(ktg_nama like '+QUOT('%N3%')+',"YA","TIDAK") FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=brg_ktg_kode WHERE brg_kode=fpd_brg_kode) IsN3,'
 + ' (SELECT ktg_nama FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=brg_ktg_kode WHERE brg_kode=fpd_brg_kode) kategori,'
 + ' (SELECT ktg_nama FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=left(brg_ktg_kode,3) WHERE brg_kode=fpd_brg_kode) SubDepartemen,'
-+ ' (SELECT ktg_nama FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=left(brg_ktg_kode,1) WHERE brg_kode=fpd_brg_kode) Departemen ,cast(0 as signed) kunjunganmarketing,cast(0 as signed) kunjungansales,biayapromosi,feemarketing'
++ ' (SELECT ktg_nama FROM bsm.tbarang INNER JOIN bsm.tkategori ON ktg_kode=left(brg_ktg_kode,1) WHERE brg_kode=fpd_brg_kode) Departemen ,cast(0 as signed) kunjunganmarketing,cast(0 as signed) kunjungansales,biayapromosi,feemarketing,'
++ ' gc_nama GolonganCustomer,'
 + asuper
 + ' FROM penjualan2022'
 + afilter
@@ -233,14 +234,17 @@ ExecSQLDirect(frmMenu.conn, s);
 + ' SELECT upper(kar_cabang) Cabang,"" Nomor,date_format(tanggal,"%Y-%m-%d") Tanggal,cast(date_format(tanggal,"%m") as signed)  bulan ,'
 + ' cast(date_format(tanggal,"%Y") as signed)  Tahun,cus_nama,"" Kode,"" Nama,0 qty,0 nilai  ,0 kontrak ,"" group_produk, 0 pajak,if(kar_jabatan="Marketing",1,0) ISpf,'
 + ' if(kar_jabatan="Sales Marketing",kar_nama,"") salesman,if(kar_jabatan="Marketing",kar_nama,"") marketing,0 nilaibyHna,0 nilaiblmppn,0 isecer,"" ISn3,"" kategori,"" subdepartemen,"" departemen,'
-+ ' cast(if(kar_jabatan="Marketing",1,0) as signed) kunjunganmarketing,cast(if(kar_jabatan="Sales Marketing",1,0) as signed) kunjungansales,0 biayapromosi'
++ ' cast(if(kar_jabatan="Marketing",1,0) as signed) kunjunganmarketing,cast(if(kar_jabatan="Sales Marketing",1,0) as signed) kunjungansales,0 biayapromosi,0 feemarketing,"" GolonganCustomer'
 
 + asuper2
 
 + ' FROM zkunjungan x INNER JOIN zkaryawan ON USER=kar_nama'
 + ' INNER JOIN tcabang ON kar_cabang=cbg_nama'
 + ' INNER JOIN customer y ON x.cus_kode=y.cus_kode AND cus_cabang=cbg_kode'
-+ ' where tanggal between tg1() and date_add(tg2() , interval 1 day) ';
++ ' INNER JOIN tgolongancustomer gc ON gc.gc_kode = y.cus_gc_kode'
+//+ ' where tanggal between tg1() and date_add(tg2() , interval 1 day) ';
++ ' where tanggal between '+ QuotD2(startdate.Date) + ' and date_add(' + QuotD2(enddate.Date) + ', interval 1 day) ';
+
 
 
 //  s:='select Cabang,fp_nomor Nomor,fp_tanggal Tanggal,Bulan,Tahun,cus_nama Outlet,fpd_brg_kode Kode,brg_nama Nama,'
@@ -260,9 +264,11 @@ ExecSQLDirect(frmMenu.conn, s);
 
 //
 if frmmenu.KDUSER = 'SUPER' then
-        Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,Hpp,Margin,kunjunganmarketing,kunjungansales,isecer,Biayapromosi,FeeMarketing'
+        Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,Hpp,Margin,kunjunganmarketing,kunjungansales,isecer,Biayapromosi,FeeMarketing,'
+                + ' GolonganCustomer'
 else
-        Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales,isecer,Biayapromosi,FeeMarketing';
+        Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales,isecer,Biayapromosi,FeeMarketing,'
+         + ' GolonganCustomer';
         QueryToDBGrid(cxGrid1DBTableView1, s,skolom ,ds2);
 
            jmlkolom :=cxGrid1DBTableView1.ColumnCount-2;
@@ -312,7 +318,7 @@ begin
     EnsureConnected(frmMenu.conn);
     ExecSQLDirect(frmMenu.conn, s);
  s:='select Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales, '
-  + ' isecer,Biayapromosi,FeeMarketing,(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) NilaiNet,JenisCustomer';
+  + ' isecer,Biayapromosi,FeeMarketing,(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) NilaiNet,JenisCustomer, GolonganCustomer';
 if frmmenu.KDUSER = 'SUPER' then
   s:=s  + ' ,hpp,margin-kontrak-biayapromosi-feemarketing margin';
 
@@ -342,14 +348,17 @@ s:=s  + ' union '
 + ' SELECT upper(kar_cabang) Cabang,"" Nomor,date_format(tanggal,"%Y-%m-%d") Tanggal,cast(date_format(tanggal,"%m") as signed)  bulan ,'
 + ' cast(date_format(tanggal,"%Y") as signed)  Tahun,cus_nama,"" Kode,"" Nama,0 qty,0 nilai  ,0 kontrak ,"" Departemen,"" SubDepartemen,"" Kategori,"" group_produk, 0 pajak,if(kar_jabatan="Marketing",1,0) ISpf,'
 + ' if(kar_jabatan="Sales Marketing",kar_nama,"") salesman,if(kar_jabatan="Marketing",kar_nama,"") marketing,0 nilaibyHna,0 nilaiblmppn,0 isecer,"" ISn3,'
-+ ' cast(if(kar_jabatan="Marketing",1,0) as signed) kunjunganmarketing,cast(if(kar_jabatan="Sales Marketing",1,0) as signed) kunjungansales,0 biayapromosi,0 feemarketing,0 nilainet,"" JenisCustomer'
++ ' cast(if(kar_jabatan="Marketing",1,0) as signed) kunjunganmarketing,cast(if(kar_jabatan="Sales Marketing",1,0) as signed) kunjungansales,0 biayapromosi,0 feemarketing,0 nilainet,"" JenisCustomer,"" GolonganCustomer'
 
 + asuper2
 
 + ' FROM zk x INNER JOIN zkaryawan ON USER=kar_nama'
 + ' INNER JOIN tcabang ON kar_cabang=cbg_nama'
 + ' INNER JOIN customer y ON x.cus_kode=y.cus_kode AND cus_cabang=cbg_kode'
-+ ' where tanggal between tg1() and date_add(tg2() , interval 1 day) ';
++ ' INNER JOIN tgolongancustomer gc ON gc.gc_kode = y.cus_gc_kode'
+//+ ' where tanggal between tg1() and date_add(tg2() , interval 1 day) ';
++ ' where tanggal between '+ QuotD2(startdate.Date) + ' and date_add(' + QuotD2(enddate.Date) + ', interval 1 day) ';
+
         ds3.Close;
         sqlqry1.Connection := frmmenu.conn;
         sqlqry1.SQL.Text := s;
@@ -357,10 +366,10 @@ s:=s  + ' union '
 
 if frmmenu.KDUSER = 'SUPER' then
         Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,Hpp,Margin, '
-        + ' kunjunganmarketing,kunjungansales,isecer,Biayapromosi,FeeMarketing,NilaiNet,JenisCustomer'
+        + ' kunjunganmarketing,kunjungansales,isecer,Biayapromosi,FeeMarketing,NilaiNet,JenisCustomer, GolonganCustomer'
 else
         Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales,'
-        + ' isecer,Biayapromosi,FeeMarketing,NilaiNet,JenisCustomer';
+        + ' isecer,Biayapromosi,FeeMarketing,NilaiNet,JenisCustomer, GolonganCustomer';
         QueryToDBGrid(cxGrid1DBTableView1, s,skolom ,ds2);
 
            jmlkolom :=cxGrid1DBTableView1.ColumnCount-2;

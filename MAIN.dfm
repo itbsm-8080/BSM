@@ -1952,11 +1952,12 @@ object frmMenu: TfrmMenu
           Caption = 'Biaya Promosi'
         end
         object dxSetingPF: TdxNavBarItem
-          Caption = 'Seting Produk Fokus'
+          Caption = 'Seting HET Produk'
           OnClick = dxSetingPFClick
         end
         object dxSettingGroupPF: TdxNavBarItem
           Caption = 'Setting Group PF'
+          Visible = False
           OnClick = dxSettingGroupPFClick
         end
         object dxcreatepo: TdxNavBarItem
@@ -2229,6 +2230,10 @@ object frmMenu: TfrmMenu
       object LaporanPermintaanBarangvsRealisasi1: TMenuItem
         Caption = 'Lap. Permintaan Barang vs Realisasi'
         OnClick = LaporanPermintaanBarangvsRealisasi1Click
+      end
+      object LapMarginBulanan1: TMenuItem
+        Caption = 'Lap. Margin Bulanan'
+        OnClick = LapMarginBulanan1Click
       end
     end
   end

@@ -202,6 +202,7 @@ type
     LaporanPermintaanBarangvsRealisasi1: TMenuItem;
     tmr1: TTimer;
     DM: TMyQuery;
+    LapMarginBulanan1: TMenuItem;
     procedure FileExit1Execute(Sender: TObject);
     function ShowForm(AFormClass: TFormClass): TForm;
     procedure Maximized1Click(Sender: TObject);
@@ -310,6 +311,7 @@ type
     procedure ApplyHakAkses;
     procedure UpdateGroupVisibility;
     procedure tmrHeartbeatTimer(Sender: TObject);
+    procedure LapMarginBulanan1Click(Sender: TObject);
   private
     { Private declarations }
     FaDatabase: string;
@@ -362,7 +364,7 @@ implementation
  ufrmBrowseSubBarangPF,ufrmBrowseSetingBarangPF,ufrmlapallpf,ufrmlapallpf2,ufrmLaplabarugi2,
  ufrmlistjual,ufrmAmbildataPenjualan,ufrmlistjualPFvsRiil,ufrmCreatePo,ufrmLapPersediaanAll,
  ufrmListPermintaanBarang,ufrmLapRekapPermintaanBarang,ufrmListFOS,ufrmBrowseKaryawanAll,
-  StrUtils,ufrmVerifikasiAbsensi,ufrmBrowseBayarRepack,ufrmBrowseBarangRealisasi;
+  StrUtils,ufrmVerifikasiAbsensi,ufrmBrowseBayarRepack,ufrmBrowseBarangRealisasi,ufrmLapBulanan3;
 {$R *.dfm}
 
 
@@ -1346,6 +1348,14 @@ begin
 
     dxNavBar2.Groups[i].Visible := AdaVisible;
   end;
+end;
+
+procedure TfrmMenu.LapMarginBulanan1Click(Sender: TObject);
+begin
+    if ActiveMDIChild.Caption <> 'Laporan Margin Bulanan' then
+ begin
+    ShowForm(TfrmLapBulanan3).Show;
+ end;
 end;
 
 end.

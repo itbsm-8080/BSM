@@ -1,11 +1,13 @@
 inherited frmBrowseSetingBarangPF: TfrmBrowseSetingBarangPF
   Left = 304
-  Top = 157
+  Top = 112
   Caption = 'Browse Seting Barang PF'
+  ClientHeight = 521
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   inherited AdvPanel1: TAdvPanel
+    Top = 485
     FullHeight = 0
     inherited cxButton1: TcxButton
       OnClick = cxButton1Click
@@ -26,6 +28,7 @@ inherited frmBrowseSetingBarangPF: TfrmBrowseSetingBarangPF
       Height = 32
       Caption = 'Kirim Data'
       TabOrder = 7
+      Visible = False
       OnClick = cxButton5Click
       Align = alLeft
       Glyph.Data = {
@@ -87,8 +90,10 @@ inherited frmBrowseSetingBarangPF: TfrmBrowseSetingBarangPF
     end
   end
   inherited AdvPanel3: TAdvPanel
+    Height = 452
     FullHeight = 407
     inherited cxGrid: TcxGrid
+      Height = 448
       inherited cxGrdMaster: TcxGridDBTableView
         OnDblClick = cxButton1Click
         OptionsView.GroupByBox = True

@@ -85,7 +85,7 @@ begin
    begin
 //      ShowForm(TfrmBrowseBarang).Show;
       frmSetingBarangPF  := frmmenu.ShowForm(TfrmSetingBarangPF) as TfrmSetingBarangPF;
-//      frmSetingBarangPF.ID := CDSMaster.FieldByname('KODE').AsString;
+
       frmSetingBarangPF.FLAGEDIT := True;
       frmSetingBarangPF.cbbBulan.ItemIndex := StrToInt(CDSMaster.FieldByname('Periode').AsString)-1;
       frmSetingBarangPF.edtTahun.Text := CDSMaster.FieldByname('Tahun').AsString;
@@ -115,9 +115,9 @@ begin
       if MessageDlg('Yakin ingin hapus ?',mtCustom,
                                   [mbYes,mbNo], 0)= mrNo
       then Exit ;
-       s:='delete from tsetingbarangpf '
-        + ' where set_periode = ' + quot(CDSMaster.FieldByname('periode').AsString)
-        + ' and set_tahun = ' + quot(CDSMaster.FieldByname('tahun').AsString)+';' ;
+       s:='delete from tbarangpf '
+        + ' where bpf_periode = ' + quot(CDSMaster.FieldByname('periode').AsString)
+        + ' and bpf_tahun = ' + quot(CDSMaster.FieldByname('tahun').AsString)+';' ;
       // xExecQuery(s,frmMenu.conn);
 EnsureConnected(frmMenu.conn);
 ExecSQLDirect(frmMenu.conn, s);

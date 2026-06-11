@@ -47,7 +47,6 @@ type
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
-    procedure simpandata;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cxButton1Click(Sender: TObject);
     procedure cxButton8Click(Sender: TObject);
@@ -132,7 +131,7 @@ begin
                                   [mbYes,mbNo], 0)= mrNo
       then Exit ;
 
-      simpandata;
+//      simpandata;
       refreshdata;
    except
      ShowMessage('Gagal Simpan');
@@ -147,58 +146,6 @@ procedure TfrmSetingBarangPF.FormKeyPress(Sender: TObject; var Key: Char);
 begin
    if Key = #13 then
       SelectNext(ActiveControl,True,True);
-end;
-
-
-procedure TfrmSetingBarangPF.simpandata;
-var
-  s:string;
-  i:integer;
-  tt:TStrings;
-  fid : integer;
-begin
-
-
-   s:= ' delete from tsetingbarangpf'
-      + ' where  set_periode =' + inttostr(cbbBulan.ItemIndex+1)
-      + ' and set_tahun = ' + edtTahun.Text;
-      // xExecQuery(s,frmMenu.conn);
-EnsureConnected(frmMenu.conn);
-ExecSQLDirect(frmMenu.conn, s);
-       // xCommit(frmMenu.conn);
-
-   tt := TStringList.Create;
-    CDS.First;
-    i:=1;
-  while not CDS.Eof do
-  begin
-   if not CDS.FieldByName('kode').IsNull then
-   begin
-    s:='insert into tsetingbarangpf (set_brg_kode,set_kode_grouppf,set_brg_het,set_periode,set_tahun,set_brg_hna)'
-    + ' values ('
-      + quot(CDS.FieldByName('kode').Asstring) + ','
-      + quot(CDS.FieldByName('kodegroup').Asstring) + ','
-      + FloatToStr(CDS.FieldByName('het').AsFloat) + ','
-      + inttostr(cbbBulan.ItemIndex+1) + ','
-      + edttahun.text+','
-      + FloatToStr(CDS.FieldByName('hna').AsFloat)       
-      + ');';
-    tt.Append(s);
-   end;
-    CDS.Next;
-    Inc(i);
-  end;
-
-     try
-        for i:=0 to tt.Count -1 do
-        begin
-            // xExecQuery(tt[i],frmMenu.conn);
-EnsureConnected(frmMenu.conn);
-ExecSQLDirect(frmMenu.conn, tt[i]);
-        end;
-      finally
-        tt.Free;
-      end;
 end;
 
 
@@ -227,7 +174,7 @@ begin
                                   [mbYes,mbNo], 0)= mrNo
       then Exit ;
 
-      simpandata;
+//      simpandata;
       refreshdata;
    except
      ShowMessage('Gagal Simpan');
@@ -261,7 +208,7 @@ begin
                                   [mbYes,mbNo], 0)= mrNo
       then Exit ;
 
-      simpandata;
+//      simpandata;
       refreshdata;
    except
      ShowMessage('Gagal Simpan');

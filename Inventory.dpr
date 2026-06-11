@@ -101,7 +101,8 @@ uses
   ufrmBrowseKaryawanAll in 'ufrmBrowseKaryawanAll.pas' {frmBrowseKaryawanAll},
   ufrmVerifikasiAbsensi in 'ufrmVerifikasiAbsensi.pas' {frmVerifikasiAbsensi},
   ufrmBrowseBayarRepack in 'ufrmBrowseBayarRepack.pas' {frmBrowseBayarRepack},
-  ufrmBayarRepack in 'ufrmBayarRepack.pas' {frmBayarRepack};
+  ufrmBayarRepack in 'ufrmBayarRepack.pas' {frmBayarRepack},
+  ufrmLapBulanan3 in 'ufrmLapBulanan3.pas' {frmLapBulanan3};
 
 {$R *.res}
 

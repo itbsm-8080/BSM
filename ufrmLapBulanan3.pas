@@ -270,9 +270,13 @@ var
 
 begin
 //      ShowMessage(cxExtLookupCabang.EditValue);
-      afilter := '%';
+      afilter := '';
+
       if cxExtLookupCabang.EditValue <> '00' then
-      afilter := cxExtLookupCabang.EditValue+'%';
+      afilter := ' NOMOR like '+quot(cxExtLookupCabang.EditValue+'%')+' AND ';
+
+      if cxExtLookupCabang.EditValue = '00' then
+      afilter := ' cabang not in ("KRM","JKT") AND ';
 
 // by nama
 IF ComboBox1.ItemIndex =0 then
@@ -287,13 +291,13 @@ IF ComboBox1.ItemIndex =0 then
 + ' netsdbulanini/netsdbulanlalu*100 growthnetsdbulanini'
 + ' FROM tampung2_2024 a'
 + ' LEFT JOIN'
-+ ' (SELECT KODE KODEBULANINI,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netbulanini,SUM(hpp) hppbulanini,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginbulanini FROM tampung2_2024 WHERE NOMOR like '+quot(afilter)+' AND  bulan='+IntToStr(cbbBulan.ItemIndex+1)+' AND tahun='+edtTahun.Text+' GROUP BY kode)  bulanini ON bulanini.kodebulanini=a.kode'
++ ' (SELECT KODE KODEBULANINI,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netbulanini,SUM(hpp) hppbulanini,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginbulanini FROM tampung2_2024 WHERE ' + afilter + '  bulan='+IntToStr(cbbBulan.ItemIndex+1)+' AND tahun='+edtTahun.Text+' GROUP BY kode)  bulanini ON bulanini.kodebulanini=a.kode'
 + ' LEFT JOIN'
-+ ' (SELECT KODE KODEbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netbulanlalu,SUM(hpp) hppbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginbulanlalu FROM tampung2_2024 WHERE NOMOR like '+quot(afilter)+' AND  bulan='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY kode)  bulanlalu ON bulanlalu.kodebulanlalu=a.kode'
++ ' (SELECT KODE KODEbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netbulanlalu,SUM(hpp) hppbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginbulanlalu FROM tampung2_2024 WHERE ' + afilter + '  bulan='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY kode)  bulanlalu ON bulanlalu.kodebulanlalu=a.kode'
 + ' LEFT JOIN'
-+ ' (SELECT KODE KODEsdbulanINI,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanini,SUM(hpp) hppsdbulanini,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanini FROM tampung2_2024 WHERE NOMOR like '+quot(afilter)+' AND  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+edtTahun.Text+' GROUP BY kode)  sdbulanini ON sdbulanini.kodesdbulanini=a.kode'
++ ' (SELECT KODE KODEsdbulanINI,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanini,SUM(hpp) hppsdbulanini,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanini FROM tampung2_2024 WHERE ' + afilter + '  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+edtTahun.Text+' GROUP BY kode)  sdbulanini ON sdbulanini.kodesdbulanini=a.kode'
 + ' LEFT JOIN'
-+ ' (SELECT KODE KODEsdbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanlalu,SUM(hpp) hppsdbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanlalu FROM tampung2_2024 WHERE NOMOR like '+quot(afilter)+' AND  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY kode)  sdbulanlalu ON sdbulanlalu.kodesdbulanlalu=a.kode group by kode';
++ ' (SELECT KODE KODEsdbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanlalu,SUM(hpp) hppsdbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanlalu FROM tampung2_2024 WHERE ' + afilter + '  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY kode)  sdbulanlalu ON sdbulanlalu.kodesdbulanlalu=a.kode group by kode';
 
 IF ComboBox1.ItemIndex =1 then
       ssql:= ' SELECT DISTINCT KATEGORI Keterangan,'
@@ -307,13 +311,13 @@ IF ComboBox1.ItemIndex =1 then
 + ' netsdbulanini/netsdbulanlalu*100 growthnetsdbulanini'
 + ' FROM tampung2_2024 a'
 + ' LEFT JOIN'
-+ ' (SELECT KATEGORI KATEGORIBULANINI,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netbulanini,SUM(hpp) hppbulanini,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginbulanini FROM tampung2_2024 WHERE NOMOR like '+quot(afilter)+' AND  bulan='+IntToStr(cbbBulan.ItemIndex+1)+' AND tahun='+edtTahun.Text+' GROUP BY KATEGORI)  bulanini ON bulanini.KATEGORIbulanini=a.KATEGORI'
++ ' (SELECT KATEGORI KATEGORIBULANINI,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netbulanini,SUM(hpp) hppbulanini,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginbulanini FROM tampung2_2024 WHERE ' + afilter + '  bulan='+IntToStr(cbbBulan.ItemIndex+1)+' AND tahun='+edtTahun.Text+' GROUP BY KATEGORI)  bulanini ON bulanini.KATEGORIbulanini=a.KATEGORI'
 + ' LEFT JOIN'
-+ ' (SELECT KATEGORI KATEGORIbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netbulanlalu,SUM(hpp) hppbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginbulanlalu FROM tampung2_2024 WHERE NOMOR like '+quot(afilter)+' AND  bulan='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY KATEGORI)  bulanlalu ON bulanlalu.KATEGORIbulanlalu=a.KATEGORI'
++ ' (SELECT KATEGORI KATEGORIbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netbulanlalu,SUM(hpp) hppbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginbulanlalu FROM tampung2_2024 WHERE ' + afilter + '  bulan='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY KATEGORI)  bulanlalu ON bulanlalu.KATEGORIbulanlalu=a.KATEGORI'
 + ' LEFT JOIN'
-+ ' (SELECT KATEGORI KATEGORIsdbulanINI,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanini,SUM(hpp) hppsdbulanini,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanini FROM tampung2_2024 WHERE NOMOR like '+quot(afilter)+' AND  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+edtTahun.Text+' GROUP BY KATEGORI)  sdbulanini ON sdbulanini.KATEGORIsdbulanini=a.KATEGORI'
++ ' (SELECT KATEGORI KATEGORIsdbulanINI,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanini,SUM(hpp) hppsdbulanini,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanini FROM tampung2_2024 WHERE ' + afilter + '  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+edtTahun.Text+' GROUP BY KATEGORI)  sdbulanini ON sdbulanini.KATEGORIsdbulanini=a.KATEGORI'
 + ' LEFT JOIN'
-+ ' (SELECT KATEGORI KATEGORIsdbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanlalu,SUM(hpp) hppsdbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanlalu FROM tampung2_2024 WHERE NOMOR like '+quot(afilter)+' AND  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY KATEGORI)  sdbulanlalu ON sdbulanlalu.KATEGORIsdbulanlalu=a.KATEGORI';
++ ' (SELECT KATEGORI KATEGORIsdbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanlalu,SUM(hpp) hppsdbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanlalu FROM tampung2_2024 WHERE ' + afilter + '  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY KATEGORI)  sdbulanlalu ON sdbulanlalu.KATEGORIsdbulanlalu=a.KATEGORI';
 
 
 IF ComboBox1.ItemIndex =2 then
@@ -328,13 +332,13 @@ IF ComboBox1.ItemIndex =2 then
 + ' netsdbulanini/netsdbulanlalu*100 growthnetsdbulanini'
 + ' FROM tampung2_2024 a'
 + ' LEFT JOIN'
-+ ' (SELECT SUBDEPARTEMEN SUBDEPARTEMENBULANINI,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netbulanini,SUM(hpp) hppbulanini,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginbulanini FROM tampung2_2024 WHERE NOMOR like '+quot(afilter)+' AND  bulan='+IntToStr(cbbBulan.ItemIndex+1)+' AND tahun='+edtTahun.Text+' GROUP BY SUBDEPARTEMEN)  bulanini ON bulanini.SUBDEPARTEMENbulanini=a.SUBDEPARTEMEN'
++ ' (SELECT SUBDEPARTEMEN SUBDEPARTEMENBULANINI,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netbulanini,SUM(hpp) hppbulanini,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginbulanini FROM tampung2_2024 WHERE ' + afilter + '  bulan='+IntToStr(cbbBulan.ItemIndex+1)+' AND tahun='+edtTahun.Text+' GROUP BY SUBDEPARTEMEN)  bulanini ON bulanini.SUBDEPARTEMENbulanini=a.SUBDEPARTEMEN'
 + ' LEFT JOIN'
-+ ' (SELECT SUBDEPARTEMEN SUBDEPARTEMENbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netbulanlalu,SUM(hpp) hppbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginbulanlalu FROM tampung2_2024 WHERE NOMOR like '+quot(afilter)+' AND  bulan='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY SUBDEPARTEMEN)  bulanlalu ON bulanlalu.SUBDEPARTEMENbulanlalu=a.SUBDEPARTEMEN'
++ ' (SELECT SUBDEPARTEMEN SUBDEPARTEMENbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netbulanlalu,SUM(hpp) hppbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginbulanlalu FROM tampung2_2024 WHERE ' + afilter + '  bulan='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY SUBDEPARTEMEN)  bulanlalu ON bulanlalu.SUBDEPARTEMENbulanlalu=a.SUBDEPARTEMEN'
 + ' LEFT JOIN'
-+ ' (SELECT SUBDEPARTEMEN SUBDEPARTEMENsdbulanINI,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanini,SUM(hpp) hppsdbulanini,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanini FROM tampung2_2024 WHERE NOMOR like '+quot(afilter)+' AND  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+edtTahun.Text+' GROUP BY SUBDEPARTEMEN)  sdbulanini ON sdbulanini.SUBDEPARTEMENsdbulanini=a.SUBDEPARTEMEN'
++ ' (SELECT SUBDEPARTEMEN SUBDEPARTEMENsdbulanINI,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanini,SUM(hpp) hppsdbulanini,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanini FROM tampung2_2024 WHERE ' + afilter + '  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+edtTahun.Text+' GROUP BY SUBDEPARTEMEN)  sdbulanini ON sdbulanini.SUBDEPARTEMENsdbulanini=a.SUBDEPARTEMEN'
 + ' LEFT JOIN'
-+ ' (SELECT SUBDEPARTEMEN SUBDEPARTEMENsdbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanlalu,SUM(hpp) hppsdbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanlalu FROM tampung2_2024 WHERE NOMOR like '+quot(afilter)+' AND  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY SUBDEPARTEMEN)  sdbulanlalu ON sdbulanlalu.SUBDEPARTEMENsdbulanlalu=a.SUBDEPARTEMEN';
++ ' (SELECT SUBDEPARTEMEN SUBDEPARTEMENsdbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanlalu,SUM(hpp) hppsdbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanlalu FROM tampung2_2024 WHERE ' + afilter + '  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY SUBDEPARTEMEN)  sdbulanlalu ON sdbulanlalu.SUBDEPARTEMENsdbulanlalu=a.SUBDEPARTEMEN';
 
            ds3.Close;
             sqlqry1.Connection := frmMenu.conn;

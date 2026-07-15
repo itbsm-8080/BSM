@@ -151,6 +151,13 @@ object frmBayarSupplier: TfrmBayarSupplier
       Height = 13
       Caption = 'Nilai'
     end
+    object Label9: TLabel
+      Left = 866
+      Top = 98
+      Width = 26
+      Height = 13
+      Caption = 'Saldo'
+    end
     object edtNomor: TAdvEdit
       Left = 700
       Top = 6
@@ -303,6 +310,7 @@ object frmBayarSupplier: TfrmBayarSupplier
       Left = 129
       Top = 50
       Properties.ImmediatePost = True
+      Properties.OnEditValueChanged = cxLookupRekeningPropertiesEditValueChanged
       Style.Color = clWindow
       Style.LookAndFeel.Kind = lfFlat
       Style.TransparentBorder = True
@@ -448,7 +456,7 @@ object frmBayarSupplier: TfrmBayarSupplier
       OleDropSource = False
       Signed = False
       TabOrder = 8
-      Text = '0.00'
+      Text = '0,00'
       Transparent = False
       Visible = True
       OnKeyPress = FormKeyPress
@@ -463,6 +471,67 @@ object frmBayarSupplier: TfrmBayarSupplier
       State = cbChecked
       TabOrder = 9
       OnClick = chkPajakClick
+      OnKeyPress = FormKeyPress
+    end
+    object edtSaldo: TAdvEdit
+      Left = 901
+      Top = 94
+      Width = 141
+      Height = 21
+      AutoFocus = False
+      EditAlign = eaRight
+      EditType = etMoney
+      ErrorMarkerPos = 0
+      ErrorMarkerLen = 0
+      ErrorColor = clRed
+      ErrorFontColor = clWhite
+      ExcelStyleDecimalSeparator = False
+      Flat = False
+      FlatLineColor = clBlack
+      FlatParentColor = True
+      FocusAlign = eaDefault
+      FocusBorder = False
+      FocusColor = clSilver
+      FocusFontColor = clWindowText
+      FocusLabel = False
+      FocusWidthInc = 0
+      ModifiedColor = clHighlight
+      DisabledColor = clSilver
+      URLColor = clBlue
+      ReturnIsTab = False
+      LengthLimit = 0
+      TabOnFullLength = False
+      Precision = 2
+      LabelPosition = lpLeftTop
+      LabelMargin = 4
+      LabelTransparent = False
+      LabelAlwaysEnabled = False
+      LabelFont.Charset = DEFAULT_CHARSET
+      LabelFont.Color = clWindowText
+      LabelFont.Height = -11
+      LabelFont.Name = 'Tahoma'
+      LabelFont.Style = []
+      Lookup.CaseSensitive = False
+      Lookup.Color = clWindow
+      Lookup.DisplayCount = 4
+      Lookup.Enabled = False
+      Lookup.History = False
+      Lookup.NumChars = 2
+      Lookup.Multi = False
+      Lookup.Separator = ';'
+      Persistence.Enable = False
+      Persistence.Location = plInifile
+      Color = clWhite
+      Enabled = True
+      HintShowLargeText = False
+      MaxLength = 2
+      OleDropTarget = False
+      OleDropSource = False
+      Signed = False
+      TabOrder = 10
+      Text = '0,00'
+      Transparent = False
+      Visible = True
       OnKeyPress = FormKeyPress
     end
   end

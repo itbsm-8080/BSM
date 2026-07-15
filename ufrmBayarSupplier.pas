@@ -63,6 +63,8 @@ type
     clNobukti: TcxGridDBColumn;
     chkPajak: TCheckBox;
     clPajak: TcxGridDBColumn;
+    Label9: TLabel;
+    edtSaldo: TAdvEdit;
     procedure refreshdata;
    procedure initgrid;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -94,6 +96,7 @@ type
       var Error: Boolean);
     procedure doslip(anomor : string );
     procedure doslip2(anomor : string );
+    procedure cxLookupRekeningPropertiesEditValueChanged(Sender: TObject);
   private
     FCDSSupplier: TClientDataset;
     FCDSRekening: TClientDataset;
@@ -469,6 +472,13 @@ begin
       Exit;
     end;
 
+    if (VarToStr(cxLookupRekening.EditValue) = '15.003') and (StrToInt(edtNilai.Text) > StrToInt(edtSaldo.Text)) then
+    begin
+      ShowMessage('Nilai kurang dari saldo');
+      result:=false;
+      Exit;
+    end;
+
   CDS.First;
   While not CDS.Eof do
   begin
@@ -657,9 +667,39 @@ end;
 
 procedure TfrmBayarSupplier.cxLookupSupplierPropertiesEditValueChanged(
   Sender: TObject);
+var
+  s: string ;
+  tsql : TmyQuery;
+  a,i:Integer;
 begin
+  if VarToStr(cxLookupRekening.EditValue) <> '15.003' then
+  begin
+    edtSaldo.Text := '0';
+    Exit;
+  end;   
+
+  s := ' SELECT IFNULL(SUM(jurd_debet - jurd_kredit), 0) saldo '
+    + ' FROM tjurnalitem '
+    + ' WHERE jurd_rek_kode = ' + Quot(cxLookupRekening.EditValue)
+    + ' AND jurd_cus_kode = ' + Quot(cxLookupSupplier.EditValue);
+
+    tsql := xOpenQuery(s,frmMenu.conn) ;
+   try
+
+       with  tsql do
+       begin
+         if not eof then
+         begin
+            edtSaldo.Text := fieldbyname('saldo').AsString;
+        end;
+      end;
+   finally
+     tsql.Free;
+   end;
+
   loaddataInvoice(cxLookupSupplier.EditValue);
   edtAlamat.Text := CDSsupplier.Fields[2].AsString;
+
 end;
 
 function TfrmBayarSupplier.GetCDSRekening: TClientDataset;
@@ -783,6 +823,39 @@ begin
   finally
      ftsreport.Free;
   end;
+end;
+
+procedure TfrmBayarSupplier.cxLookupRekeningPropertiesEditValueChanged(
+  Sender: TObject);
+var
+  s: string ;
+  tsql : TmyQuery;
+  a,i:Integer;
+begin
+  if VarToStr(cxLookupRekening.EditValue) <> '15.003' then
+  begin
+    edtSaldo.Text := '0';
+    Exit;
+  end;
+
+  s := ' SELECT IFNULL(SUM(jurd_debet - jurd_kredit), 0) saldo '
+    + ' FROM tjurnalitem '
+    + ' WHERE jurd_rek_kode = ' + Quot(cxLookupRekening.EditValue)
+    + ' AND jurd_cus_kode = ' + Quot(cxLookupSupplier.EditValue);
+
+    tsql := xOpenQuery(s,frmMenu.conn) ;
+   try
+
+       with  tsql do
+       begin
+         if not eof then
+         begin
+            edtSaldo.Text := fieldbyname('saldo').AsString;
+        end;
+      end;
+   finally
+     tsql.Free;
+   end;
 end;
 
 end.

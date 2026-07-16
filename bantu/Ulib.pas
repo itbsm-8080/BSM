@@ -9,7 +9,7 @@ interface
   cxDBExtLookupComboBox,cxgrid,cxGridDBTableView,cxGridFilterHelpers,cxCustomData,
   OleServer, ExcelXP,printers,WinSpool,DBGrids,cxDropDownEdit,cxCurrencyEdit,cxCalendar,
   cxGridExportLink,cxFilter,cxGridTableView,cxGridCustomTableView,cxTreeView,cxDBTL, cxTLData,cxTLExportLink,
-  MyAccess;
+  MyAccess,cxGridCustomView;
 type
  Tbutton1 = class(Tbutton)
   public
@@ -63,6 +63,12 @@ type
     procedure ExportToXLS(sFileName: String = ''; DoShowInfo: Boolean = True);
     function GetFooterSummary(sFieldName : String): Variant; overload;
     function GetFooterSummary(aColumn: TcxGridDBColumn): Variant; overload;
+
+
+
+    function GetgroupFooterSummary(ADataGroupIndex: Integer;sFieldName : String): Variant;      overload;
+    function GetgroupFooterSummary(ADataGroupIndex: Integer;aColumn: TcxGridDBColumn): Variant; overload;
+
     procedure LoadFromCDS(ACDS: TClientDataSet; AutoFormat: Boolean = True;
         DoBestFit: Boolean = True);
     procedure LoadFromSQL(aSQL: String; aOwner: TComponent);
@@ -1704,12 +1710,34 @@ begin
     end;
   end;
 end;
-
 function TcxDBGridHelper.GetFooterSummary(sFieldName : String): Variant;
 //var
 //  i: Integer;
 begin
   Result := Self.GetFooterSummary(Self.GetColumnByFieldName(sFieldName));
+end;
+function TcxDBGridHelper.GetgroupFooterSummary(ADataGroupIndex: Integer;aColumn: TcxGridDBColumn): Variant;
+var
+  i: Integer;
+begin
+  Result := Null;
+
+  with Self.DataController.Summary do
+  begin
+    for i :=0 to DefaultGroupSummaryItems.Count-1 do
+    begin
+      If DefaultGroupSummaryItems.Items[i].ItemLink = aColumn then
+        Result := GroupSummaryValues[ADataGroupIndex,i];
+    end;
+  end;
+end;
+
+
+
+
+function TcxDBGridHelper.GetgroupFooterSummary(ADataGroupIndex: Integer;sFieldName : String): Variant;
+begin
+  Result := Self.GetgroupFooterSummary(ADataGroupIndex,Self.GetColumnByFieldName(sFieldName));
 end;
 
 procedure TcxDBGridHelper.LoadFromCDS(ACDS: TClientDataSet; AutoFormat: Boolean
@@ -2244,6 +2272,7 @@ begin
   else
      Result := 0.1;
 end;
+
 
 end.
 

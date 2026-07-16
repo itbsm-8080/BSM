@@ -21,7 +21,7 @@ uses
   dxSkinsCore, dxSkinsDefaultPainters, dxSkinsdxBarPainter, AdvCombo,
   cxCurrencyEdit, cxGridDBBandedTableView, dxPScxGrid6Lnk,DateUtils, MemDS,
   DBAccess, MyAccess, cxContainer, cxTextEdit, cxMaskEdit, cxDropDownEdit,
-  cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox;
+  cxLookupEdit, cxDBLookupEdit, cxDBExtLookupComboBox,cxGridDBDataDefinitions,cxGridRows ;
 
 type
   TfrmLapBulanan3 = class(TForm)
@@ -91,6 +91,7 @@ type
     cxStyle5: TcxStyle;
     cxGrid1DBBandedTableView1Column23: TcxGridDBBandedColumn;
     cxGrid1DBBandedTableView1Column24: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column25: TcxGridDBBandedColumn;
     procedure FormDblClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
     procedure sbNewClick(Sender: TObject);
@@ -181,6 +182,30 @@ type
     procedure cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems18GetText(
       Sender: TcxDataSummaryItem; const AValue: Variant;
       AIsFooter: Boolean; var AText: String);
+    procedure cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems12GetText(
+      Sender: TcxDataSummaryItem; const AValue: Variant;
+      AIsFooter: Boolean; var AText: String);
+    procedure cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems13GetText(
+      Sender: TcxDataSummaryItem; const AValue: Variant;
+      AIsFooter: Boolean; var AText: String);
+    procedure cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems14GetText(
+      Sender: TcxDataSummaryItem; const AValue: Variant;
+      AIsFooter: Boolean; var AText: String);
+    procedure cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems15GetText(
+      Sender: TcxDataSummaryItem; const AValue: Variant;
+      AIsFooter: Boolean; var AText: String);
+    procedure cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems16GetText(
+      Sender: TcxDataSummaryItem; const AValue: Variant;
+      AIsFooter: Boolean; var AText: String);
+    procedure cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems17GetText(
+      Sender: TcxDataSummaryItem; const AValue: Variant;
+      AIsFooter: Boolean; var AText: String);
+    procedure cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems18GetText(
+      Sender: TcxDataSummaryItem; const AValue: Variant;
+      AIsFooter: Boolean; var AText: String);
+    procedure cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems19GetText(
+      Sender: TcxDataSummaryItem; const AValue: Variant;
+      AIsFooter: Boolean; var AText: String);
 
   private
     flagedit : Boolean;
@@ -196,12 +221,15 @@ type
     xhppPremium,xhppsolar,xhpppertamaxplus,xhpppertamax : double ;
     function GetPivotChartLink: TcxPivotGridChartConnection;
     function GetCDSPabrik: TClientDataset;
+
   public
     property CDSPabrik: TClientDataset read GetCDSPabrik write FCDSPabrik;
     procedure loaddata;
     procedure refreshdata;
     property PivotChartLink: TcxPivotGridChartConnection read GetPivotChartLink
         write FPivotChartLink;
+
+
 
     { Public declarations }
   end;
@@ -280,7 +308,7 @@ begin
 
 // by nama
 IF ComboBox1.ItemIndex =0 then
-      ssql:= ' SELECT DISTINCT KODE,max(NAMA) Keterangan,'
+      ssql:= ' SELECT DISTINCT CASE    WHEN DEPARTEMEN = "N3" THEN "N3"    ELSE "OTHERS"   END AS KELOMPOK_SUBTOTAL,DEPARTEMEN,KODE,max(NAMA) Keterangan,'
 + ' Netbulanini,hppbulanini,marginbulanini,marginbulanini/Netbulanini*100 ratiobulanini,'
 + ' Netbulanlalu,hppbulanlalu,marginbulanlalu,marginbulanlalu/Netbulanlalu*100 ratiobulanlalu,'
 + ' marginbulanini/marginbulanlalu*100 growthbulanini,'
@@ -300,7 +328,7 @@ IF ComboBox1.ItemIndex =0 then
 + ' (SELECT KODE KODEsdbulanlalu,SUM(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) Netsdbulanlalu,SUM(hpp) hppsdbulanlalu,SUM(margin- Kontrak - Biayapromosi-Feemarketing) marginsdbulanlalu FROM tampung2_2024 WHERE ' + afilter + '  bulan<='+IntToStr(cbbBulan.ItemIndex+1)+'  AND tahun='+ IntToStr(strtoint(edtTahun.Text)-1)+' GROUP BY kode)  sdbulanlalu ON sdbulanlalu.kodesdbulanlalu=a.kode group by kode';
 
 IF ComboBox1.ItemIndex =1 then
-      ssql:= ' SELECT DISTINCT KATEGORI Keterangan,'
+      ssql:= ' SELECT DISTINCT CASE    WHEN DEPARTEMEN = "N3" THEN "N3"    ELSE "OTHERS"   END AS KELOMPOK_SUBTOTAL,DEPARTEMEN,KATEGORI Keterangan,'
 + ' Netbulanini,hppbulanini,marginbulanini,marginbulanini/Netbulanini*100 ratiobulanini,'
 + ' Netbulanlalu,hppbulanlalu,marginbulanlalu,marginbulanlalu/Netbulanlalu*100 ratiobulanlalu,'
 + ' marginbulanini/marginbulanlalu*100 growthbulanini,'
@@ -321,7 +349,7 @@ IF ComboBox1.ItemIndex =1 then
 
 
 IF ComboBox1.ItemIndex =2 then
-      ssql:= ' SELECT DISTINCT SUBDEPARTEMEN Keterangan,'
+      ssql:= ' SELECT DISTINCT CASE    WHEN DEPARTEMEN = "N3" THEN "N3"    ELSE "OTHERS"   END AS KELOMPOK_SUBTOTAL,DEPARTEMEN,SUBDEPARTEMEN Keterangan,'
 + ' Netbulanini,hppbulanini,marginbulanini,marginbulanini/Netbulanini*100 ratiobulanini,'
 + ' Netbulanlalu,hppbulanlalu,marginbulanlalu,marginbulanlalu/Netbulanlalu*100 ratiobulanlalu,'
 + ' marginbulanini/marginbulanlalu*100 growthbulanini,'
@@ -666,9 +694,12 @@ begin
   Result := FCDSPabrik;
 end;
 procedure TfrmLapBulanan3.FormCreate(Sender: TObject);
+
 begin
    with TcxExtLookupHelper(cxExtLookupCabang.Properties) do
     LoadFromCDS(CDSPabrik, 'Kode','Nama',['Kode'],Self);
+
+
 end;
 procedure TfrmLapBulanan3.cxGrid1DBBandedTableView1Column20CustomDrawCell(
   Sender: TcxCustomGridTableView; ACanvas: TcxCanvas;
@@ -771,6 +802,451 @@ begin
         capaibulanini :=cVarToFloat(TcxDBGridHelper(cxGrid1DBBandedTableView1).GetFooterSummary('marginsdbulanini'))/ cVarToFloat(TcxDBGridHelper(cxGrid1DBBandedTableView1).GetFooterSummary('marginsdbulanlalu'))*100;
     AText := FormatFloat('###.##',capaibulanini);
   except
+  end;
+end;
+
+procedure TfrmLapBulanan3.cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems12GetText(
+  Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
+  var AText: String);
+var
+  AGroupIndex: Integer;
+  V_Margin, V_Net, capaibulanini: Double;
+  ASummary: TcxDataSummary;
+  I, IdxMargin, IdxNet: Integer;
+begin
+  ASummary := Sender.DataController.Summary;
+
+  // 1. SOLUSI FIX ERROR SINTAKS V4: Menggunakan GroupSummaryItems[0] untuk level grup utama
+  IdxMargin := -1;
+  IdxNet    := -1;
+
+  for I := 0 to ASummary.GroupSummaryItems[0].Count - 1 do
+  begin
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column7 then
+      IdxMargin := I;
+
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column2 then
+      IdxNet := I;
+  end;
+
+  // 2. Cari GroupIndex yang tepat dengan mencocokkan nilai AValue (skCount palsu) yang sedang aktif di-render
+  AGroupIndex := -1;
+  for I := 0 to Sender.DataController.Groups.ChildCount[-1] - 1 do
+  begin
+    if ASummary.GroupSummaryValues[Sender.DataController.Groups.ChildDataGroupIndex[-1, I], Sender.Index] = AValue then
+    begin
+      AGroupIndex := Sender.DataController.Groups.ChildDataGroupIndex[-1, I];
+      Break;
+    end;
+  end;
+
+  // 3. Jika GroupIndex dan indeks kolom valid, timpa teks count menjadi hasil pembagian persen
+  if (AGroupIndex <> -1) and (IdxMargin <> -1) and (IdxNet <> -1) then
+  begin
+    try
+      V_Margin := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxMargin]);
+      V_Net    := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxNet]);
+
+      if V_Net > 0 then
+      begin
+        capaibulanini := (V_Margin / V_Net) * 100;
+        // Ganti angka count bawaan (12 atau 10) secara paksa dengan teks persentase
+        AText := FormatFloat('###.##', capaibulanini);
+      end
+      else
+        AText := '0';
+    except
+      AText := '0';
+    end;
+  end;
+end;
+
+procedure TfrmLapBulanan3.cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems13GetText(
+  Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
+  var AText: String);
+var
+  AGroupIndex: Integer;
+  V_Margin, V_Net, capaibulanini: Double;
+  ASummary: TcxDataSummary;
+  I, IdxMargin, IdxNet: Integer;
+begin
+  ASummary := Sender.DataController.Summary;
+
+  // 1. SOLUSI FIX ERROR SINTAKS V4: Menggunakan GroupSummaryItems[0] untuk level grup utama
+  IdxMargin := -1;
+  IdxNet    := -1;
+
+  for I := 0 to ASummary.GroupSummaryItems[0].Count - 1 do
+  begin
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column16 then
+      IdxMargin := I;
+
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column9 then
+      IdxNet := I;
+  end;
+
+  // 2. Cari GroupIndex yang tepat dengan mencocokkan nilai AValue (skCount palsu) yang sedang aktif di-render
+  AGroupIndex := -1;
+  for I := 0 to Sender.DataController.Groups.ChildCount[-1] - 1 do
+  begin
+    if ASummary.GroupSummaryValues[Sender.DataController.Groups.ChildDataGroupIndex[-1, I], Sender.Index] = AValue then
+    begin
+      AGroupIndex := Sender.DataController.Groups.ChildDataGroupIndex[-1, I];
+      Break;
+    end;
+  end;
+
+  // 3. Jika GroupIndex dan indeks kolom valid, timpa teks count menjadi hasil pembagian persen
+  if (AGroupIndex <> -1) and (IdxMargin <> -1) and (IdxNet <> -1) then
+  begin
+    try
+      V_Margin := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxMargin]);
+      V_Net    := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxNet]);
+
+      if V_Net > 0 then
+      begin
+        capaibulanini := (V_Margin / V_Net) * 100;
+        // Ganti angka count bawaan (12 atau 10) secara paksa dengan teks persentase
+        AText := FormatFloat('###.##', capaibulanini);
+      end
+      else
+        AText := '0';
+    except
+      AText := '0';
+    end;
+  end;
+end;
+
+procedure TfrmLapBulanan3.cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems14GetText(
+  Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
+  var AText: String);
+var
+  AGroupIndex: Integer;
+  V_Margin, V_Net, capaibulanini: Double;
+  ASummary: TcxDataSummary;
+  I, IdxMargin, IdxNet: Integer;
+begin
+  ASummary := Sender.DataController.Summary;
+
+  // 1. SOLUSI FIX ERROR SINTAKS V4: Menggunakan GroupSummaryItems[0] untuk level grup utama
+  IdxMargin := -1;
+  IdxNet    := -1;
+
+  for I := 0 to ASummary.GroupSummaryItems[0].Count - 1 do
+  begin
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column7 then
+      IdxMargin := I;
+
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column16 then
+      IdxNet := I;
+  end;
+
+  // 2. Cari GroupIndex yang tepat dengan mencocokkan nilai AValue (skCount palsu) yang sedang aktif di-render
+  AGroupIndex := -1;
+  for I := 0 to Sender.DataController.Groups.ChildCount[-1] - 1 do
+  begin
+    if ASummary.GroupSummaryValues[Sender.DataController.Groups.ChildDataGroupIndex[-1, I], Sender.Index] = AValue then
+    begin
+      AGroupIndex := Sender.DataController.Groups.ChildDataGroupIndex[-1, I];
+      Break;
+    end;
+  end;
+
+  // 3. Jika GroupIndex dan indeks kolom valid, timpa teks count menjadi hasil pembagian persen
+  if (AGroupIndex <> -1) and (IdxMargin <> -1) and (IdxNet <> -1) then
+  begin
+    try
+      V_Margin := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxMargin]);
+      V_Net    := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxNet]);
+
+      if V_Net > 0 then
+      begin
+        capaibulanini := (V_Margin / V_Net) * 100;
+        // Ganti angka count bawaan (12 atau 10) secara paksa dengan teks persentase
+        AText := FormatFloat('###.##', capaibulanini);
+      end
+      else
+        AText := '0';
+    except
+      AText := '0';
+    end;
+  end;
+end;
+
+procedure TfrmLapBulanan3.cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems15GetText(
+  Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
+  var AText: String);
+var
+  AGroupIndex: Integer;
+  V_Margin, V_Net, capaibulanini: Double;
+  ASummary: TcxDataSummary;
+  I, IdxMargin, IdxNet: Integer;
+begin
+  ASummary := Sender.DataController.Summary;
+
+  // 1. SOLUSI FIX ERROR SINTAKS V4: Menggunakan GroupSummaryItems[0] untuk level grup utama
+  IdxMargin := -1;
+  IdxNet    := -1;
+
+  for I := 0 to ASummary.GroupSummaryItems[0].Count - 1 do
+  begin
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column2 then
+      IdxMargin := I;
+
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column9 then
+      IdxNet := I;
+  end;
+
+  // 2. Cari GroupIndex yang tepat dengan mencocokkan nilai AValue (skCount palsu) yang sedang aktif di-render
+  AGroupIndex := -1;
+  for I := 0 to Sender.DataController.Groups.ChildCount[-1] - 1 do
+  begin
+    if ASummary.GroupSummaryValues[Sender.DataController.Groups.ChildDataGroupIndex[-1, I], Sender.Index] = AValue then
+    begin
+      AGroupIndex := Sender.DataController.Groups.ChildDataGroupIndex[-1, I];
+      Break;
+    end;
+  end;
+
+  // 3. Jika GroupIndex dan indeks kolom valid, timpa teks count menjadi hasil pembagian persen
+  if (AGroupIndex <> -1) and (IdxMargin <> -1) and (IdxNet <> -1) then
+  begin
+    try
+      V_Margin := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxMargin]);
+      V_Net    := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxNet]);
+
+      if V_Net > 0 then
+      begin
+        capaibulanini := (V_Margin / V_Net) * 100;
+        // Ganti angka count bawaan (12 atau 10) secara paksa dengan teks persentase
+        AText := FormatFloat('###.##', capaibulanini);
+      end
+      else
+        AText := '0';
+    except
+      AText := '0';
+    end;
+  end;
+end;
+procedure TfrmLapBulanan3.cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems16GetText(
+  Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
+  var AText: String);
+var
+  AGroupIndex: Integer;
+  V_Margin, V_Net, capaibulanini: Double;
+  ASummary: TcxDataSummary;
+  I, IdxMargin, IdxNet: Integer;
+begin
+  ASummary := Sender.DataController.Summary;
+
+  // 1. SOLUSI FIX ERROR SINTAKS V4: Menggunakan GroupSummaryItems[0] untuk level grup utama
+  IdxMargin := -1;
+  IdxNet    := -1;
+
+  for I := 0 to ASummary.GroupSummaryItems[0].Count - 1 do
+  begin
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column15 then
+      IdxMargin := I;
+
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column14 then
+      IdxNet := I;
+  end;
+
+  // 2. Cari GroupIndex yang tepat dengan mencocokkan nilai AValue (skCount palsu) yang sedang aktif di-render
+  AGroupIndex := -1;
+  for I := 0 to Sender.DataController.Groups.ChildCount[-1] - 1 do
+  begin
+    if ASummary.GroupSummaryValues[Sender.DataController.Groups.ChildDataGroupIndex[-1, I], Sender.Index] = AValue then
+    begin
+      AGroupIndex := Sender.DataController.Groups.ChildDataGroupIndex[-1, I];
+      Break;
+    end;
+  end;
+
+  // 3. Jika GroupIndex dan indeks kolom valid, timpa teks count menjadi hasil pembagian persen
+  if (AGroupIndex <> -1) and (IdxMargin <> -1) and (IdxNet <> -1) then
+  begin
+    try
+      V_Margin := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxMargin]);
+      V_Net    := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxNet]);
+
+      if V_Net > 0 then
+      begin
+        capaibulanini := (V_Margin / V_Net) * 100;
+        // Ganti angka count bawaan (12 atau 10) secara paksa dengan teks persentase
+        AText := FormatFloat('###.##', capaibulanini);
+      end
+      else
+        AText := '0';
+    except
+      AText := '0';
+    end;
+  end;
+end;
+procedure TfrmLapBulanan3.cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems17GetText(
+  Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
+  var AText: String);
+var
+  AGroupIndex: Integer;
+  V_Margin, V_Net, capaibulanini: Double;
+  ASummary: TcxDataSummary;
+  I, IdxMargin, IdxNet: Integer;
+begin
+  ASummary := Sender.DataController.Summary;
+
+  // 1. SOLUSI FIX ERROR SINTAKS V4: Menggunakan GroupSummaryItems[0] untuk level grup utama
+  IdxMargin := -1;
+  IdxNet    := -1;
+
+  for I := 0 to ASummary.GroupSummaryItems[0].Count - 1 do
+  begin
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column19 then
+      IdxMargin := I;
+
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column18 then
+      IdxNet := I;
+  end;
+
+  // 2. Cari GroupIndex yang tepat dengan mencocokkan nilai AValue (skCount palsu) yang sedang aktif di-render
+  AGroupIndex := -1;
+  for I := 0 to Sender.DataController.Groups.ChildCount[-1] - 1 do
+  begin
+    if ASummary.GroupSummaryValues[Sender.DataController.Groups.ChildDataGroupIndex[-1, I], Sender.Index] = AValue then
+    begin
+      AGroupIndex := Sender.DataController.Groups.ChildDataGroupIndex[-1, I];
+      Break;
+    end;
+  end;
+
+  // 3. Jika GroupIndex dan indeks kolom valid, timpa teks count menjadi hasil pembagian persen
+  if (AGroupIndex <> -1) and (IdxMargin <> -1) and (IdxNet <> -1) then
+  begin
+    try
+      V_Margin := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxMargin]);
+      V_Net    := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxNet]);
+
+      if V_Net > 0 then
+      begin
+        capaibulanini := (V_Margin / V_Net) * 100;
+        // Ganti angka count bawaan (12 atau 10) secara paksa dengan teks persentase
+        AText := FormatFloat('###.##', capaibulanini);
+      end
+      else
+        AText := '0';
+    except
+      AText := '0';
+    end;
+  end;
+end;
+procedure TfrmLapBulanan3.cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems18GetText(
+  Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
+  var AText: String);
+var
+  AGroupIndex: Integer;
+  V_Margin, V_Net, capaibulanini: Double;
+  ASummary: TcxDataSummary;
+  I, IdxMargin, IdxNet: Integer;
+begin
+  ASummary := Sender.DataController.Summary;
+
+  // 1. SOLUSI FIX ERROR SINTAKS V4: Menggunakan GroupSummaryItems[0] untuk level grup utama
+  IdxMargin := -1;
+  IdxNet    := -1;
+
+  for I := 0 to ASummary.GroupSummaryItems[0].Count - 1 do
+  begin
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column15 then
+      IdxMargin := I;
+
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column19 then
+      IdxNet := I;
+  end;
+
+  // 2. Cari GroupIndex yang tepat dengan mencocokkan nilai AValue (skCount palsu) yang sedang aktif di-render
+  AGroupIndex := -1;
+  for I := 0 to Sender.DataController.Groups.ChildCount[-1] - 1 do
+  begin
+    if ASummary.GroupSummaryValues[Sender.DataController.Groups.ChildDataGroupIndex[-1, I], Sender.Index] = AValue then
+    begin
+      AGroupIndex := Sender.DataController.Groups.ChildDataGroupIndex[-1, I];
+      Break;
+    end;
+  end;
+
+  // 3. Jika GroupIndex dan indeks kolom valid, timpa teks count menjadi hasil pembagian persen
+  if (AGroupIndex <> -1) and (IdxMargin <> -1) and (IdxNet <> -1) then
+  begin
+    try
+      V_Margin := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxMargin]);
+      V_Net    := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxNet]);
+
+      if V_Net > 0 then
+      begin
+        capaibulanini := (V_Margin / V_Net) * 100;
+        // Ganti angka count bawaan (12 atau 10) secara paksa dengan teks persentase
+        AText := FormatFloat('###.##', capaibulanini);
+      end
+      else
+        AText := '0';
+    except
+      AText := '0';
+    end;
+  end;
+end;
+
+procedure TfrmLapBulanan3.cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems19GetText(
+  Sender: TcxDataSummaryItem; const AValue: Variant; AIsFooter: Boolean;
+  var AText: String);
+var
+  AGroupIndex: Integer;
+  V_Margin, V_Net, capaibulanini: Double;
+  ASummary: TcxDataSummary;
+  I, IdxMargin, IdxNet: Integer;
+begin
+  ASummary := Sender.DataController.Summary;
+
+  // 1. SOLUSI FIX ERROR SINTAKS V4: Menggunakan GroupSummaryItems[0] untuk level grup utama
+  IdxMargin := -1;
+  IdxNet    := -1;
+
+  for I := 0 to ASummary.GroupSummaryItems[0].Count - 1 do
+  begin
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column14 then
+      IdxMargin := I;
+
+    if TcxGridDBTableSummaryItem(ASummary.GroupSummaryItems[0].Items[I]).Column = cxGrid1DBBandedTableView1Column18 then
+      IdxNet := I;
+  end;
+
+  // 2. Cari GroupIndex yang tepat dengan mencocokkan nilai AValue (skCount palsu) yang sedang aktif di-render
+  AGroupIndex := -1;
+  for I := 0 to Sender.DataController.Groups.ChildCount[-1] - 1 do
+  begin
+    if ASummary.GroupSummaryValues[Sender.DataController.Groups.ChildDataGroupIndex[-1, I], Sender.Index] = AValue then
+    begin
+      AGroupIndex := Sender.DataController.Groups.ChildDataGroupIndex[-1, I];
+      Break;
+    end;
+  end;
+
+  // 3. Jika GroupIndex dan indeks kolom valid, timpa teks count menjadi hasil pembagian persen
+  if (AGroupIndex <> -1) and (IdxMargin <> -1) and (IdxNet <> -1) then
+  begin
+    try
+      V_Margin := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxMargin]);
+      V_Net    := cVarToFloat(ASummary.GroupSummaryValues[AGroupIndex, IdxNet]);
+
+      if V_Net > 0 then
+      begin
+        capaibulanini := (V_Margin / V_Net) * 100;
+        // Ganti angka count bawaan (12 atau 10) secara paksa dengan teks persentase
+        AText := FormatFloat('###.##', capaibulanini);
+      end
+      else
+        AText := '0';
+    except
+      AText := '0';
+    end;
   end;
 end;
 

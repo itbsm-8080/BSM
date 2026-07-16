@@ -1,10 +1,10 @@
 object frmLapBulanan3: TfrmLapBulanan3
-  Left = 103
-  Top = 129
+  Left = 152
+  Top = 176
   AutoScroll = False
   Caption = 'Laporan Margin Bulanan'
   ClientHeight = 542
-  ClientWidth = 1238
+  ClientWidth = 1540
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -25,9 +25,10 @@ object frmLapBulanan3: TfrmLapBulanan3
   object tscrlbx1: TTeScrollBox
     Left = 0
     Top = 28
-    Width = 1238
+    Width = 1540
     Height = 476
     HorzScrollBar.Range = 1020
+    VertScrollBar.Position = 28
     VertScrollBar.Range = 500
     Align = alClient
     AutoScroll = False
@@ -35,8 +36,8 @@ object frmLapBulanan3: TfrmLapBulanan3
     ThemeObject = 'default'
     object TePanel4: TTePanel
       Left = 0
-      Top = 0
-      Width = 1217
+      Top = -28
+      Width = 1519
       Height = 500
       Align = alClient
       Color = clWhite
@@ -63,7 +64,7 @@ object frmLapBulanan3: TfrmLapBulanan3
       object TePanel1: TTePanel
         Left = 1
         Top = 38
-        Width = 1215
+        Width = 1517
         Height = 461
         Align = alClient
         Caption = 'TePanel1'
@@ -72,14 +73,139 @@ object frmLapBulanan3: TfrmLapBulanan3
         object cxGrid1: TcxGrid
           Left = 1
           Top = 1
-          Width = 1213
+          Width = 1515
           Height = 459
           Align = alClient
           TabOrder = 0
           object cxGrid1DBBandedTableView1: TcxGridDBBandedTableView
             NavigatorButtons.ConfirmDelete = False
             DataController.DataSource = ds2
-            DataController.Summary.DefaultGroupSummaryItems = <>
+            DataController.Summary.DefaultGroupSummaryItems = <
+              item
+                Format = ',0;(,0)'
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBBandedTableView1Column2
+              end
+              item
+                Format = ',0;(,0)'
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBBandedTableView1Column3
+              end
+              item
+                Format = ',0;(,0)'
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBBandedTableView1Column7
+              end
+              item
+                Format = ',0;(,0)'
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBBandedTableView1Column9
+              end
+              item
+                Format = ',0;(,0)'
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBBandedTableView1Column13
+              end
+              item
+                Format = ',0;(,0)'
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBBandedTableView1Column16
+              end
+              item
+                Format = ',0;(,0)'
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBBandedTableView1Column14
+              end
+              item
+                Format = ',0;(,0)'
+                Kind = skSum
+                Position = spFooter
+                Column = growth2
+              end
+              item
+                Format = ',0;(,0)'
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBBandedTableView1Column15
+              end
+              item
+                Format = ',0;(,0)'
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBBandedTableView1Column18
+              end
+              item
+                Format = ',0;(,0)'
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBBandedTableView1Column17
+              end
+              item
+                Format = ',0;(,0)'
+                Kind = skSum
+                Position = spFooter
+                Column = cxGrid1DBBandedTableView1Column19
+              end
+              item
+                Kind = skCount
+                Position = spFooter
+                OnGetText = cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems12GetText
+                Column = cxGrid1DBBandedTableView1Column8
+              end
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skCount
+                Position = spFooter
+                OnGetText = cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems13GetText
+                Column = cxGrid1DBBandedTableView1Column10
+              end
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skCount
+                Position = spFooter
+                OnGetText = cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems14GetText
+                Column = growth
+              end
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skCount
+                Position = spFooter
+                OnGetText = cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems15GetText
+                Column = cxGrid1DBBandedTableView1Column23
+              end
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skSum
+                Position = spFooter
+                OnGetText = cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems16GetText
+                Column = cxGrid1DBBandedTableView1Column21
+              end
+              item
+                Format = ',0.00;(,0.00)'
+                Kind = skSum
+                Position = spFooter
+                OnGetText = cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems17GetText
+                Column = cxGrid1DBBandedTableView1Column20
+              end
+              item
+                Kind = skSum
+                Position = spFooter
+                OnGetText = cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems18GetText
+                Column = cxGrid1DBBandedTableView1Column22
+              end
+              item
+                Kind = skSum
+                Position = spFooter
+                OnGetText = cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryDefaultGroupSummaryItems19GetText
+                Column = cxGrid1DBBandedTableView1Column24
+              end>
             DataController.Summary.FooterSummaryItems = <
               item
                 Format = ',0;(,0)'
@@ -173,9 +299,17 @@ object frmLapBulanan3: TfrmLapBulanan3
                 OnGetText = cxGrid1DBBandedTableView1TcxGridDBDataControllerTcxDataSummaryFooterSummaryItems19GetText
                 Column = cxGrid1DBBandedTableView1Column24
               end>
-            DataController.Summary.SummaryGroups = <>
+            DataController.Summary.SummaryGroups = <
+              item
+                Links = <
+                  item
+                    Column = cxGrid1DBBandedTableView1Column20
+                  end>
+                SummaryItems = <>
+              end>
             OptionsView.Footer = True
-            OptionsView.GroupByBox = False
+            OptionsView.FooterMultiSummaries = True
+            OptionsView.GroupFooters = gfVisibleWhenExpanded
             Styles.ContentEven = cxStyle2
             Styles.ContentOdd = cxStyle1
             Bands = <
@@ -183,7 +317,7 @@ object frmLapBulanan3: TfrmLapBulanan3
                 Caption = 'Keterangan'
                 FixedKind = fkLeft
                 Styles.Header = cxstyl1
-                Width = 268
+                Width = 372
               end
               item
                 Caption = 'Nett'
@@ -207,7 +341,7 @@ object frmLapBulanan3: TfrmLapBulanan3
               item
                 Caption = 'Bulan Ini tahun lalu'
                 Styles.Header = cxstyl1
-                Width = 333
+                Width = 357
               end
               item
                 Caption = 'Margin'
@@ -250,7 +384,7 @@ object frmLapBulanan3: TfrmLapBulanan3
               item
                 Caption = 'sd Buln Ini'
                 Styles.Header = cxStyle5
-                Width = 288
+                Width = 309
               end
               item
                 Caption = 'Margin'
@@ -269,7 +403,7 @@ object frmLapBulanan3: TfrmLapBulanan3
               item
                 Caption = 'sd Bln ini (Thn Lalu)'
                 Styles.Header = cxStyle5
-                Width = 314
+                Width = 350
               end
               item
                 Caption = 'Margin'
@@ -340,10 +474,9 @@ object frmLapBulanan3: TfrmLapBulanan3
             object cxGrid1DBBandedTableView1Column1: TcxGridDBBandedColumn
               DataBinding.FieldName = 'Keterangan'
               Options.Editing = False
-              SortIndex = 0
-              SortOrder = soAscending
+              Width = 275
               Position.BandIndex = 0
-              Position.ColIndex = 0
+              Position.ColIndex = 1
               Position.RowIndex = 0
               IsCaptionAssigned = True
             end
@@ -352,8 +485,6 @@ object frmLapBulanan3: TfrmLapBulanan3
               PropertiesClassName = 'TcxCurrencyEditProperties'
               Properties.DisplayFormat = ',0;(,0)'
               Options.Editing = False
-              SortIndex = 1
-              SortOrder = soAscending
               Position.BandIndex = 1
               Position.ColIndex = 0
               Position.RowIndex = 0
@@ -616,6 +747,18 @@ object frmLapBulanan3: TfrmLapBulanan3
               Position.RowIndex = 0
               IsCaptionAssigned = True
             end
+            object cxGrid1DBBandedTableView1Column25: TcxGridDBBandedColumn
+              DataBinding.FieldName = 'KELOMPOK_SUBTOTAL'
+              Visible = False
+              GroupIndex = 0
+              SortIndex = 0
+              SortOrder = soAscending
+              Width = 97
+              Position.BandIndex = 0
+              Position.ColIndex = 0
+              Position.RowIndex = 0
+              IsCaptionAssigned = True
+            end
           end
           object cxGrid1Level1: TcxGridLevel
             GridView = cxGrid1DBBandedTableView1
@@ -625,7 +768,7 @@ object frmLapBulanan3: TfrmLapBulanan3
       object TePanel2: TTePanel
         Left = 1
         Top = 1
-        Width = 1215
+        Width = 1517
         Height = 37
         Align = alTop
         Color = clMoneyGreen
@@ -684,7 +827,7 @@ object frmLapBulanan3: TfrmLapBulanan3
           ParentFont = False
         end
         object btnRefresh: TcxButton
-          Left = 1127
+          Left = 1429
           Top = 1
           Width = 87
           Height = 35
@@ -826,7 +969,7 @@ object frmLapBulanan3: TfrmLapBulanan3
   object TePanel3: TTePanel
     Left = 0
     Top = 0
-    Width = 1238
+    Width = 1540
     Height = 28
     Align = alTop
     Alignment = taLeftJustify
@@ -845,14 +988,14 @@ object frmLapBulanan3: TfrmLapBulanan3
   object TePanel5: TTePanel
     Left = 0
     Top = 504
-    Width = 1238
+    Width = 1540
     Height = 38
     Align = alBottom
     Color = clMoneyGreen
     TabOrder = 4
     ThemeObject = 'default'
     object cxButton8: TcxButton
-      Left = 1150
+      Left = 1452
       Top = 1
       Width = 87
       Height = 36

@@ -315,9 +315,7 @@ begin
     + ' isecer,Biayapromosi,FeeMarketing,(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) NilaiNet,JenisCustomer, GolonganCustomer ';
 
   if frmmenu.KDUSER = 'SUPER' then
-//    s:=s  + ' ,hpp,margin-kontrak-biayapromosi-feemarketing margin';
-
-      s:=s  + ' ,hpp,nilainet-hpp margin';
+    s:=s  + ' ,hpp,(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) - hpp margin';
 
   s:= s + '  from (select * from tampung2_2022 union select * from tampung2_2023 union select * from tampung2_2024) x '
   + ' left join vfpcus y on y.fp_nomor=x.nomor '

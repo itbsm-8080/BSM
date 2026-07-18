@@ -85,6 +85,7 @@ type
     cxStyle1: TcxStyle;
     cxStyle2: TcxStyle;
     cxGrdMainColumn2: TcxGridDBColumn;
+    clSisaPO: TcxGridDBColumn;
     procedure refreshdata;
    procedure initgrid;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -107,6 +108,7 @@ type
     procedure clSKUPropertiesEditValueChanged(Sender: TObject);
     function getstok(asku:string): Double;
     function getavgsales(asku:string): Double;
+    function getpopending(asku:string): Double;
     procedure clKetPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption;
       var Error: Boolean);
@@ -383,6 +385,7 @@ begin
     zAddField(FCDS, 'otorisasi', ftInteger, False);
     zAddField(FCDS, 'Stok', ftFloat, False);
     zAddField(FCDS, 'avgsales', ftFloat, False);
+    zAddField(FCDS, 'POPending', ftFloat, False);
     zAddField(FCDS, 'stokcabang', ftFloat, False);
     FCDS.CreateDataSet;
   end;
@@ -477,7 +480,7 @@ begin
  CDS.FieldByName('satuan').AsString := CDSSKU.Fields[3].Asstring;
  CDS.FieldByName('STOK').asfloat := getstok(CDSSKU.Fields[0].AsString);
  CDS.FieldByName('avgsales').asfloat := getavgsales(CDSSKU.Fields[0].AsString);
-
+ CDS.FieldByName('POPending').asfloat := getpopending(CDSSKU.Fields[0].AsString);
 
 end;
 
@@ -515,6 +518,28 @@ begin
 + ' FROM tmasterstok '
 + ' WHERE mst_brg_kode='+Quot(asku)
 + ' AND mst_noreferensi LIKE "MTC%" AND mst_tanggal BETWEEN DATE_ADD(CURDATE(), INTERVAL -90 DAY) AND CURDATE()' ;
+
+  tsql := xOpenQuery(s,frmMenu.conn);
+  with tsql do
+  begin
+    try
+      Result := Fields[0].AsFloat;
+    finally
+      free;
+    end;
+  end;
+end;
+
+function Tfrmpo.getpopending(asku:string): Double;
+var
+  s: string;
+  tsql: TmyQuery;
+begin
+  Result := 0;
+
+  S:= 'select sum(pod_qty-pod_qty_terima) popending from popending '
+      + ' WHERE pod_brg_kode='+Quot(asku)
+      + ' group by pod_brg_kode';
 
   tsql := xOpenQuery(s,frmMenu.conn);
   with tsql do
@@ -809,7 +834,7 @@ begin
                       CDS.FieldByName('keterangan').AsString  := fieldbyname('pod_keterangan').AsString;
                       CDS.FieldByName('STOK').asfloat := getstok(CDS.FieldByName('SKU').AsString);
                       CDS.FieldByName('avgsales').asfloat := getavgsales(CDS.FieldByName('SKU').AsString);
-
+                      CDS.FieldByName('POPending').asfloat := getpopending(CDS.FieldByName('SKU').AsString);
                       CDS.Post;
                    i:=i+1;
                    next;

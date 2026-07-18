@@ -970,6 +970,16 @@ object frmPO: TfrmPO
           Styles.Content = cxStyle2
           Width = 115
         end
+        object clSisaPO: TcxGridDBColumn
+          Caption = 'PO Pending'
+          DataBinding.FieldName = 'POPending'
+          PropertiesClassName = 'TcxCurrencyEditProperties'
+          Properties.DisplayFormat = ',0.;(,0.)'
+          HeaderAlignmentHorz = taCenter
+          HeaderGlyphAlignmentHorz = taCenter
+          Options.Editing = False
+          Width = 90
+        end
         object cxGrdMainColumn2: TcxGridDBColumn
           Caption = 'Stok Cabang'
           DataBinding.FieldName = 'stokcabang'
@@ -1186,7 +1196,7 @@ object frmPO: TfrmPO
       OleDropSource = False
       Signed = False
       TabOrder = 1
-      Text = '0.00'
+      Text = '0,00'
       Transparent = False
       Visible = True
       OnExit = edtDiscprExit
@@ -1248,7 +1258,7 @@ object frmPO: TfrmPO
       ReadOnly = True
       Signed = False
       TabOrder = 3
-      Text = '0.00'
+      Text = '0,00'
       Transparent = False
       Visible = True
       OnExit = edtDiscFakturExit
@@ -1310,7 +1320,7 @@ object frmPO: TfrmPO
       ReadOnly = True
       Signed = False
       TabOrder = 4
-      Text = '0.00'
+      Text = '0,00'
       Transparent = False
       Visible = True
       OnKeyPress = FormKeyPress
@@ -1377,7 +1387,7 @@ object frmPO: TfrmPO
       ReadOnly = True
       Signed = False
       TabOrder = 5
-      Text = '0.00'
+      Text = '0,00'
       Transparent = False
       Visible = True
       OnKeyPress = FormKeyPress
@@ -1437,7 +1447,7 @@ object frmPO: TfrmPO
       OleDropSource = False
       Signed = False
       TabOrder = 2
-      Text = '0.00'
+      Text = '0,00'
       Transparent = False
       Visible = True
       OnExit = edtDiscFakturExit

@@ -51,6 +51,7 @@ type
     cxGrdMainColumn12: TcxGridDBColumn;
     PopupMenu1: TPopupMenu;
     LihatDetailStokdanTOR1: TMenuItem;
+    clSubDepartemen: TcxGridDBColumn;
   procedure btnRefreshClick(Sender: TObject);
   function GetCDS: TClientDataSet;
   procedure FormShow(Sender: TObject);
@@ -114,7 +115,7 @@ begin
 //    cxGrdMaster.Columns[13].Width :=70;
 //    cxGrdMaster.Columns[14].Width :=70;
 //    cxGrdMaster.Columns[15].Width :=70;
-    s:= 'select distinct x.Kode,Nama,Kode_supplier,Supplier,'
+    s:= 'select distinct x.Kode,Nama,SubDepartemen,Kode_supplier,Supplier,'
 + ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode and cabang="01") Solo,'
 + ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode and cabang="02") Jogja,'
 + ' (select sum(qty) from permintaanbarang where tanggal>='+quotd(startdate.date)+' and kode=x.kode and cabang="03") Madiun,'
@@ -148,6 +149,7 @@ begin
 //                      CDS.FieldByName('no').AsInteger                  := i;
                       CDS.FieldByName('kode').AsInteger                  := fieldbyname('kode').AsInteger;
                       CDS.FieldByName('nama').AsString                   := fieldbyname('nama').AsString;
+                      CDS.FieldByName('SubDepartemen').AsString          := fieldbyname('SubDepartemen').AsString;
                       CDS.FieldByName('kode_supplier').AsString          := fieldbyname('kode_supplier').Asstring;
                       CDS.FieldByName('supplier').AsString               := fieldbyname('supplier').Asstring;
 
@@ -189,6 +191,7 @@ begin
     zAddField(FCDS, 'No', ftInteger, False);
     zAddField(FCDS, 'Kode', ftInteger, False);
     zAddField(FCDS, 'nama', ftstring, False,200);
+    zAddField(FCDS, 'SubDepartemen', ftstring, False,200);
     zAddField(FCDS, 'Kode_Supplier', ftstring, False,20);
     zAddField(FCDS, 'Supplier', ftstring, False,200);
     zAddField(FCDS, 'Solo', ftFloat, False);

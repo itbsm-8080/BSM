@@ -174,6 +174,12 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
           Options.Editing = False
           Width = 210
         end
+        object clSubDepartemen: TcxGridDBColumn
+          Caption = 'Sub Departemen'
+          DataBinding.FieldName = 'SubDepartemen'
+          Options.Editing = False
+          Width = 180
+        end
         object clSatuan: TcxGridDBColumn
           Caption = 'Kode_Supplier'
           DataBinding.FieldName = 'kode_supplier'

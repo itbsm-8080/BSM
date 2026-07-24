@@ -436,7 +436,7 @@ begin
   begin
      if SaveDialog1.Execute then
      begin
-       ExportGridToExcel(SaveDialog1.FileName, cxGrid1);
+          ExportGridToExcel(SaveDialog1.FileName, cxGrid1);
      end;
  end;
 

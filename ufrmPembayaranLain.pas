@@ -13,7 +13,8 @@ uses
   dxSkinscxPCPainter, cxCustomData, cxFilter, cxData, cxDataStorage,
   cxDBData, cxSpinEdit, cxCalendar, Menus, cxButtons, cxGridLevel,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxClasses,
-  cxGridCustomView, cxGrid, cxButtonEdit, AdvEdBtn, cxRadioGroup, MyAccess;
+  cxGridCustomView, cxGrid, cxButtonEdit, AdvEdBtn, cxRadioGroup, MyAccess,
+  cxCurrencyEdit, dxCntner, dxEditor, dxExEdtr, dxEdLib;
 
 type
   TfrmPembayaranLain = class(TForm)
@@ -46,13 +47,13 @@ type
     PopupMenu1: TPopupMenu;
     HapusRecord1: TMenuItem;
     Label5: TLabel;
-    edtNilai: TAdvEdit;
     edtAccount: TAdvEditBtn;
     edtNamaAccount: TAdvEdit;
     rbKas: TcxRadioButton;
     rbBank: TcxRadioButton;
     clSupplier: TcxGridDBColumn;
     clNik: TcxGridDBColumn;
+    edtNilai: TdxCurrencyEdit;
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
@@ -219,7 +220,7 @@ begin
   CDS.First;
   while not CDS.Eof do
   begin
-   if (CDS.FieldByName('nilai').AsFloat >  0) and (CDS.FieldByName('account').AsString <> '') then
+   if (CDS.FieldByName('nilai').AsFloat <>  0) and (CDS.FieldByName('account').AsString <> '') then
    begin
         s:='insert into tjurnalitem '
           + ' (jurd_jur_no,jurd_rek_kode,jurd_kredit,jurd_debet,jurd_cc_kode,jurd_keterangan,jurd_nourut,jurd_cus_kode,jurd_kar_nik) values ( '
@@ -603,7 +604,7 @@ begin
   While not CDS.Eof do
   begin
 
-    If CDS.FieldByName('nilai').asfloat > 0 then
+    If CDS.FieldByName('nilai').asfloat <> 0 then
     begin
       atotal :=atotal + CDS.FieldByName('nilai').asfloat;
     end;

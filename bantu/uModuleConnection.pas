@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, StrUtils, Classes, DBXpress, FMTBcd, DB, SqlExpr, DBClient,
-  cxGrid,cxGridDBTableView, cxTreeView,  Math, cxGridExportLink, cxExportPivotGridLink,
+  cxGrid,cxGridDBTableView, cxTreeView,  Math, cxGridExportLink, cxExportPivotGridLink,cxExport,
   cxGridDBBandedTableView, cxDBPivotGrid, cxCurrencyEdit, cxCustomPivotGrid,
   cxGridBandedTableView, cxDBExtLookupComboBox, cxCustomData,
   cxGridCustomTableView, cxDBTL, cxTLExportLink, Dialogs, MyAccess;
@@ -508,7 +508,8 @@ begin
   If DoSave then
   begin
     Try
-      cxExportPivotGridToExcel(sFileName, Self, ExpandAll);
+      cxExportPivotGridToText(sFileName, Self, true);
+//      cxExportPivotGridToFile(sFileName, cxDBPivotGrid1, cxExportToText, True);
       If DoShowInfo then ShowMessage('Data berhasil diexport ke: ' + sFileName);
     except
       If DoShowInfo then ShowMessage('Gagal menyimpan data ke excel');

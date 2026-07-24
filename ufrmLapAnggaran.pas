@@ -135,6 +135,15 @@ begin
   end;
     akhir := EndOfTheMonth(StrToDate(IntToStr(cbbBulan.itemindex+1)+'/01/'+edttahun.Text));
     awal  :=StrToDate(IntToStr(cbbBulan.itemindex+1)+'/01/'+edttahun.Text);
+  ssql := 'set @tg1='+quotd(awal);
+
+  EnsureConnected(frmMenu.conn);
+  ExecSQLDirect(frmMenu.conn, ssql);
+
+  ssql := 'set @tg2='+quotd(akhir);
+
+  EnsureConnected(frmMenu.conn);
+  ExecSQLDirect(frmMenu.conn, ssql);
 
   ssql := 'delete from tampunganggaran ';
   // xExecQuery(ssql,frmMenu.conn);
@@ -184,7 +193,7 @@ begin
               +  ' SELECT SUM(IFNULL(bayar_cash,0)+ IFNULL(bayar_transfer,0)+ IFNULL(giro,0)+ IFNULL(potongan,0)+ IFNULL(pph,0)+ IFNULL(ppn,0))'
               +  ' FROM '+fields[1].AsString+'.pembayaran '
               +  ' WHERE MONTH(tanggal)='+IntToStr(cbbBulan.itemindex+1)+' AND YEAR(tanggal)='+edttahun.text+' AND salesman=a.salesman) inkaso'
-              +  ' FROM '+fields[1].AsString+'.penjualan a'
+              +  ' FROM '+fields[1].AsString+'.penjualan2 a'
               +  ' INNER JOIN '+fields[1].AsString+'.tfp_hdr ON fp_nomor=nomor ' // and fp_nomor like '+ Quot(Fields[2].AsString+'%')
               +  ' WHERE tanggal < '+ quotd(awal)+ ' AND fp_jthtempo <= '+quotd(akhir)
               +  ' GROUP BY salesman) a WHERE Salesman <> "SLS-999"';
@@ -224,7 +233,7 @@ begin
               + ' SELECT SUM(IFNULL(bayar_cash,0)+ IFNULL(bayar_transfer,0)+ IFNULL(giro,0)+ IFNULL(potongan,0)+ IFNULL(pph,0)+ IFNULL(ppn,0))'
               + ' FROM '+fields[1].AsString+'.pembayaran'
               + ' WHERE MONTH(tanggal)='+IntToStr(cbbBulan.itemindex+1)+' AND YEAR(tanggal)= '+edttahun.text+' AND customer=a.customer) inkaso'
-              + ' FROM '+fields[1].AsString+'.penjualan a'
+              + ' FROM '+fields[1].AsString+'.penjualan2 a'
               + ' INNER JOIN '+fields[1].AsString+'.tfp_hdr ON fp_nomor=nomor '
               + ' WHERE tanggal < '+quotd(awal)+' AND fp_jthtempo <= '+quotd(akhir)
               + ' AND a.salesman <> "SLS-999" '
@@ -239,7 +248,7 @@ begin
               + ' FROM '+fields[1].AsString+'.pembayaran'
               + ' WHERE MONTH(tanggal)='+IntToStr(cbbBulan.itemindex+1)+' AND YEAR(tanggal)= '+edttahun.text+' AND customer=a.cus_kode) inkaso,0 STATUS'
               + ' from '+fields[1].AsString+'.tcustomer a'
-              + ' where cus_kode not in (select distinct customer from '+fields[1].AsString+'.penjualan'
+              + ' where cus_kode not in (select distinct customer from '+fields[1].AsString+'.penjualan2'
               + ' WHERE tanggal < '+quotd(awal)+' ) ) A WHERE IFNULL(INKASO ,0) > 0';
              // xExecQuery(s,frmMenu.conn);
             EnsureConnected(frmMenu.conn);

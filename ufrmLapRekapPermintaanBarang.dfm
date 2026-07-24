@@ -1,16 +1,16 @@
 inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
-  Left = 65
+  Left = 66
   Top = 88
   Caption = 'Laporan Rekap Permintaan Barang'
   ClientHeight = 599
-  ClientWidth = 1386
+  ClientWidth = 1460
   OldCreateOrder = True
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   inherited AdvPanel1: TAdvPanel
     Top = 563
-    Width = 1386
+    Width = 1460
     FullHeight = 0
     inherited cxButton1: TcxButton
       Visible = False
@@ -28,7 +28,7 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
       Visible = False
     end
     inherited cxButton8: TcxButton
-      Left = 1297
+      Left = 1371
     end
     object cxButton5: TcxButton
       Left = 538
@@ -79,7 +79,7 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
     end
   end
   inherited AdvPanel2: TAdvPanel
-    Width = 1386
+    Width = 1460
     FullHeight = 0
     inherited Label1: TLabel
       Width = 71
@@ -90,7 +90,7 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
       Visible = False
     end
     inherited btnRefresh: TcxButton
-      Left = 1297
+      Left = 1371
     end
     inherited startdate: TDateTimePicker
       Date = 46082.468570856480000000
@@ -103,245 +103,414 @@ inherited frmLapRekapPermintaanBarang: TfrmLapRekapPermintaanBarang
     end
   end
   inherited AdvPanel3: TAdvPanel
-    Width = 1386
+    Width = 1460
     Height = 530
     FullHeight = 0
     inherited cxGrid: TcxGrid
-      Width = 1382
+      Width = 1456
       Height = 526
     end
-    object cxGrid1: TcxGrid
+    object cxGrid2: TcxGrid
       Left = 2
       Top = 2
-      Width = 1382
+      Width = 1456
       Height = 526
       Align = alClient
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
       TabOrder = 1
-      LookAndFeel.Kind = lfUltraFlat
-      LookAndFeel.NativeStyle = False
-      object cxGrdMain: TcxGridDBTableView
-        PopupMenu = PopupMenu1
+      object cxGrid1DBBandedTableView1: TcxGridDBBandedTableView
         NavigatorButtons.ConfirmDelete = False
-        DataController.Filter.Options = [fcoCaseInsensitive]
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <
+        DataController.Summary.DefaultGroupSummaryItems = <
           item
+            Format = ',0;(,0)'
+            Kind = skSum
+            Position = spFooter
           end
           item
             Format = ',0;(,0)'
             Kind = skSum
+            Position = spFooter
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Kind = skCount
+            Position = spFooter
+          end
+          item
+            Format = ',0.00;(,0.00)'
+            Kind = skCount
+            Position = spFooter
+          end
+          item
+            Format = ',0.00;(,0.00)'
+            Kind = skCount
+            Position = spFooter
+          end
+          item
+            Format = ',0.00;(,0.00)'
+            Kind = skCount
+            Position = spFooter
+          end
+          item
+            Format = ',0.00;(,0.00)'
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Format = ',0.00;(,0.00)'
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Kind = skSum
+            Position = spFooter
+          end
+          item
+            Kind = skSum
+            Position = spFooter
           end>
-        DataController.Summary.SummaryGroups = <>
-        FilterRow.ApplyChanges = fracImmediately
-        OptionsBehavior.GoToNextCellOnEnter = True
-        OptionsBehavior.FocusCellOnCycle = True
-        OptionsCustomize.ColumnHiding = True
-        OptionsData.Appending = True
-        OptionsData.CancelOnExit = False
-        OptionsData.Deleting = False
-        OptionsData.DeletingConfirmation = False
+        DataController.Summary.FooterSummaryItems = <
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+          end
+          item
+            Format = ',0;(,0)'
+            Kind = skSum
+          end
+          item
+          end
+          item
+          end
+          item
+          end
+          item
+          end
+          item
+          end
+          item
+          end
+          item
+          end
+          item
+          end>
+        DataController.Summary.SummaryGroups = <
+          item
+            Links = <
+              item
+              end>
+            SummaryItems = <>
+          end>
         OptionsView.Footer = True
-        OptionsView.GroupByBox = False
-        OptionsView.HeaderHeight = 23
-        object clNo: TcxGridDBColumn
-          DataBinding.FieldName = 'No'
-          PropertiesClassName = 'TcxSpinEditProperties'
-          Visible = False
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
-          Width = 36
+        OptionsView.FooterMultiSummaries = True
+        OptionsView.GroupFooters = gfVisibleWhenExpanded
+        Styles.ContentOdd = cxStyle1
+        Bands = <
+          item
+            Caption = 'Kode'
+            FixedKind = fkLeft
+            Width = 102
+          end
+          item
+            Caption = 'Nama Barang'
+            FixedKind = fkLeft
+            Width = 214
+          end
+          item
+            Caption = 'Sub Departemen'
+            FixedKind = fkLeft
+            Width = 176
+          end
+          item
+            Caption = 'Kode Supplier'
+            Width = 105
+          end
+          item
+            Caption = 'Nama Supplier'
+            Width = 151
+          end
+          item
+            Caption = 'Solo'
+          end
+          item
+            Caption = 'Jogja'
+          end
+          item
+            Caption = 'Madiun'
+          end
+          item
+            Caption = 'Purwokerto'
+          end
+          item
+            Caption = 'Semarang'
+          end
+          item
+            Caption = 'Surabaya'
+          end
+          item
+            Caption = 'Cirebon'
+          end
+          item
+            Caption = 'Lab'
+          end
+          item
+            Caption = 'Jakarta'
+          end
+          item
+            Caption = 'Total'
+          end
+          item
+            Caption = 'Stok'
+          end
+          item
+            Caption = 'Sisa'
+          end
+          item
+            Caption = 'Order'
+          end
+          item
+            Caption = 'Stok Cabang'
+          end
+          item
+            Caption = 'PO Pending'
+          end>
+        object cxGrid1DBBandedTableView1Column1: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'Kode'
+          Position.BandIndex = 0
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object clSKU: TcxGridDBColumn
-          Caption = 'Kode'
-          DataBinding.FieldName = 'kode'
-          PropertiesClassName = 'TcxTextEditProperties'
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
-          Width = 95
-        end
-        object clNamaBarang: TcxGridDBColumn
-          Caption = 'Nama Barang'
+        object cxGrid1DBBandedTableView1Column2: TcxGridDBBandedColumn
           DataBinding.FieldName = 'nama'
-          PropertiesClassName = 'TcxTextEditProperties'
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
-          Width = 210
+          Position.BandIndex = 1
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object clSubDepartemen: TcxGridDBColumn
-          Caption = 'Sub Departemen'
+        object cxGrid1DBBandedTableView1Column3: TcxGridDBBandedColumn
           DataBinding.FieldName = 'SubDepartemen'
-          Options.Editing = False
-          Width = 180
+          Position.BandIndex = 2
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object clSatuan: TcxGridDBColumn
-          Caption = 'Kode_Supplier'
-          DataBinding.FieldName = 'kode_supplier'
-          PropertiesClassName = 'TcxTextEditProperties'
-          Properties.ReadOnly = True
-          GroupSummaryAlignment = taCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
-          Width = 88
+        object cxGrid1DBBandedTableView1Column4: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'Kode_Supplier'
+          Position.BandIndex = 3
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object clStok: TcxGridDBColumn
-          Caption = 'Nama Supplier'
+        object cxGrid1DBBandedTableView1Column5: TcxGridDBBandedColumn
           DataBinding.FieldName = 'Supplier'
-          PropertiesClassName = 'TcxSpinEditProperties'
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
-          Width = 145
+          Position.BandIndex = 4
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object clminstok: TcxGridDBColumn
+        object cxGrid1DBBandedTableView1Column6: TcxGridDBBandedColumn
           DataBinding.FieldName = 'Solo'
-          PropertiesClassName = 'TcxSpinEditProperties'
-          GroupSummaryAlignment = taCenter
-          HeaderAlignmentHorz = taCenter
-          Options.Editing = False
+          Position.BandIndex = 5
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object clharga: TcxGridDBColumn
-          Caption = 'Jogja'
-          DataBinding.FieldName = 'jogja'
-          GroupSummaryAlignment = taCenter
-          HeaderAlignmentHorz = taCenter
-          Options.Editing = False
-          Width = 85
+        object cxGrid1DBBandedTableView1Column7: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'Jogja'
+          Position.BandIndex = 6
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object clQtyPO: TcxGridDBColumn
-          Caption = 'Madiun'
-          DataBinding.FieldName = 'madiun'
-          PropertiesClassName = 'TcxButtonEditProperties'
-          Properties.Buttons = <
-            item
-              Default = True
-              Kind = bkEllipsis
-            end>
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
-          Width = 85
+        object cxGrid1DBBandedTableView1Column8: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'Madiun'
+          Position.BandIndex = 7
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object cxGrdMainColumn1: TcxGridDBColumn
+        object cxGrid1DBBandedTableView1Column9: TcxGridDBBandedColumn
           DataBinding.FieldName = 'Purwokerto'
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          HeaderGlyphAlignmentHorz = taCenter
-          Options.Editing = False
-          Width = 66
+          Position.BandIndex = 8
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object cxGrdMainColumn3: TcxGridDBColumn
+        object cxGrid1DBBandedTableView1Column10: TcxGridDBBandedColumn
           DataBinding.FieldName = 'Semarang'
-          GroupSummaryAlignment = taCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
+          Position.BandIndex = 9
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object cxGrdMainColumn4: TcxGridDBColumn
+        object cxGrid1DBBandedTableView1Column11: TcxGridDBBandedColumn
           DataBinding.FieldName = 'Surabaya'
-          GroupSummaryAlignment = taCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
+          Position.BandIndex = 10
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object cxGrdMainColumn5: TcxGridDBColumn
+        object cxGrid1DBBandedTableView1Column12: TcxGridDBBandedColumn
           DataBinding.FieldName = 'Cirebon'
-          GroupSummaryAlignment = taCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
+          Position.BandIndex = 11
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object cxGrdMainColumn6: TcxGridDBColumn
-          Caption = 'Lab'
-          DataBinding.FieldName = 'lab'
-          GroupSummaryAlignment = taCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
+        object cxGrid1DBBandedTableView1Column13: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'Lab'
+          Position.BandIndex = 12
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object cxGrdMainColumn7: TcxGridDBColumn
+        object cxGrid1DBBandedTableView1Column14: TcxGridDBBandedColumn
           DataBinding.FieldName = 'Jakarta'
-          GroupSummaryAlignment = taCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
+          Position.BandIndex = 13
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object cxGrdMainColumn8: TcxGridDBColumn
-          Caption = 'Total'
-          DataBinding.FieldName = 'total'
-          GroupSummaryAlignment = taCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
+        object cxGrid1DBBandedTableView1Column15: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'Total'
+          Position.BandIndex = 14
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object cxGrdMainColumn9: TcxGridDBColumn
+        object cxGrid1DBBandedTableView1Column16: TcxGridDBBandedColumn
           DataBinding.FieldName = 'Stok'
-          GroupSummaryAlignment = taCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
+          Position.BandIndex = 15
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object cxGrdMainColumn10: TcxGridDBColumn
-          Caption = 'Sisa'
-          DataBinding.FieldName = 'sisa'
-          GroupSummaryAlignment = taCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
+        object cxGrid1DBBandedTableView1Column17: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'Sisa'
+          Position.BandIndex = 16
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object cxGrdMainColumn11: TcxGridDBColumn
-          Caption = 'Order'
-          DataBinding.FieldName = 'order'
-          GroupSummaryAlignment = taCenter
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Styles.Content = cxStyle1
+        object cxGrid1DBBandedTableView1Column18: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'Order'
+          Position.BandIndex = 17
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object cxGrdMainColumn2: TcxGridDBColumn
-          Caption = 'Stok Cabang'
-          DataBinding.FieldName = 'stokcabang'
-          PropertiesClassName = 'TcxCurrencyEditProperties'
-          Properties.DisplayFormat = ',0.;(,0.)'
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
-          Options.Focusing = False
-          Width = 102
+        object cxGrid1DBBandedTableView1Column19: TcxGridDBBandedColumn
+          DataBinding.FieldName = 'Stokcabang'
+          Position.BandIndex = 18
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
-        object cxGrdMainColumn12: TcxGridDBColumn
-          Caption = 'PO Pending'
+        object cxGrid1DBBandedTableView1Column20: TcxGridDBBandedColumn
           DataBinding.FieldName = 'popending'
-          PropertiesClassName = 'TcxCurrencyEditProperties'
-          Properties.DisplayFormat = ',0.;(,0.)'
-          HeaderAlignmentHorz = taCenter
-          HeaderAlignmentVert = vaCenter
-          Options.Editing = False
+          Position.BandIndex = 19
+          Position.ColIndex = 0
+          Position.RowIndex = 0
+          IsCaptionAssigned = True
         end
       end
-      object cxGridDBTableView1: TcxGridDBTableView
-        NavigatorButtons.ConfirmDelete = False
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
-        DataController.Summary.SummaryGroups = <>
-        OptionsData.CancelOnExit = False
-        OptionsData.Deleting = False
-        OptionsData.DeletingConfirmation = False
-        OptionsData.Editing = False
-        OptionsData.Inserting = False
-        OptionsView.GroupByBox = False
-      end
-      object cxGridLevel1: TcxGridLevel
-        Caption = 'Master Data'
-        GridView = cxGrdMain
+      object cxGrid1Level1: TcxGridLevel
+        GridView = cxGrid1DBBandedTableView1
       end
     end
+  end
+  inherited ldsp: TDataSetProvider
+    Left = 144
+    Top = 256
   end
   object cxStyleRepository1: TcxStyleRepository
     PixelsPerInch = 96

@@ -18,40 +18,39 @@ uses
   ComCtrls, StdCtrls, cxGridLevel, cxClasses, cxControls, cxGridCustomView,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
   cxButtons, ExtCtrls, AdvPanel, DBClient, cxLookAndFeels, cxSpinEdit,
-  cxTextEdit, cxButtonEdit, MyAccess, cxCurrencyEdit;
+  cxTextEdit, cxButtonEdit, MyAccess, cxCurrencyEdit,
+  cxGridBandedTableView, cxGridDBBandedTableView;
 
 type
   TfrmLapRekapPermintaanBarang = class(TfrmCxBrowse)
-    cxGrid1: TcxGrid;
-    cxGrdMain: TcxGridDBTableView;
-    clNo: TcxGridDBColumn;
-    clSKU: TcxGridDBColumn;
-    clNamaBarang: TcxGridDBColumn;
-    clSatuan: TcxGridDBColumn;
-    clStok: TcxGridDBColumn;
-    clminstok: TcxGridDBColumn;
-    clharga: TcxGridDBColumn;
-    clQtyPO: TcxGridDBColumn;
-    cxGridDBTableView1: TcxGridDBTableView;
-    cxGridLevel1: TcxGridLevel;
-    cxGrdMainColumn1: TcxGridDBColumn;
-    cxGrdMainColumn3: TcxGridDBColumn;
-    cxGrdMainColumn4: TcxGridDBColumn;
-    cxGrdMainColumn5: TcxGridDBColumn;
-    cxGrdMainColumn6: TcxGridDBColumn;
-    cxGrdMainColumn7: TcxGridDBColumn;
-    cxGrdMainColumn8: TcxGridDBColumn;
-    cxGrdMainColumn9: TcxGridDBColumn;
-    cxGrdMainColumn10: TcxGridDBColumn;
-    cxGrdMainColumn11: TcxGridDBColumn;
     cxStyleRepository1: TcxStyleRepository;
     cxStyle1: TcxStyle;
     cxButton5: TcxButton;
-    cxGrdMainColumn2: TcxGridDBColumn;
-    cxGrdMainColumn12: TcxGridDBColumn;
     PopupMenu1: TPopupMenu;
     LihatDetailStokdanTOR1: TMenuItem;
-    clSubDepartemen: TcxGridDBColumn;
+    cxGrid2: TcxGrid;
+    cxGrid1DBBandedTableView1: TcxGridDBBandedTableView;
+    cxGrid1Level1: TcxGridLevel;
+    cxGrid1DBBandedTableView1Column1: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column2: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column3: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column4: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column5: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column6: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column7: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column8: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column9: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column10: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column11: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column12: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column13: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column14: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column15: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column16: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column17: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column18: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column19: TcxGridDBBandedColumn;
+    cxGrid1DBBandedTableView1Column20: TcxGridDBBandedColumn;
   procedure btnRefreshClick(Sender: TObject);
   function GetCDS: TClientDataSet;
   procedure FormShow(Sender: TObject);
@@ -188,7 +187,7 @@ begin
   If not Assigned(FCDS) then
   begin
     FCDS := TClientDataSet.Create(Self);
-    zAddField(FCDS, 'No', ftInteger, False);
+//    zAddField(FCDS, 'No', ftInteger, False);
     zAddField(FCDS, 'Kode', ftInteger, False);
     zAddField(FCDS, 'nama', ftstring, False,200);
     zAddField(FCDS, 'SubDepartemen', ftstring, False,200);
@@ -206,7 +205,7 @@ begin
     zAddField(FCDS, 'Total', ftFloat, False);
     zAddField(FCDS, 'Stok', ftFloat, False);
     zAddField(FCDS, 'Stokcabang', ftFloat, False);
-    zAddField(FCDS, 'popending', ftFloat, False);    
+    zAddField(FCDS, 'popending', ftFloat, False);
     zAddField(FCDS, 'Sisa', ftFloat, False);
     zAddField(FCDS, 'order', ftFloat, False);
 
@@ -233,7 +232,8 @@ end;
 procedure TfrmLapRekapPermintaanBarang.FormCreate(Sender: TObject);
 begin
   inherited;
-  TcxDBGridHelper(cxGrdMain).LoadFromCDS(CDS, False, False);
+//  TcxDBGridHelper(cxGrdMain).LoadFromCDS(CDS, False, False);
+  TcxDBGridHelper(cxGrid1DBBandedTableView1).LoadFromCDS(CDS, False, False);
 end;
 
 procedure TfrmLapRekapPermintaanBarang.cxButton5Click(Sender: TObject);
@@ -273,7 +273,7 @@ ExecSQLDirect(frmMenu.conn, s);
     s:= ' delete from Tpo_DTL '
       + ' where  pod_po_nomor =' + quot(anomor);
    tt.Append(s);
-      CDS.Filter := cxGrdMain.DataController.Filter.FilterText;
+      CDS.Filter := cxGrid1DBBandedTableView1.DataController.Filter.FilterText;
       CDS.Filtered := True;
 
    CDS.First;
@@ -346,9 +346,9 @@ end;
 procedure TfrmLapRekapPermintaanBarang.cxButton7Click(Sender: TObject);
 begin
   if SaveDlg.Execute then
-    ExportGridToExcel(SaveDlg.FileName, cxGrid1,True,True,True);
+    ExportGridToExcel(SaveDlg.FileName, cxGrid2,True,True,True);
 
-  cxGrdMain.DataController.CollapseDetails;
+  cxGrid1DBBandedTableView1.DataController.CollapseDetails;
 
 end;
 

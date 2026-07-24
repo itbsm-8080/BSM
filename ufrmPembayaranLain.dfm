@@ -1,6 +1,6 @@
 object frmPembayaranLain: TfrmPembayaranLain
-  Left = 0
-  Top = 73
+  Left = 114
+  Top = 253
   Width = 1024
   Height = 560
   Caption = 'Pembayaran Lain lain'
@@ -239,7 +239,7 @@ object frmPembayaranLain: TfrmPembayaranLain
       Date = 41548.641773425920000000
       Format = 'dd/MM/yyyy'
       Time = 41548.641773425920000000
-      TabOrder = 4
+      TabOrder = 3
       OnKeyPress = FormKeyPress
     end
     object edtKeterangan: TAdvEdit
@@ -357,67 +357,7 @@ object frmPembayaranLain: TfrmPembayaranLain
       OleDropSource = False
       ReadOnly = True
       Signed = False
-      TabOrder = 3
-      Transparent = False
-      Visible = True
-      OnKeyPress = FormKeyPress
-    end
-    object edtNilai: TAdvEdit
-      Left = 121
-      Top = 52
-      Width = 144
-      Height = 21
-      AutoFocus = False
-      EditAlign = eaRight
-      EditType = etMoney
-      ErrorMarkerPos = 0
-      ErrorMarkerLen = 0
-      ErrorColor = clRed
-      ErrorFontColor = clWhite
-      ExcelStyleDecimalSeparator = False
-      Flat = False
-      FlatLineColor = clBlack
-      FlatParentColor = True
-      FocusAlign = eaDefault
-      FocusBorder = False
-      FocusColor = clWindow
-      FocusFontColor = clWindowText
-      FocusLabel = False
-      FocusWidthInc = 0
-      ModifiedColor = clHighlight
-      DisabledColor = clSilver
-      URLColor = clBlue
-      ReturnIsTab = False
-      LengthLimit = 0
-      TabOnFullLength = False
-      Precision = 2
-      LabelPosition = lpLeftTop
-      LabelMargin = 4
-      LabelTransparent = False
-      LabelAlwaysEnabled = False
-      LabelFont.Charset = DEFAULT_CHARSET
-      LabelFont.Color = clWindowText
-      LabelFont.Height = -11
-      LabelFont.Name = 'MS Sans Serif'
-      LabelFont.Style = []
-      Lookup.CaseSensitive = False
-      Lookup.Color = clWindow
-      Lookup.DisplayCount = 4
-      Lookup.Enabled = False
-      Lookup.History = False
-      Lookup.NumChars = 2
-      Lookup.Multi = False
-      Lookup.Separator = ';'
-      Persistence.Enable = False
-      Persistence.Location = plInifile
-      Color = clWindow
-      Enabled = True
-      HintShowLargeText = False
-      OleDropTarget = False
-      OleDropSource = False
-      Signed = False
       TabOrder = 2
-      Text = '0.00'
       Transparent = False
       Visible = True
       OnKeyPress = FormKeyPress
@@ -539,7 +479,7 @@ object frmPembayaranLain: TfrmPembayaranLain
       OleDropSource = False
       ReadOnly = True
       Signed = False
-      TabOrder = 5
+      TabOrder = 4
       Transparent = False
       Visible = True
       OnKeyPress = FormKeyPress
@@ -551,7 +491,7 @@ object frmPembayaranLain: TfrmPembayaranLain
       Height = 17
       Caption = 'Kas'
       Checked = True
-      TabOrder = 6
+      TabOrder = 5
       TabStop = True
       OnClick = rbKasClick
     end
@@ -561,8 +501,17 @@ object frmPembayaranLain: TfrmPembayaranLain
       Width = 113
       Height = 17
       Caption = 'Bank'
-      TabOrder = 7
+      TabOrder = 6
       OnClick = rbBankClick
+    end
+    object edtNilai: TdxCurrencyEdit
+      Left = 120
+      Top = 56
+      Width = 169
+      TabOrder = 7
+      Alignment = taRightJustify
+      DisplayFormat = ',0.00;-,0.00'
+      StoredValues = 1
     end
   end
   object AdvPanel3: TAdvPanel
@@ -707,8 +656,7 @@ object frmPembayaranLain: TfrmPembayaranLain
         end
         object clNilai: TcxGridDBColumn
           DataBinding.FieldName = 'Nilai'
-          PropertiesClassName = 'TcxSpinEditProperties'
-          Properties.OnEditValueChanged = clQTYPropertiesEditValueChanged
+          PropertiesClassName = 'TcxCurrencyEditProperties'
           HeaderAlignmentHorz = taCenter
           HeaderAlignmentVert = vaCenter
           Width = 127

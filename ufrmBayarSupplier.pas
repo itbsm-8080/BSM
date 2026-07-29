@@ -672,12 +672,8 @@ var
   tsql : TmyQuery;
   a,i:Integer;
 begin
-  if VarToStr(cxLookupRekening.EditValue) <> '15.003' then
+  if VarToStr(cxLookupRekening.EditValue) = '15.003' then
   begin
-    edtSaldo.Text := '0';
-    Exit;
-  end;   
-
   s := ' SELECT IFNULL(SUM(jurd_debet - jurd_kredit), 0) saldo '
     + ' FROM tjurnalitem '
     + ' WHERE jurd_rek_kode = ' + Quot(cxLookupRekening.EditValue)
@@ -696,6 +692,11 @@ begin
    finally
      tsql.Free;
    end;
+  end
+  else
+  begin
+    edtSaldo.Text := '0';
+  end;
 
   loaddataInvoice(cxLookupSupplier.EditValue);
   edtAlamat.Text := CDSsupplier.Fields[2].AsString;

@@ -472,7 +472,7 @@ begin
       Exit;
     end;
 
-    if (VarToStr(cxLookupRekening.EditValue) = '15.003') and (StrToInt(edtNilai.Text) > StrToInt(edtSaldo.Text)) then
+    if (VarToStr(cxLookupRekening.EditValue) = '15.003') and (StrToFloat(StringReplace(edtNilai.Text,',','',[rfReplaceAll])) > StrToFloat(StringReplace(edtSaldo.Text,',','',[rfReplaceAll]))) then
     begin
       ShowMessage('Nilai kurang dari saldo');
       result:=false;

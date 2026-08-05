@@ -80,6 +80,7 @@ type
     chkTampung: TCheckBox;
     cxButton2: TcxButton;
     sqlqry1: TMyQuery;
+    cxButton4: TcxButton;
     procedure FormDblClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
     procedure sbNewClick(Sender: TObject);
@@ -99,6 +100,7 @@ type
     procedure cxButton1Click(Sender: TObject);
     procedure edtkodeClickBtn(Sender: TObject);
     procedure cxButton2Click(Sender: TObject);
+    procedure cxButton7Click(Sender: TObject);
 
   private
     flagedit : Boolean;
@@ -128,7 +130,7 @@ var
   frmListJual: TfrmListJual;
 
 implementation
-   uses Ulib, MAIN, uModuleConnection, cxgridExportlink,uReport,
+   uses Ulib, MAIN, uModuleConnection, cxGridExportLink,uReport,cxExport,
   uFrmbantuan;
 {$R *.dfm}
 
@@ -436,7 +438,8 @@ begin
   begin
      if SaveDialog1.Execute then
      begin
-          ExportGridToExcel(SaveDialog1.FileName, cxGrid1);
+//          ExportGridToExcel(SaveDialog1.FileName, cxGrid1);
+          ExportGridToText(SaveDialog1.FileName, cxGrid1, True, True, ',', '"', '"');
      end;
  end;
 
@@ -610,6 +613,20 @@ begin
 EnsureConnected(frmMenu.conn);
 ExecSQLDirect(frmMenu.conn, s);
   ShowMessage('proses selesai');
+end;
+
+procedure TfrmListJual.cxButton7Click(Sender: TObject);
+begin
+IF PageControl1.Pages[1].Visible  then
+     TcxDBPivotHelper(cxPivot).ExportToXLS
+  else
+  begin
+     if SaveDialog1.Execute then
+     begin
+          ExportGridToExcel(SaveDialog1.FileName, cxGrid1);
+     
+     end;
+ end;
 end;
 
 end.

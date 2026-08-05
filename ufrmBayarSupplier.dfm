@@ -456,7 +456,7 @@ object frmBayarSupplier: TfrmBayarSupplier
       OleDropSource = False
       Signed = False
       TabOrder = 8
-      Text = '0,00'
+      Text = '0.00'
       Transparent = False
       Visible = True
       OnKeyPress = FormKeyPress
@@ -529,7 +529,7 @@ object frmBayarSupplier: TfrmBayarSupplier
       OleDropSource = False
       Signed = False
       TabOrder = 10
-      Text = '0,00'
+      Text = '0.00'
       Transparent = False
       Visible = True
       OnKeyPress = FormKeyPress

@@ -430,18 +430,26 @@ end;
 end;
 
 procedure TfrmListJual.TeSpeedButton1Click(Sender: TObject);
+var
+  FilePathCSV, FilePathTemp: string;
 begin
 
-  IF PageControl1.Pages[1].Visible  then
-     TcxDBPivotHelper(cxPivot).ExportToXLS
-  else
+IF PageControl1.Pages[1].Visible then
+  TcxDBPivotHelper(cxPivot).ExportToXLS
+else
+begin
+  SaveDialog1.Filter := 'File CSV (*.csv)|*.csv';
+  SaveDialog1.DefaultExt := 'csv';
+  
+  if SaveDialog1.Execute then
   begin
-     if SaveDialog1.Execute then
-     begin
-//          ExportGridToExcel(SaveDialog1.FileName, cxGrid1);
-          ExportGridToText(SaveDialog1.FileName, cxGrid1, True, True, ',', '"', '"');
-     end;
- end;
+    
+    FilePathCSV := ChangeFileExt(SaveDialog1.FileName, '.csv');
+    FilePathTemp := ChangeFileExt(FilePathCSV, '.txt');
+    ExportGridToText(FilePathTemp, cxGrid1, True, True, ',', '"', '"');
+    RenameFile(FilePathTemp, FilePathCSV)
+  end;
+end;
 
 
 end;

@@ -17,6 +17,8 @@ type
 public
      procedure ExportToXLS(ExpandAll: Boolean = True; sFileName: String = '';
          DoShowInfo: Boolean = True);
+     procedure ExportToTXT(ExpandAll: Boolean = True; sFileName: String = '';
+         DoShowInfo: Boolean = True);
      procedure LoadFromCDS(ACDS: TClientDataSet; ExpandAll: Boolean = True;
          ReCreateAllItem: Boolean = True);
      procedure SetAllUpperCaseColumn;
@@ -486,6 +488,37 @@ begin
 end;
 
 procedure TcxDBPivotHelper.ExportToXLS(ExpandAll: Boolean = True; sFileName:
+    String = ''; DoShowInfo: Boolean = True);
+var
+  DoSave: Boolean;
+  lSaveDlg: TSaveDialog;
+begin
+  DoSave := True;
+  If sFileName = '' then
+  begin
+    lSaveDlg := TSaveDialog.Create(nil);
+    Try
+      if lSaveDlg.Execute then
+        sFileName := lSaveDlg.FileName
+      else
+        DoSave := False;
+    Finally
+      lSaveDlg.Free;
+    End;
+  end;
+
+  If DoSave then
+  begin
+    Try
+      cxExportPivotGridToExcel(sFileName, Self, ExpandAll);
+      If DoShowInfo then ShowMessage('Data berhasil diexport ke: ' + sFileName);
+    except
+      If DoShowInfo then ShowMessage('Gagal menyimpan data ke excel');
+    end;
+  end;
+end;
+
+procedure TcxDBPivotHelper.ExportToTXT(ExpandAll: Boolean = True; sFileName:
     String = ''; DoShowInfo: Boolean = True);
 var
   DoSave: Boolean;

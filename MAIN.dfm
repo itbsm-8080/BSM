@@ -2235,6 +2235,10 @@ object frmMenu: TfrmMenu
         Caption = 'Lap. Margin Bulanan'
         OnClick = LapMarginBulanan1Click
       end
+      object LaporanOmsetPenjualanvsOmsetKategori1: TMenuItem
+        Caption = 'Laporan Omset Penjualan vs Omset Kategori'
+        OnClick = LaporanOmsetPenjualanvsOmsetKategori1Click
+      end
     end
   end
   object dxDockingManager1: TdxDockingManager

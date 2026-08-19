@@ -203,6 +203,7 @@ type
     tmr1: TTimer;
     DM: TMyQuery;
     LapMarginBulanan1: TMenuItem;
+    LaporanOmsetPenjualanvsOmsetKategori1: TMenuItem;
     procedure FileExit1Execute(Sender: TObject);
     function ShowForm(AFormClass: TFormClass): TForm;
     procedure Maximized1Click(Sender: TObject);
@@ -312,6 +313,7 @@ type
     procedure UpdateGroupVisibility;
     procedure tmrHeartbeatTimer(Sender: TObject);
     procedure LapMarginBulanan1Click(Sender: TObject);
+    procedure LaporanOmsetPenjualanvsOmsetKategori1Click(Sender: TObject);
   private
     { Private declarations }
     FaDatabase: string;
@@ -364,7 +366,8 @@ implementation
  ufrmBrowseSubBarangPF,ufrmBrowseSetingBarangPF,ufrmlapallpf,ufrmlapallpf2,ufrmLaplabarugi2,
  ufrmlistjual,ufrmAmbildataPenjualan,ufrmlistjualPFvsRiil,ufrmCreatePo,ufrmLapPersediaanAll,
  ufrmListPermintaanBarang,ufrmLapRekapPermintaanBarang,ufrmListFOS,ufrmBrowseKaryawanAll,
-  StrUtils,ufrmVerifikasiAbsensi,ufrmBrowseBayarRepack,ufrmBrowseBarangRealisasi,ufrmLapBulanan3;
+  StrUtils,ufrmVerifikasiAbsensi,ufrmBrowseBayarRepack,ufrmBrowseBarangRealisasi,ufrmLapBulanan3,
+  ufrmOmsetvsOmsetKategori;
 {$R *.dfm}
 
 
@@ -429,7 +432,7 @@ begin
   DateSeparator := '/';
   DecimalSeparator := '.';
   Application.UpdateFormatSettings := True;
-  zVersi := '1.0.70';
+  zVersi := '1.0.71';
   StatusBar1.Panels[4].Text := 'Versi ' + zVersi;
 
   // cek versi
@@ -1355,6 +1358,15 @@ begin
     if ActiveMDIChild.Caption <> 'Laporan Margin Bulanan' then
  begin
     ShowForm(TfrmLapBulanan3).Show;
+ end;
+end;
+
+procedure TfrmMenu.LaporanOmsetPenjualanvsOmsetKategori1Click(
+  Sender: TObject);
+begin
+ if ActiveMDIChild.Caption <> 'Laporan Omset Penjualan vs Omset Kategori' then
+ begin
+    ShowForm(TfrmOmsetvsOmsetKategori).Show;
  end;
 end;
 

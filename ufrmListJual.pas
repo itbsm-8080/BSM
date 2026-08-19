@@ -314,7 +314,7 @@ begin
     EnsureConnected(frmMenu.conn);
     ExecSQLDirect(frmMenu.conn, s);
    s:='select Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales, '
-    + ' isecer,Biayapromosi,FeeMarketing,(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) NilaiNet,JenisCustomer, GolonganCustomer ';
+    + ' isecer,Biayapromosi,FeeMarketing,(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) NilaiNet, 0 NilaiEkspedisi,JenisCustomer, GolonganCustomer ';
 
   if frmmenu.KDUSER = 'SUPER' then
     s:=s  + ' ,hpp,(Nilaiblmppn - Kontrak - Biayapromosi-Feemarketing) - hpp margin';
@@ -346,7 +346,7 @@ begin
   + ' SELECT upper(kar_cabang) Cabang,"" Nomor,date_format(tanggal,"%Y-%m-%d") Tanggal,cast(date_format(tanggal,"%m") as signed)  bulan ,'
   + ' cast(date_format(tanggal,"%Y") as signed)  Tahun,cus_nama,"" Kode,"" Nama,0 qty,0 nilai  ,0 kontrak ,"" Departemen,"" SubDepartemen,"" Kategori,"" group_produk, 0 pajak,if(kar_jabatan="Marketing",1,0) ISpf,'
   + ' if(kar_jabatan="Sales Marketing",kar_nama,"") salesman,if(kar_jabatan="Marketing",kar_nama,"") marketing,0 nilaibyHna,0 nilaiblmppn,0 isecer,"" ISn3,'
-  + ' cast(if(kar_jabatan="Marketing",1,0) as signed) kunjunganmarketing,cast(if(kar_jabatan="Sales Marketing",1,0) as signed) kunjungansales,0 biayapromosi,0 feemarketing,0 nilainet,"" JenisCustomer,"" GolonganCustomer'
+  + ' cast(if(kar_jabatan="Marketing",1,0) as signed) kunjunganmarketing,cast(if(kar_jabatan="Sales Marketing",1,0) as signed) kunjungansales,0 biayapromosi,0 feemarketing,0 nilainet, 0 NilaiEkspedisi, "" JenisCustomer,"" GolonganCustomer'
 
   + asuper2
 
@@ -354,6 +354,14 @@ begin
   + ' INNER JOIN tcabang ON kar_cabang=cbg_nama'
   + ' INNER JOIN customer y ON x.cus_kode=y.cus_kode AND cus_cabang=cbg_kode'
   + ' where tanggal between tg1() and date_add(tg2() , interval 1 day) ';
+
+    s:=s  + ' union '
+  + ' SELECT Cabang,Nomor,Tanggal,bulan ,'
+  + ' Tahun,cus_nama,Kode,Nama,qty, 0 nilai  ,kontrak ,Departemen,SubDepartemen,Kategori,group_produk, pajak,ISpf,'
+  + '  salesman, marketing, 0 nilaibyHna, 0 nilaiblmppn,0 isecer,"" ISn3,'
+  + '  kunjunganmarketing, kunjungansales,biaya_promosi biayapromosi,fee_marketing feemarketing,Nilai_Net nilainet, nilai NilaiEkspedisi, JenisCustomer,Golongan GolonganCustomer'
+  + asuper2
+  + ' from vlisttagihanekspedisi';
 
   ds3.Close;
   sqlqry1.Connection := frmmenu.conn;
@@ -434,24 +442,16 @@ var
   FilePathCSV, FilePathTemp: string;
 begin
 
-IF PageControl1.Pages[1].Visible then
-  TcxDBPivotHelper(cxPivot).ExportToXLS
-else
-begin
-  SaveDialog1.Filter := 'File CSV (*.csv)|*.csv';
-  SaveDialog1.DefaultExt := 'csv';
-  
-  if SaveDialog1.Execute then
+  IF PageControl1.Pages[1].Visible  then
+     TcxDBPivotHelper(cxPivot).ExportToTXT
+  else
   begin
-    
-    FilePathCSV := ChangeFileExt(SaveDialog1.FileName, '.csv');
-    FilePathTemp := ChangeFileExt(FilePathCSV, '.txt');
-    ExportGridToText(FilePathTemp, cxGrid1, True, True, ',', '"', '"');
-    RenameFile(FilePathTemp, FilePathCSV)
-  end;
-end;
-
-
+     if SaveDialog1.Execute then
+     begin
+//          ExportGridToExcel(SaveDialog1.FileName, cxGrid1);
+          ExportGridToText(SaveDialog1.FileName, cxGrid1, True, True, ',', '"', '"');
+     end;
+ end;
 end;
 
 

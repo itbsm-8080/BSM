@@ -102,7 +102,8 @@ uses
   ufrmVerifikasiAbsensi in 'ufrmVerifikasiAbsensi.pas' {frmVerifikasiAbsensi},
   ufrmBrowseBayarRepack in 'ufrmBrowseBayarRepack.pas' {frmBrowseBayarRepack},
   ufrmBayarRepack in 'ufrmBayarRepack.pas' {frmBayarRepack},
-  ufrmLapBulanan3 in 'ufrmLapBulanan3.pas' {frmLapBulanan3};
+  ufrmLapBulanan3 in 'ufrmLapBulanan3.pas' {frmLapBulanan3},
+  ufrmOmsetvsOmsetKategori in 'ufrmOmsetvsOmsetKategori.pas' {frmOmsetvsOmsetKategori};
 
 {$R *.res}
 

@@ -370,10 +370,10 @@ begin
 
 if frmmenu.KDUSER = 'SUPER' then
         Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,Hpp,Margin, '
-        + ' kunjunganmarketing,kunjungansales,isecer,Biayapromosi,FeeMarketing,NilaiNet,JenisCustomer,GolonganCustomer'
+        + ' kunjunganmarketing,kunjungansales,isecer,Biayapromosi,FeeMarketing,NilaiNet,NilaiEkspedisi,JenisCustomer,GolonganCustomer'
 else
         Skolom :='Cabang,Nomor,Tanggal,Bulan,Tahun,Outlet,Kode,Nama,Qty,Nilai,Kontrak,Departemen,SubDepartemen,Kategori,Group_Produk,Pajak,IsPf,Salesman,Marketing,NilaiByHna,Nilaiblmppn,IsN3,kunjunganmarketing,kunjungansales,'
-        + ' isecer,Biayapromosi,FeeMarketing,NilaiNet,JenisCustomer,GolonganCustomer';
+        + ' isecer,Biayapromosi,FeeMarketing,NilaiNet,NilaiEkspedisi,JenisCustomer,GolonganCustomer';
         QueryToDBGrid(cxGrid1DBTableView1, s,skolom ,ds2);
 
            jmlkolom :=cxGrid1DBTableView1.ColumnCount-2;
@@ -401,8 +401,10 @@ BEGIN
         cxGrid1DBTableView1.Columns[22].Summary.FooterFormat:='###,###,###,###';
         cxGrid1DBTableView1.Columns[23].Summary.FooterKind:=skSum;
         cxGrid1DBTableView1.Columns[23].Summary.FooterFormat:='###,###,###,###';
-              cxGrid1DBTableView1.Columns[28].Summary.FooterKind:=skSum;
+        cxGrid1DBTableView1.Columns[28].Summary.FooterKind:=skSum;
         cxGrid1DBTableView1.Columns[28].Summary.FooterFormat:='###,###,###,###';
+        cxGrid1DBTableView1.Columns[30].Summary.FooterKind:=skSum;
+        cxGrid1DBTableView1.Columns[30].Summary.FooterFormat:='###,###,###,###';
 
 end
 else

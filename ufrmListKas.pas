@@ -86,13 +86,13 @@ begin
                   + ' union'
                   + ' select nomor,tanggal,Keterangan,Rekening,Debet,kredit,saldo,if(nomor like "VP%",(select sup_nama from tbayarsup_hdr inner join tsupplier on sup_kode=bys_sup_kode where bys_nomor=nomor),Memo) Memo'
                   + ' from ('
-                  + ' SELECT jurd_jur_no Nomor, DATE_FORMAT(tanggal,"%Y-%m-%d") Tanggal, jurd_keterangan Keterangan,rek_nama Rekening,'
+                  + ' SELECT jurd_jur_no Nomor, DATE_FORMAT(tanggal,"%Y-%m-%d") Tanggal, a.jurd_keterangan Keterangan,rek_nama Rekening,'
                   + ' jurd_kredit Debet,jurd_debet Kredit, 0 Saldo,cc Memo,'
                   + ' case when debet <> 0 then (select count(*) from tjurnalitem where jurd_jur_no=a.nomor and jurd_debet <> 0)'
                   + ' else (select count(*) from tjurnalitem where jurd_jur_no=a.nomor  and jurd_kredit <> 0) end sendiri'
                   + ' FROM tjurnalitem b'
                   + ' INNER JOIN ('
-                  + ' SELECT jurd_jur_no nomor,jur_tanggal tanggal,jur_tipetransaksi,jur_keterangan,jurd_debet debet,jurd_kredit kredit,(select sup_nama from tsupplier where  jurd_cus_kode=sup_kode limit 1) cc '
+                  + ' SELECT jurd_jur_no nomor,jur_tanggal tanggal,jur_tipetransaksi,jurd_keterangan,jurd_debet debet,jurd_kredit kredit,(select sup_nama from tsupplier where  jurd_cus_kode=sup_kode limit 1) cc '
                   + ' FROM tjurnalitem'
                   + ' INNER JOIN tjurnal ON jurd_jur_no=jur_no'
                   + ' WHERE jurd_rek_kode= '+ quot(VarToStr(cxlookupRekeningcash.editvalue))+ ' AND jur_tanggal BETWEEN '+quotd(startdate.DateTime)+' and '+quotd(enddate.DateTime)+ ') a ON b.jurd_jur_no=a.nomor'
@@ -102,7 +102,7 @@ begin
                   + ' WHERE jurd_rek_kode <> ' + quot(VarToStr(cxlookupRekeningcash.editvalue))
                   + ' having   sendiri = 1'
                   + ' union'
-                  + ' SELECT DISTINCT jurd_jur_no Nomor, DATE_FORMAT(tanggal,"%Y-%m-%d") Tanggal, jur_keterangan Keterangan,'
+                  + ' SELECT DISTINCT jurd_jur_no Nomor, DATE_FORMAT(tanggal,"%Y-%m-%d") Tanggal, a.jurd_keterangan Keterangan,'
                   + ' (case when a.debet > 0'
                   + ' then'
                   + ' (select rek_nama from tjurnalitem inner join trekening on rek_kode=jurd_rek_kode where jurd_jur_no=b.jurd_jur_no and jurd_kredit > 0  limit 1) else'
@@ -115,7 +115,7 @@ begin
                   + ' else (select count(*) from tjurnalitem where jurd_jur_no=a.nomor  and jurd_kredit>0) end sendiri'
                   + ' FROM tjurnalitem b'
                   + ' INNER JOIN ('
-                  + ' SELECT jurd_jur_no nomor,jur_tanggal tanggal,jur_tipetransaksi,jur_keterangan,jurd_debet debet,jurd_kredit kredit,(SELECT sup_nama FROM tsupplier WHERE jurd_cus_kode=sup_kode LIMIT 1)  cc '
+                  + ' SELECT jurd_jur_no nomor,jur_tanggal tanggal,jur_tipetransaksi,jurd_keterangan,jurd_debet debet,jurd_kredit kredit,(SELECT sup_nama FROM tsupplier WHERE jurd_cus_kode=sup_kode LIMIT 1)  cc '
                   + ' FROM tjurnalitem'
                   + ' INNER JOIN tjurnal ON jurd_jur_no=jur_no'
                   + ' WHERE jurd_rek_kode= ' + quot(VarToStr(cxlookupRekeningcash.editvalue)) + ' AND jur_tanggal BETWEEN '+quotd(startdate.DateTime)+' and '+quotd(enddate.DateTime)+ ') a ON b.jurd_jur_no=a.nomor'
@@ -130,7 +130,7 @@ begin
     cxGrdMaster.ApplyBestFit();
     cxGrdMaster.Columns[0].Width :=100;
     cxGrdMaster.Columns[1].Width :=100;
-    cxGrdMaster.Columns[2].Width :=100;
+    cxGrdMaster.Columns[2].Width :=200;
     cxGrdMaster.Columns[3].Width :=200;
     cxGrdMaster.Columns[4].Width :=100;
     cxGrdMaster.Columns[5].Width :=100;
